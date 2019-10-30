@@ -1,4 +1,4 @@
-package ba.ping.vstv.hrms.mik.util;
+package ba.unsa.pmf.gamification.util;
 
 import java.util.Calendar;
 import java.util.Date;
