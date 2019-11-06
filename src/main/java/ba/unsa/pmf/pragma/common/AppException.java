@@ -1,4 +1,4 @@
-package ba.unsa.pmf.gamification.common;
+package ba.unsa.pmf.pragma.common;
 
 public class AppException extends RuntimeException {
 

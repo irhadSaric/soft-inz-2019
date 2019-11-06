@@ -1,4 +1,4 @@
-package ba.unsa.pmf.gamification.web;
+package ba.unsa.pmf.pragma.web;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;

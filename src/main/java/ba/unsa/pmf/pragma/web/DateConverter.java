@@ -1,10 +1,10 @@
-package ba.unsa.pmf.gamification.web;
+package ba.unsa.pmf.pragma.web;
 
 import java.util.Date;
 
 import org.springframework.core.convert.converter.Converter;
 
-import ba.unsa.pmf.gamification.util.ValidationUtils;
+import ba.unsa.pmf.pragma.util.ValidationUtils;
 
 
 public final class DateConverter implements Converter<String, Date> {

@@ -1,4 +1,4 @@
-package ba.unsa.pmf.gamification.common;
+package ba.unsa.pmf.pragma.common;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;

@@ -1,4 +1,4 @@
-package ba.unsa.pmf.gamification.util;
+package ba.unsa.pmf.pragma.util;
 
 public class JsonUtils {
 

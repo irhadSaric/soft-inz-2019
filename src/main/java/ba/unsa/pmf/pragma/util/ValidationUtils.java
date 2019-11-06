@@ -1,8 +1,8 @@
-package ba.unsa.pmf.gamification.util;
+package ba.unsa.pmf.pragma.util;
 
 import java.util.regex.Pattern;
 
-import ba.unsa.pmf.gamification.common.AppException;
+import ba.unsa.pmf.pragma.common.AppException;
 
 public class ValidationUtils {
 

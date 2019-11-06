@@ -1,4 +1,4 @@
-package ba.unsa.pmf.gamification.controller;
+package ba.unsa.pmf.pragma.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,8 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import ba.unsa.pmf.gamification.common.AppException;
-import ba.unsa.pmf.gamification.common.Messages;
+import ba.unsa.pmf.pragma.common.AppException;
+import ba.unsa.pmf.pragma.common.Messages;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 

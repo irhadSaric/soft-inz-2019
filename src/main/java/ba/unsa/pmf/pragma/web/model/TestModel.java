@@ -1,4 +1,4 @@
-package ba.unsa.pmf.gamification.web.model;
+package ba.unsa.pmf.pragma.web.model;
 
 
 public class TestModel {

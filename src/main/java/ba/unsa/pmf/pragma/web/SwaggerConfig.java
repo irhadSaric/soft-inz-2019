@@ -1,4 +1,4 @@
-package ba.unsa.pmf.gamification.web;
+package ba.unsa.pmf.pragma.web;
 
 import java.util.Collections;
 import java.util.Date;
