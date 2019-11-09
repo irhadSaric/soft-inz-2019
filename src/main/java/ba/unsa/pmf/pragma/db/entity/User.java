@@ -3,6 +3,8 @@ package ba.unsa.pmf.pragma.db.entity;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author malek.chahin
@@ -12,17 +14,22 @@ import javax.persistence.*;
 @Table(name = "users")
 public class User extends BaseEntity {
 
+    @NotNull
     @Column(name = "first_name", nullable = false)
     private String firstName;
 
+    @NotNull
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
+    @NotNull
+    @Email
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @Column(name = "password", nullable = false)
     @Length(min = 5, message = "*Your password must have at least 5 characters")
+    @NotNull
     @Transient
     private String password;
 

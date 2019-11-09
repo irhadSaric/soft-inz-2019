@@ -38,8 +38,6 @@ public class UserService {
     @Transactional
     public User saveUser(User user) {
 //        TODO, If user has permission
-//        TODO, malek.chahin: Save if email is unique
-//        This check is maybe already provided because of the entity
         return userRepository.save(user);
     }
 
