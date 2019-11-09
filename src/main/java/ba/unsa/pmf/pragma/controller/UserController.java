@@ -14,8 +14,8 @@ import java.util.List;
  * November, 06, 2019.
  */
 @RestController
-@RequestMapping(value = "/api/user", produces = MediaType.APPLICATION_JSON_VALUE)
-public class UserController {
+@RequestMapping("api/user")
+public class UserController extends BaseController {
 
     @Autowired
     private UserRepository userRepository;

@@ -22,7 +22,7 @@ public class SwaggerConfig {
 	public Docket api() {		
 		return new Docket(DocumentationType.SWAGGER_2)
 				.select()
-				.apis(RequestHandlerSelectors.basePackage("ba.unsa.pmf.gamification.controller"))
+				.apis(RequestHandlerSelectors.basePackage("ba.unsa.pmf.pragma.controller"))
 				.paths(PathSelectors.any())
 				.build()
 				.apiInfo(apiInfo())
@@ -32,11 +32,11 @@ public class SwaggerConfig {
 	
 	private ApiInfo apiInfo() {
 	    return new ApiInfo(
-	    		"Gamification API", 
-	    		"Backend API for Gamification application.", 
+	    		"Pragma API", 
+	    		"Backend API for Pragma application.", 
 	    		"v1", 
 	    		null, 
-	    		new Contact("Gamification", null, null), 
+	    		new Contact("Pragma", null, null), 
 	    		null, 
 	    		null, 
 	    		Collections.emptyList());
