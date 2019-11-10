@@ -51,13 +51,13 @@ public class UserService {
         userRepository.save(user);
 
         List<Role> userRoles = roleRepository.findRolesByKey("user");
+        // Create records in the user_roles table to connect the newly created user to the default user permissions
         for (Role role : userRoles) {
             UserRole userRole = new UserRole();
             userRole.setRole(role);
             userRole.setUser(user);
             userRoleRepository.save(userRole);
         }
-        // Create records in the user_roles table to connect the newly created user to the default user permissions
         return userRepository.save(user);
     }
 
