@@ -3,3 +3,4 @@ jdk: oraclejdk11
 
 script:
   - ls
+  - cd src/main/java/ba/unsa/pmf/pragma/ && ls
