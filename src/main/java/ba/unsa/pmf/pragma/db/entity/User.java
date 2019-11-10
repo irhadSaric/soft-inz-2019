@@ -30,7 +30,6 @@ public class User extends BaseEntity {
     @Column(name = "password", nullable = false)
     @Length(min = 5, message = "*Your password must have at least 5 characters")
     @NotNull
-    @Transient
     private String password;
 
     @Column(name = "phone", nullable = false)
