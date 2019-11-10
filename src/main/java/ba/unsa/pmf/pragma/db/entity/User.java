@@ -37,7 +37,7 @@ public class User extends BaseEntity {
     private String phone;
 
     @ManyToOne
-    @JoinColumn(name = "country", nullable = false)
+    @JoinColumn(name = "country_id", nullable = false)
     private Country country;
 
     public String getPassword() {

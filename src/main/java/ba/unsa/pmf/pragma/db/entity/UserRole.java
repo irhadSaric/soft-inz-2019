@@ -1,9 +1,8 @@
 package ba.unsa.pmf.pragma.db.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import ba.unsa.pmf.pragma.db.keys.UserRoleKey;
+
+import javax.persistence.*;
 
 /**
  * @author malek.chahin
@@ -11,14 +10,17 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "user_roles")
-public class UserRole extends BaseEntity {
+@IdClass(UserRoleKey.class)
+public class UserRole {
 
+    @Id
     @ManyToOne
-    @JoinColumn(name = "user")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @Id
     @ManyToOne
-    @JoinColumn(name = "role")
+    @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
     public User getUser() {
