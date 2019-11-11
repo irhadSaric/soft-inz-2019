@@ -1,8 +1,5 @@
 package ba.unsa.pmf.pragma.db.keys;
 
-import ba.unsa.pmf.pragma.db.entity.Permission;
-import ba.unsa.pmf.pragma.db.entity.Role;
-
 import java.io.Serializable;
 
 /**
@@ -11,14 +8,14 @@ import java.io.Serializable;
  */
 public class RolePermissionKey implements Serializable {
 
-    private Role role;
-    private Permission permission;
+    private Short roleId;
+    private Short permissionId;
 
     public RolePermissionKey() {
     }
 
-    public RolePermissionKey(Role role, Permission permission) {
-        this.role = role;
-        this.permission = permission;
+    public RolePermissionKey(Short roleId, Short permissionId) {
+        this.roleId = roleId;
+        this.permissionId = permissionId;
     }
 }

@@ -18,8 +18,8 @@ public interface RoleRepository extends JpaRepository<Role, Short> {
     @Query(value =
             "select r " +
             "from Role r " +
-            "inner join UserRole ur on ur.role.id = r.id " +
-            "inner join User u on u.id = ur.user.id " +
+            "inner join UserRole ur on ur.roleId = r.id " +
+            "inner join User u on u.id = ur.userId " +
             "where u.id = :userId"
     )
     List<Role> findRolesByUserId(@Param("userId") Long userId);
