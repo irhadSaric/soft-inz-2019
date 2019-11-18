@@ -8,14 +8,14 @@ import java.io.Serializable;
  */
 public class UserRoleKey implements Serializable {
 
-    private Long userId;
-    private Short roleId;
+    private Long user;
+    private Short role;
 
     public UserRoleKey() {
     }
 
-    public UserRoleKey(Long userId, Short roleId) {
-        this.userId = userId;
-        this.roleId = roleId;
+    public UserRoleKey(Long user_id, Short role_id) {
+        this.user = user_id;
+        this.role = role_id;
     }
 }

@@ -14,58 +14,28 @@ import javax.persistence.*;
 public class RolePermission {
 
     @Id
-    @Column(name = "role_id", nullable = false)
-    private Short roleId;
+    @ManyToOne
+    @JoinColumn(name = "role_id", nullable = false)
+    private Role role;
 
     @Id
-    @Column(name = "permission_id", nullable = false)
-    private Short permissionId;
-
     @ManyToOne
-    @JoinColumn(name = "permission_id")
+    @JoinColumn(name = "permission_id", nullable = false)
     private Permission permission;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    private Role role;
+    public Role getRole() {
+        return role;
+    }
 
     public void setRole(Role role) {
         this.role = role;
     }
 
-    public Short getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Short roleId) {
-        this.roleId = roleId;
-    }
-
-    public Short getPermissionId() {
-        return permissionId;
-    }
-
-    public void setPermissionId(Short permissionId) {
-        this.permissionId = permissionId;
+    public Permission getPermission() {
+        return permission;
     }
 
     public void setPermission(Permission permission) {
         this.permission = permission;
-    }
-
-    public Short getRole() {
-        return roleId;
-    }
-
-    public void setRole(Short roleId) {
-        this.roleId = roleId;
-    }
-
-    public Short getPermission() {
-        return permissionId;
-    }
-
-    public void setPermission(Short permissionId) {
-        this.permissionId = permissionId;
     }
 }
