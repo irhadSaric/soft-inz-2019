@@ -40,6 +40,13 @@ public class User extends BaseEntity {
     @JoinColumn(name = "country_id", nullable = false)
     private Country country;
 
+    @Column(name = "avatar")
+    private byte[] avatar;
+
+    @ManyToOne
+    @JoinColumn(name = "status", nullable = false)
+    private Status status;
+
     public String getPassword() {
         return password;
     }
@@ -86,5 +93,21 @@ public class User extends BaseEntity {
 
     public void setCountry(Country country) {
         this.country = country;
+    }
+
+    public byte[] getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(byte[] avatar) {
+        this.avatar = avatar;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }
