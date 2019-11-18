@@ -18,10 +18,10 @@ public interface PermissionRepository extends JpaRepository<Permission, Short> {
     @Query(value =
             "select p " +
             "from Permission p " +
-            "inner join RolePermission rp on rp.permissionId = p.id " +
-            "inner join Role r on rp.roleId = r.id " +
-            "inner join UserRole ur on ur.roleId = r.id " +
-            "inner join User u on u.id = ur.userId " +
+            "inner join RolePermission rp on rp.permission.id = p.id " +
+            "inner join Role r on rp.role.id = r.id " +
+            "inner join UserRole ur on ur.role.id = r.id " +
+            "inner join User u on u.id = ur.user.id " +
             "where u.id = :userId"
     )
     List<Permission> findPermissionsByUserId(@Param("userId") Long userId);

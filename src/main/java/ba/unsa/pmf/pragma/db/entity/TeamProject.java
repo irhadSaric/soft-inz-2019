@@ -8,37 +8,16 @@ import javax.persistence.*;
 @Table(name = "team_projects")
 @IdClass(TeamProjectKey.class)
 public class TeamProject {
-    @Id
-    @Column(name = "team_id", nullable = false, insertable = false, updatable = false)
-    private Long teamId;
 
     @Id
-    @Column(name = "project_id", nullable = false, insertable = false, updatable = false)
-    private Long projectId;
-
     @ManyToOne
-    @JoinColumn(name = "team_id")
+    @JoinColumn(name = "team_id", nullable = false)
     private Team team;
 
+    @Id
     @ManyToOne
-    @JoinColumn(name = "project_id")
+    @JoinColumn(name = "project_id", nullable = false)
     private Project project;
-
-    public Long getTeamId() {
-        return teamId;
-    }
-
-    public void setTeamId(Long teamId) {
-        this.teamId = teamId;
-    }
-
-    public Long getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Long projectId) {
-        this.projectId = projectId;
-    }
 
     public Team getTeam() {
         return team;
