@@ -43,7 +43,7 @@ public class User extends BaseEntity {
     @Column(name = "avatar")
     private byte[] avatar;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "status", nullable = false)
     private Status status;
 

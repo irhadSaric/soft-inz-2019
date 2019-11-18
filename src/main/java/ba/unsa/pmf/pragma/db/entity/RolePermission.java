@@ -14,18 +14,18 @@ import javax.persistence.*;
 public class RolePermission {
 
     @Id
-    @Column(name = "role_id", nullable = false, insertable = false, updatable = false)
+    @Column(name = "role_id", nullable = false)
     private Short roleId;
 
     @Id
-    @Column(name = "permission_id", nullable = false, insertable = false, updatable = false)
+    @Column(name = "permission_id", nullable = false)
     private Short permissionId;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "permission_id")
     private Permission permission;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
 

@@ -5,7 +5,7 @@ import ba.unsa.pmf.pragma.db.keys.TeamProjectKey;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "team_project")
+@Table(name = "team_projects")
 @IdClass(TeamProjectKey.class)
 public class TeamProject {
     @Id
@@ -16,11 +16,11 @@ public class TeamProject {
     @Column(name = "project_id", nullable = false, insertable = false, updatable = false)
     private Long projectId;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "team_id")
     private Team team;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;
 

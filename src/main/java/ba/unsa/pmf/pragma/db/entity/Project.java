@@ -4,12 +4,12 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "project")
+@Table(name = "projects")
 public class Project extends BaseEntity {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "status_id", nullable = false)
     private Status statusId;
 
