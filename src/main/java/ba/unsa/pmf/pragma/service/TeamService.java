@@ -43,7 +43,8 @@ public class TeamService {
         optional.ifPresent(user -> userTeam.setUser(optional.get()));
         userTeam.setJoinDate(new Date(System.currentTimeMillis()));
         userTeam.setTeam(team);
-        // userTeam.setRole(roleRepository.findRolesByKey("Lead"));
+        userTeam.setRole(roleRepository.findRoleByKey("Lead"));
+        userTeam.setNickname(request.getNickname());
         userTeamRepository.save(userTeam);
         return "Successfully Created Team";
     }
