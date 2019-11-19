@@ -6,8 +6,9 @@ import javax.persistence.Table;
 import java.util.Date;
 
 @Entity
-@Table(name = "team")
+@Table(name = "teams")
 public class Team extends BaseEntity{
+
     @Column(name = "name", nullable = false)
     private String name;
 

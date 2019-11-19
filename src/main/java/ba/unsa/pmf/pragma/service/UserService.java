@@ -101,8 +101,8 @@ public class UserService {
         // Create records in the user_roles table to connect the newly created user to the default user permissions
         for (Role role : userRoles) {
             UserRole userRole = new UserRole();
-            userRole.setRoleId(role.getId());
-            userRole.setUserId(user.getId());
+            userRole.setRole(role);
+            userRole.setUser(user);
             userRoleRepository.save(userRole);
         }
         return user;

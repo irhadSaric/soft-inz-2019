@@ -4,8 +4,9 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "user_team")
+@Table(name = "user_teams")
 public class UserTeam extends BaseEntity{
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

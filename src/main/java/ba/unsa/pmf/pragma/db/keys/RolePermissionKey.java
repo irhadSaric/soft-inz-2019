@@ -8,14 +8,14 @@ import java.io.Serializable;
  */
 public class RolePermissionKey implements Serializable {
 
-    private Short roleId;
-    private Short permissionId;
+    private Short role;
+    private Short permission;
 
     public RolePermissionKey() {
     }
 
-    public RolePermissionKey(Short roleId, Short permissionId) {
-        this.roleId = roleId;
-        this.permissionId = permissionId;
+    public RolePermissionKey(Short role_id, Short permission_id) {
+        this.role = role_id;
+        this.permission = permission_id;
     }
 }
