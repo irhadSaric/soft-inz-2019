@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public interface UserTeamRepository extends JpaRepository<UserTeam,Long> {
     @Query(value =
-            "select t.team from UserTeam t where t.id = :userId"
+            "select t.team from UserTeam t where t.user.id = :userId"
     )
     List<Team> getTeamsForUser(@Param("userId") Long userId);
 }
