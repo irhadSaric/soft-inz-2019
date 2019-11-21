@@ -12,7 +12,7 @@ public class Team extends BaseEntity{
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "logo", nullable = false)
+    @Column(name = "logo")
     private byte[] logo;
 
     @Column(name = "description", nullable = false)
