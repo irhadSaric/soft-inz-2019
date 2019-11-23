@@ -198,11 +198,11 @@ class Register extends Component {
               />
               {submitted &&
                 ((!user.confirmPassword && (
-                  <div className="help-block">Password is required</div>
+                  <div className="help-block">Confirm password is required</div>
                 )) ||
                   (user.password && user.password !== user.confirmPassword && (
                     <div className="help-block">
-                      Your password and confirmation password do not match.
+                      Password and confirmation password do not match.
                     </div>
                   )))}
             </div>
