@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import "../../index.css";
-import { Container, Header, Input, Grid, Button } from "semantic-ui-react";
+import { Container, Header, Input, Button } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";

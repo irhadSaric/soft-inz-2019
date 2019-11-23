@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import "../../index.css";
 import { Container, Header, Button, Input, Dropdown } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
@@ -16,6 +15,7 @@ class Register extends Component {
         firstName: "",
         lastName: "",
         password: "",
+        confirmPassword: "",
         phone: ""
       },
       statuses: [],
@@ -103,6 +103,8 @@ class Register extends Component {
                 onChange={this.handleChange}
                 error={submitted && !user.email}
                 placeholder={"Email"}
+                icon={"at"}
+                iconPosition={"left"}
               />
               {submitted && !user.email && (
                 <div className="help-block">Email is required</div>
@@ -171,6 +173,38 @@ class Register extends Component {
               {submitted && !user.password && (
                 <div className="help-block">Password is required</div>
               )}
+            </div>
+            <div
+              className={
+                "formGroup" +
+                (submitted && !user.confirmPassword ? " has-error" : "")
+              }
+            >
+              <label htmlFor="confirmPassword" className={"label"}>
+                Confirm password
+              </label>
+              <Input
+                type="password"
+                className="formInput"
+                name="confirmPassword"
+                value={user.confirmPassword}
+                onChange={this.handleChange}
+                error={
+                  submitted &&
+                  (!user.confirmPassword ||
+                    (user.password && user.password !== user.confirmPassword))
+                }
+                placeholder={"Confirm password"}
+              />
+              {submitted &&
+                ((!user.confirmPassword && (
+                  <div className="help-block">Password is required</div>
+                )) ||
+                  (user.password && user.password !== user.confirmPassword && (
+                    <div className="help-block">
+                      Your password and confirmation password do not match.
+                    </div>
+                  )))}
             </div>
             <div
               className={
