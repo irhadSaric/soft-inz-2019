@@ -62,9 +62,6 @@ class Login extends Component {
                 onChange={this.handleChange}
                 placeholder={"Username"}
               />
-              {submitted && !username && (
-                <div className="help-block">Username is required</div>
-              )}
             </div>
             <div
               className={
@@ -81,9 +78,6 @@ class Login extends Component {
                 onChange={this.handleChange}
                 placeholder={"Password"}
               />
-              {submitted && !password && (
-                <div className="help-block">Password is required</div>
-              )}
             </div>
             <div className="loginBtnGroup">
               <Button
