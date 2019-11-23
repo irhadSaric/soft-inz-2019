@@ -4,6 +4,8 @@ import ba.unsa.pmf.pragma.db.entity.User;
 import ba.unsa.pmf.pragma.service.UserService;
 import ba.unsa.pmf.pragma.service.dtos.LoginRequest;
 import ba.unsa.pmf.pragma.service.dtos.RegistrationResponse;
+import ba.unsa.pmf.pragma.service.dtos.UserProfileData;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,7 +43,12 @@ public class UserController extends BaseController {
     }
 
     @GetMapping("/api/user/profile/{id}")
-    public User getUser(@PathVariable("id") Long id) {
+    public UserProfileData getUser(@PathVariable("id") Long id) {
         return userService.getUser(id);
+    }
+
+    @PutMapping("/api/user/profile/{id}")
+    public UserProfileData updateUser(@PathVariable("id") Long id, @RequestBody UserProfileData userProfileData) throws NotFoundException {
+        return userService.updateUser(id, userProfileData);
     }
 }

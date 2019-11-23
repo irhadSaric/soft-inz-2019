@@ -2,6 +2,7 @@ package ba.unsa.pmf.pragma.db.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 import java.util.Date;
 
@@ -12,6 +13,7 @@ public class Team extends BaseEntity{
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Lob
     @Column(name = "logo", nullable = false)
     private byte[] logo;
 

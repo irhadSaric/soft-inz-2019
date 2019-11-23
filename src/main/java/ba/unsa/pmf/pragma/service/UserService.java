@@ -1,20 +1,21 @@
 package ba.unsa.pmf.pragma.service;
 
+import ba.unsa.pmf.pragma.db.entity.Country;
 import ba.unsa.pmf.pragma.db.entity.Role;
 import ba.unsa.pmf.pragma.db.entity.User;
 import ba.unsa.pmf.pragma.db.entity.UserRole;
-import ba.unsa.pmf.pragma.db.repository.PermissionRepository;
-import ba.unsa.pmf.pragma.db.repository.RoleRepository;
-import ba.unsa.pmf.pragma.db.repository.UserRepository;
-import ba.unsa.pmf.pragma.db.repository.UserRoleRepository;
+import ba.unsa.pmf.pragma.db.repository.*;
 import ba.unsa.pmf.pragma.service.dtos.LoginRequest;
 import ba.unsa.pmf.pragma.service.dtos.RegistrationResponse;
+import ba.unsa.pmf.pragma.service.dtos.UserProfileData;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -32,6 +33,9 @@ public class UserService {
 
     @Autowired
     private PermissionRepository permissionRepository;
+
+    @Autowired
+    private CountryRepository countryRepository;
 
     @Autowired
     private UserRoleRepository userRoleRepository;
@@ -52,9 +56,34 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public User getUser(Long id) {
+    public UserProfileData getUser(Long id) {
         // Method will be used by users to view their profiles and other user profiles
-        return userRepository.getOne(id);
+        User user = userRepository.getOne(id);
+        return new UserProfileData(
+                user.getEmail(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getPhone(),
+                user.getCountry()
+        );
+    }
+
+    @Transactional
+    public UserProfileData updateUser(Long id, UserProfileData userProfileData) throws NotFoundException {
+        Optional<User> data = userRepository.findById(id);
+
+        if (data.isEmpty()) {
+            throw new NotFoundException("No user with specified id was found.");
+        }
+
+        User user = data.get();
+        user.setFirstName(userProfileData.getFirstName());
+        user.setLastName(userProfileData.getLastName());
+        user.setEmail(userProfileData.getEmail());
+        user.setPhone(userProfileData.getPhone());
+        user.setCountry(countryRepository.getOne(userProfileData.getCountry().getId()));
+        userRepository.save(user);
+        return userProfileData;
     }
 
     @Transactional(readOnly = true)
