@@ -1,0 +1,21 @@
+div.loginDiv{
+    width: 100%;
+    margin-top: 200px;
+}
+
+div.ui.container.loginContainer{
+    width: 500px;
+    margin: auto;
+}
+
+button.ui.fluid.button.loginButton{
+    margin-top: 10px;
+}
+
+div.ui.input.formInput{
+    margin-left: 30px;
+}
+
+div.formGroup{
+    margin-top: 20px;
+}

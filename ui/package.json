@@ -1,0 +1,45 @@
+{
+  "name": "pragma",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "core-js": "^2.6.10",
+    "final-form": "^4.18.5",
+    "react": "^16.11.0",
+    "react-cookie-consent": "^2.5.0",
+    "react-dom": "^16.11.0",
+    "react-final-form": "^6.3.0",
+    "react-redux": "^7.1.1",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "3.2.0",
+    "react-toastify": "^5.4.1",
+    "redux": "^4.0.4",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.3.0",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^0.88.1",
+    "superagent": "^5.1.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {}
+}
