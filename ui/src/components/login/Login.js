@@ -13,7 +13,7 @@ class Login extends Component {
     //this.props.logout();
 
     this.state = {
-      username: "",
+      email: "",
       password: "",
       submitted: false
     };
@@ -32,15 +32,15 @@ class Login extends Component {
     const { actions } = this.props;
 
     this.setState({ submitted: true });
-    const { username, password } = this.state;
-    if (username && password) {
-      actions.login(username, password);
+    const { email, password } = this.state;
+    if (email && password) {
+      actions.login(email, password);
     }
   }
 
   render() {
     const { loggingIn } = this.props;
-    const { username, password, submitted } = this.state;
+    const { email, password, submitted } = this.state;
     return (
       <div className="loginDiv">
         <Container className="loginWrapper">
@@ -48,18 +48,18 @@ class Login extends Component {
           <form name="form" onSubmit={this.handleSubmit}>
             <div
               className={
-                "formGroup" + (submitted && !username ? " has-error" : "")
+                "formGroup" + (submitted && !email ? " has-error" : "")
               }
             >
               <Input
-                type="text"
-                icon={"user"}
+                type="email"
+                icon={"at"}
                 iconPosition={"left"}
                 className="formInput"
-                name="username"
-                value={username}
+                name="email"
+                value={email}
                 onChange={this.handleChange}
-                placeholder={"Username"}
+                placeholder={"Email"}
               />
             </div>
             <div
@@ -80,7 +80,7 @@ class Login extends Component {
             </div>
             <div className="loginBtnGroup">
               <Button
-                disabled={!username || !password}
+                disabled={!email || !password}
                 color={"green"}
                 className="btn btn-primary loginBtn"
               >
