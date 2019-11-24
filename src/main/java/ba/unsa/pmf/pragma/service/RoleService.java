@@ -27,4 +27,9 @@ public class RoleService {
     public List<Role> getRolesForUser(Long userId) {
         return roleRepository.findRolesByUserId(userId);
     }
+
+    @Transactional
+    public Role getRoleById(short id){
+        return roleRepository.getOne(id);
+    }
 }
