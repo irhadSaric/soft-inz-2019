@@ -8,6 +8,8 @@ import ba.unsa.pmf.pragma.service.TeamService;
 import ba.unsa.pmf.pragma.service.UserService;
 import ba.unsa.pmf.pragma.service.UserTeamService;
 import ba.unsa.pmf.pragma.service.dtos.CreateTeamRequest;
+import ba.unsa.pmf.pragma.service.dtos.UserTeamResponse;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,8 +32,7 @@ public class TeamController {
     RoleService roleService;
 
     @PostMapping("/create-team")
-    public String createTeam(@RequestBody CreateTeamRequest request)
-    {
+    public UserTeamResponse createTeam(@RequestBody CreateTeamRequest request) throws NotFoundException {
         return teamService.createTeam(request);
     }
 
@@ -55,7 +56,7 @@ public class TeamController {
     public String addUserToTeam(@PathVariable("teamId") Long teamId, @PathVariable("userId") Long userId,
                                 @PathVariable short roleId){
         UserTeam userTeam = new UserTeam();
-        User user = userService.getUser(userId);
+        User user = userService.getOneUser(userId);
 
         userTeam.setJoinDate(new Date());
         userTeam.setNickname(user.getFirstName());

@@ -69,6 +69,11 @@ public class UserService {
     }
 
     @Transactional
+    public User getOneUser(Long id) {
+        return userRepository.getOne(id);
+    }
+
+    @Transactional
     public UserProfileData updateUser(Long id, UserProfileData userProfileData) throws NotFoundException {
         Optional<User> data = userRepository.findById(id);
 
