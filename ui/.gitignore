@@ -1,0 +1,12 @@
+node_modules
+/build/*
+variables.json
+build
+/variables.json
+.DS_Store
+/package-lock.json
+/build
+report.20190416.103613.6124.001.json
+report.20190415.160143.24944.001.json
+report.20190416.103241.6020.001.json
+report.20190416.103448.6091.001.json
