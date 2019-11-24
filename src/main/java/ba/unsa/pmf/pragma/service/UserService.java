@@ -86,11 +86,6 @@ public class UserService {
         return userProfileData;
     }
 
-    @Transactional(readOnly = true)
-    public User getUserByEmail(String email) {
-        return userRepository.getUserByEmail(email);
-    }
-
     @Transactional
     public RegistrationResponse register(User user) {
         this.saveUser(user);

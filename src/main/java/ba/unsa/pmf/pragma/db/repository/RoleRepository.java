@@ -26,4 +26,6 @@ public interface RoleRepository extends JpaRepository<Role, Short> {
 
     @Query(value = "select r from Role r where r.key = :key")
     List<Role> findRolesByKey(@Param("key") String key);
+
+    Role getRoleByKey(@Param("key") String key);
 }
