@@ -1,0 +1,37 @@
+package ba.unsa.pmf.pragma.controller;
+
+import ba.unsa.pmf.pragma.db.entity.Country;
+import ba.unsa.pmf.pragma.db.entity.Status;
+import ba.unsa.pmf.pragma.service.CountryService;
+import ba.unsa.pmf.pragma.service.StatusService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+/**
+ * @author malek.chahin
+ * November, 24, 2019.
+ */
+@RestController
+@RequestMapping("/api/codebooks")
+public class CodebooksController {
+
+    @Autowired
+    private CountryService countryService;
+
+    @Autowired
+    private StatusService statusService;
+
+    @GetMapping("/countries/all")
+    public List<Country> getAllCountries() {
+        return countryService.getAllCountries();
+    }
+
+    @GetMapping("/statuses/all")
+    public List<Status> getAllStatuses() {
+        return statusService.getAllStatuses();
+    }
+}
