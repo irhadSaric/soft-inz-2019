@@ -79,8 +79,6 @@ class Register extends Component {
       { key: "ba", value: "ba", text: "Bosnia and Herzegovina" }
     ];
 
-    const statusOptions = [{ key: "active", value: "active", text: "Active" }];
-
     return (
       <div className="registerDiv">
         <Container className="registerWrapper">
