@@ -3,47 +3,49 @@ package ba.unsa.pmf.pragma.service;
 import ba.unsa.pmf.pragma.db.entity.Team;
 import ba.unsa.pmf.pragma.db.entity.User;
 import ba.unsa.pmf.pragma.db.entity.UserTeam;
+import ba.unsa.pmf.pragma.db.repository.RoleRepository;
 import ba.unsa.pmf.pragma.db.repository.TeamRepository;
+import ba.unsa.pmf.pragma.db.repository.UserRepository;
 import ba.unsa.pmf.pragma.db.repository.UserTeamRepository;
+import ba.unsa.pmf.pragma.service.dtos.CreateTeamRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Date;
+import java.util.Optional;
 
 @Service
 public class TeamService {
-    @Autowired
-    private TeamRepository teamRepository;
 
     @Autowired
-    private UserTeamRepository userTeamRepository;
+    TeamRepository teamRepository;
 
-    @Transactional(readOnly = true)
-    public List<Team> findAllTeams() {
-//      TODO, If user has permission
-        return teamRepository.findAll();
-    }
+    @Autowired
+    UserTeamRepository userTeamRepository;
 
-    @Transactional
-    public Team findTeamById(Long id){
-        return teamRepository.getOne(id);
-    }
+    @Autowired
+    UserRepository userRepository;
 
-    @Transactional
-    public String saveTeam(Team team){
-        teamRepository.save(team);
-        return ":redirect/api/team/find/"+team.getId().toString();
-    }
+    @Autowired
+    RoleRepository roleRepository;
 
-    @Transactional
-    public List<User> findTeamMembers(Long teamId){
-        return teamRepository.findTeamMembers(teamId);
-    }
+    public String createTeam(CreateTeamRequest request) {
+        Team team = new Team();
+        team.setCreationDate(new Date(System.currentTimeMillis()));
+        team.setLogo(request.getLogo());
+        team.setName(request.getTeamName());
+        team.setDescription(request.getDescription());
 
-    @Transactional
-    public String saveUserTeam(UserTeam userTeam){
+        team = teamRepository.save(team);
+
+        Optional<User> optional = userRepository.findById(request.getUserId());
+        UserTeam userTeam = new UserTeam();
+        optional.ifPresent(user -> userTeam.setUser(optional.get()));
+        userTeam.setJoinDate(new Date(System.currentTimeMillis()));
+        userTeam.setTeam(team);
+        userTeam.setRole(roleRepository.findRoleByKey("Lead"));
+        userTeam.setNickname(request.getNickname());
         userTeamRepository.save(userTeam);
-        return ":redirect/api/team/find/"+userTeam.getTeam().getId().toString();
+        return "Successfully Created Team";
     }
 }

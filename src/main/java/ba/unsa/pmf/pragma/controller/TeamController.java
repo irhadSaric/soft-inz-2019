@@ -1,56 +1,33 @@
 package ba.unsa.pmf.pragma.controller;
 
 import ba.unsa.pmf.pragma.db.entity.Team;
-import ba.unsa.pmf.pragma.db.entity.User;
-import ba.unsa.pmf.pragma.db.entity.UserTeam;
-import ba.unsa.pmf.pragma.db.repository.RoleRepository;
 import ba.unsa.pmf.pragma.service.TeamService;
-import ba.unsa.pmf.pragma.service.UserService;
+import ba.unsa.pmf.pragma.service.UserTeamService;
+import ba.unsa.pmf.pragma.service.dtos.CreateTeamRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/team/")
-public class TeamController extends BaseController {
-    @Autowired
-    private TeamService teamService;
+public class TeamController {
 
     @Autowired
-    private UserService userService;
+    TeamService teamService;
 
     @Autowired
-    private RoleRepository roleRepository;
+    UserTeamService userTeamService;
 
-    @GetMapping("/find/all")
-    public List<Team> returnTeams(){
-        return teamService.findAllTeams();
+    @PostMapping("/create-team")
+    public String createTeam(@RequestBody CreateTeamRequest request)
+    {
+        return teamService.createTeam(request);
     }
 
-    @PostMapping("/add")
-    public String addTeam(@Valid @RequestBody Team team){
-        team.setCreationDate(new Date());
-        return teamService.saveTeam(team);
+    @GetMapping("/get-teams/{user_id}")
+    public List<Team> getTeamsForUser(@PathVariable final Long user_id)
+    {
+         return userTeamService.getTeamsForUser(user_id);
     }
 
-    @GetMapping("/find/{teamId}")
-    public List<User> findAllTeamMembers(@PathVariable("teamId") Long teamId) {
-        return teamService.findTeamMembers(teamId);
-    }
-
-    @PostMapping("/add/{teamId}/{userId}")
-    public String addUserToTeam(@PathVariable("teamId") Long teamId, @PathVariable("userId") Long userId){
-        UserTeam userTeam = new UserTeam();
-        User user = userService.getUser(userId);
-
-        userTeam.setJoinDate(new Date());
-        userTeam.setNickname(user.getFirstName());
-        userTeam.setUser(user);
-        userTeam.setTeam(teamService.findTeamById(teamId));
-        userTeam.setRole(roleRepository.getOne((short) 1));
-        return teamService.saveUserTeam(userTeam);
-    }
 }
