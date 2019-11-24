@@ -5,8 +5,6 @@ import { loginService } from '../../services/loginService';
 import {alertAction} from './alertAction';
 import history from '../../utils/history';
 
-const LOGIN_ROUTE = 'http://pragma-dev.herokuapp.com/api/users/login';
-
 /* function requestLogin(params) {
   return {
     type: types.ACTIONS.REQUEST_LOGIN,
@@ -55,11 +53,11 @@ const login = params => function dispatchFunction(dispatch) {
 
 }; */
 
-function login(username, password) {
+function login(email, password) {
   return dispatch => {
-      dispatch(request({ username }));
+      dispatch(request({ email }));
 
-      loginService.login(username, password)
+      loginService.login(email, password)
           .then(
               user => { 
                   dispatch(success(user));

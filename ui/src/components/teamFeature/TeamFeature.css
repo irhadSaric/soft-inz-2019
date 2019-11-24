@@ -1,0 +1,22 @@
+#popup{
+    margin-left: 200px;
+    width: 100%;
+}
+
+#description{
+    width: 100%;
+    height: 200px;
+    border-radius: 4px;
+}
+
+#dropdown{
+    height: auto;
+}
+
+#teamName{
+    width: 100%;
+    height:40px;
+    border-radius: 4px;
+    margin-left: 15px;
+    margin-right: 15px;
+}

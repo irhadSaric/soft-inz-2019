@@ -1,4 +1,5 @@
 import { authHeader } from '../utils/auth-header';
+import config from 'config';
 
 export const loginService = {
     login,
@@ -10,17 +11,14 @@ export const loginService = {
     delete: _delete
 };
 
-const LOGIN_ROUTE = 'http://pragma-dev.herokuapp.com/api/users/login';
-const API_URL = '';
-
-function login(username, password) {
+function login(email, password) {
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: JSON.stringify({ email, password })
     };
 
-    return fetch(`${API_URL}`, requestOptions)
+    return fetch(`${config.API_URL}/login`, requestOptions)
         .then(handleResponse)
         .then(user => {
             // store user details and jwt token in local storage to keep user logged in between page refreshes
@@ -41,7 +39,7 @@ function getAll() {
         headers: authHeader()
     };
 
-    return fetch(`${API_URL}`, requestOptions).then(handleResponse);
+    return fetch(`${config.API_URL}`, requestOptions).then(handleResponse);
 }
 
 function getById(id) {
@@ -50,27 +48,27 @@ function getById(id) {
         headers: authHeader()
     };
 
-    return fetch(`${API_URL}`, requestOptions).then(handleResponse);
+    return fetch(`${config.API_URL}`, requestOptions).then(handleResponse);
 }
 
 function register(user) {
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: JSON.stringify(user)
     };
 
-    return fetch(`${API_URL}/users/register`, requestOptions).then(handleResponse);
+    return fetch(`${config.API_URL}/register`, requestOptions).then(handleResponse);
 }
 
 function update(user) {
     const requestOptions = {
         method: 'PUT',
-        headers: { ...authHeader(), 'Content-Type': 'application/json' },
+        headers: { ...authHeader(), 'Content-Type': 'application/x-www-form-urlencoded' },
         body: JSON.stringify(user)
     };
 
-    return fetch(`${API_URL}`, requestOptions).then(handleResponse);;
+    return fetch(`${config.API_URL}`, requestOptions).then(handleResponse);
 }
 
 // prefixed function name with underscore because delete is a reserved word in javascript
@@ -80,7 +78,7 @@ function _delete(id) {
         headers: authHeader()
     };
 
-    return fetch(`${API_URL}`, requestOptions).then(handleResponse);
+    return fetch(`${config.API_URL}`, requestOptions).then(handleResponse);
 }
 
 function handleResponse(response) {

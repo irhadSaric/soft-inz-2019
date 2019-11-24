@@ -1,6 +1,8 @@
 /* eslint-disable no-nested-ternary */
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { Grid, Card, Image, Icon } from 'semantic-ui-react';
+import './UserProfile.css';
 
 class UserProfile extends Component {
   constructor(props) {
@@ -9,13 +11,10 @@ class UserProfile extends Component {
     };
   }
 
-  onSubmit = (values) => {
-  }
-
   render() {
     return (
         <Grid stackable>
-            <Card>
+            <Card id="userCard">
                 <Image src='/images/avatar/large/matthew.png' wrapped ui={false} />
                 <Card.Content>
                 <Card.Header>Matthew</Card.Header>
@@ -32,6 +31,8 @@ class UserProfile extends Component {
                     22 Friends
                 </a>
                 </Card.Content>
+                <a href="http://localhost:3000/editProfile">Edit profile</a>
+                <Link to="/editProfile" className="btn btn-link">Edit profile</Link>
             </Card>
         </Grid>
 
