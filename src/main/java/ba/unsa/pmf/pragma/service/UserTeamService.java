@@ -4,6 +4,7 @@ import ba.unsa.pmf.pragma.db.entity.Team;
 import ba.unsa.pmf.pragma.db.repository.UserTeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -11,9 +12,10 @@ import java.util.List;
 public class UserTeamService {
 
     @Autowired
-    UserTeamRepository userTeamRepository;
+    private UserTeamRepository userTeamRepository;
 
-    public List<Team> getTeamsForUser(Long user_id) {
-      return userTeamRepository.getTeamsForUser(user_id);
+    @Transactional(readOnly = true)
+    public List<Team> getTeamsForUser(Long userId) {
+      return userTeamRepository.getTeamsForUser(userId);
     }
 }

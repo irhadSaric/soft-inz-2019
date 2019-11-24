@@ -8,8 +8,11 @@ import ba.unsa.pmf.pragma.db.repository.TeamRepository;
 import ba.unsa.pmf.pragma.db.repository.UserRepository;
 import ba.unsa.pmf.pragma.db.repository.UserTeamRepository;
 import ba.unsa.pmf.pragma.service.dtos.CreateTeamRequest;
+import ba.unsa.pmf.pragma.service.dtos.UserTeamResponse;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.Optional;
@@ -18,34 +21,52 @@ import java.util.Optional;
 public class TeamService {
 
     @Autowired
-    TeamRepository teamRepository;
+    private TeamRepository teamRepository;
 
     @Autowired
-    UserTeamRepository userTeamRepository;
+    private UserTeamRepository userTeamRepository;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    RoleRepository roleRepository;
+    private RoleRepository roleRepository;
 
-    public String createTeam(CreateTeamRequest request) {
+    @Transactional
+    public UserTeamResponse createTeam(CreateTeamRequest request) throws NotFoundException {
+
         Team team = new Team();
         team.setCreationDate(new Date(System.currentTimeMillis()));
-        team.setLogo(request.getLogo());
+//        team.setLogo(request.getLogo());
         team.setName(request.getTeamName());
         team.setDescription(request.getDescription());
-
         team = teamRepository.save(team);
 
         Optional<User> optional = userRepository.findById(request.getUserId());
+
+        if (optional.isEmpty()) {
+            throw new NotFoundException(String.format("User with %s id not found.", request.getUserId()));
+        }
+
+        User user = optional.get();
         UserTeam userTeam = new UserTeam();
-        optional.ifPresent(user -> userTeam.setUser(optional.get()));
+        userTeam.setUser(user);
         userTeam.setJoinDate(new Date(System.currentTimeMillis()));
         userTeam.setTeam(team);
-        userTeam.setRole(roleRepository.findRoleByKey("Lead"));
-        userTeam.setNickname(request.getNickname());
+        userTeam.setRole(roleRepository.getRoleByKey("lead"));
+        userTeam.setNickname(
+                (request.getNickname() == null || request.getNickname().equals("")) ?
+                user.getFirstName() + user.getLastName() :
+                request.getNickname()
+        );
         userTeamRepository.save(userTeam);
-        return "Successfully Created Team";
+
+        return new UserTeamResponse(
+                userTeam.getNickname(),
+                userTeam.getRole().getName(),
+                userTeam.getRole().getKey(),
+                team.getName(),
+                team.getDescription()
+        );
     }
 }

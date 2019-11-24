@@ -3,17 +3,31 @@ package ba.unsa.pmf.pragma.service.dtos;
 import javax.validation.constraints.NotNull;
 
 public class CreateTeamRequest {
-    @NotNull
-    Long userId;
-
-    byte[] logo;
 
     @NotNull
-    String teamName;
+    private Long userId;
 
-    String description;
+    private byte[] logo;
 
-    String nickname;
+    @NotNull
+    private String teamName;
+
+    @NotNull
+    private String description;
+
+    private String nickname;
+
+    public CreateTeamRequest() {
+
+    }
+
+    public CreateTeamRequest(@NotNull Long userId, byte[] logo, @NotNull String teamName, @NotNull String description, String nickname) {
+        this.userId = userId;
+        this.logo = logo;
+        this.teamName = teamName;
+        this.description = description;
+        this.nickname = nickname;
+    }
 
     public Long getUserId() {
         return userId;
@@ -52,14 +66,6 @@ public class CreateTeamRequest {
     }
 
     public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public CreateTeamRequest(@NotNull Long userId, byte[] logo, @NotNull String teamName, String description, String nickname) {
-        this.userId = userId;
-        this.logo = logo;
-        this.teamName = teamName;
-        this.description = description;
         this.nickname = nickname;
     }
 }

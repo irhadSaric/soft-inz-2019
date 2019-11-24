@@ -4,30 +4,30 @@ import ba.unsa.pmf.pragma.db.entity.Team;
 import ba.unsa.pmf.pragma.service.TeamService;
 import ba.unsa.pmf.pragma.service.UserTeamService;
 import ba.unsa.pmf.pragma.service.dtos.CreateTeamRequest;
+import ba.unsa.pmf.pragma.service.dtos.UserTeamResponse;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/teams")
 public class TeamController {
 
     @Autowired
-    TeamService teamService;
+    private TeamService teamService;
 
     @Autowired
-    UserTeamService userTeamService;
+    private UserTeamService userTeamService;
 
     @PostMapping("/create-team")
-    public String createTeam(@RequestBody CreateTeamRequest request)
-    {
+    public UserTeamResponse createTeam(@RequestBody CreateTeamRequest request) throws NotFoundException {
         return teamService.createTeam(request);
     }
 
-    @GetMapping("/get-teams/{user_id}")
-    public List<Team> getTeamsForUser(@PathVariable final Long user_id)
-    {
-         return userTeamService.getTeamsForUser(user_id);
+    @GetMapping("/get-teams/{userId}")
+    public List<Team> getTeamsForUser(@PathVariable final Long userId) {
+         return userTeamService.getTeamsForUser(userId);
     }
-
 }
