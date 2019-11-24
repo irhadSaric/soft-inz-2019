@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/team/")
 public class TeamController extends BaseController {
     @Autowired
     private TeamService teamService;
@@ -24,23 +25,23 @@ public class TeamController extends BaseController {
     @Autowired
     private RoleRepository roleRepository;
 
-    @GetMapping("/api/team/find/all")
+    @GetMapping("/find/all")
     public List<Team> returnTeams(){
         return teamService.findAllTeams();
     }
 
-    @PostMapping("/api/team/add")
+    @PostMapping("/add")
     public String addTeam(@Valid @RequestBody Team team){
         team.setCreationDate(new Date());
         return teamService.saveTeam(team);
     }
 
-    @GetMapping("/api/team/find/{teamId}")
+    @GetMapping("/find/{teamId}")
     public List<User> findAllTeamMembers(@PathVariable("teamId") Long teamId) {
         return teamService.findTeamMembers(teamId);
     }
 
-    @PostMapping("/api/team/add/{teamId}/{userId}")
+    @PostMapping("/add/{teamId}/{userId}")
     public String addUserToTeam(@PathVariable("teamId") Long teamId, @PathVariable("userId") Long userId){
         UserTeam userTeam = new UserTeam();
         User user = userService.getUser(userId);
