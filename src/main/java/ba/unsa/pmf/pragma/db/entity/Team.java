@@ -12,8 +12,9 @@ public class Team extends BaseEntity{
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "logo")
-    private byte[] logo;
+//    @Lob
+//    @Column(name = "logo")
+//    private byte[] logo;
 
     @Column(name = "description", nullable = false)
     private String description;
@@ -29,13 +30,13 @@ public class Team extends BaseEntity{
         this.name = name;
     }
 
-    public byte[] getLogo() {
-        return logo;
-    }
-
-    public void setLogo(byte[] logo) {
-        this.logo = logo;
-    }
+//    public byte[] getLogo() {
+//        return logo;
+//    }
+//
+//    public void setLogo(byte[] logo) {
+//        this.logo = logo;
+//    }
 
     public String getDescription() {
         return description;
