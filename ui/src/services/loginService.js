@@ -5,11 +5,17 @@ export const loginService = {
     login,
     logout,
     register,
-    getAll,
+    getAllCountries,
     getById,
     update,
     delete: _delete
 };
+
+let headers = new Headers();
+
+  headers.append('Content-Type', 'application/x-www-form-urlencoded');
+  //headers.append('Access-Control-Allow-Origin', '*');
+  //headers.append('Access-Control-Allow-Credentials', 'true');
 
 function login(email, password) {
     const requestOptions = {
@@ -33,13 +39,13 @@ function logout() {
     localStorage.removeItem('user');
 }
 
-function getAll() {
+function getAllCountries() {
     const requestOptions = {
         method: 'GET',
-        headers: authHeader()
+        headers: headers
     };
 
-    return fetch(`${config.API_URL}`, requestOptions).then(handleResponse);
+    return fetch(`${config.API_URL}/api/codebooks/countries/all`, requestOptions).then(handleResponse);
 }
 
 function getById(id) {

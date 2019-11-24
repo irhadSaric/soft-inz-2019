@@ -3,7 +3,7 @@ import { Container, Header, Button, Input, Dropdown } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { loginAction } from "../../redux/actions";
+import { loginAction, countryAction } from "../../redux/actions";
 
 class Register extends Component {
   constructor(props) {
@@ -15,16 +15,22 @@ class Register extends Component {
         firstName: "",
         lastName: "",
         password: "",
-        confirmPassword: "",
-        phone: ""
+        phone: "",
       },
-      statuses: [],
-      countries: [],
+      country: [],
+      selectedValue: "",
+      confirmPassword: "",
       submitted: false
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.onChange = this.onChange.bind(this);
+  }
+
+  componentDidMount(){
+    const {actions} = this.props;
+    actions.getAllCountries();
   }
 
   handleChange(event) {
@@ -38,20 +44,26 @@ class Register extends Component {
     });
   }
 
+  onChange(e, {selectedValue}) {
+    this.setState({
+      country: {value: selectedValue}
+    });
+  }
+
   handleSubmit(event) {
     event.preventDefault();
     const { actions } = this.props;
 
     this.setState({ submitted: true });
     const { user } = this.state;
-    if (user.firstName && user.lastName && user.email && user.password) {
+    /*if (user.firstName && user.lastName && user.email && user.password) {
       actions.register(user);
-    }
+    }*/
   }
 
   render() {
     const { registering } = this.props;
-    const { user, submitted } = this.state;
+    const { user, submitted, selectedValue } = this.state;
 
     const countryOptions = [
       { key: "af", value: "af", text: "Afghanistan" },
@@ -250,6 +262,7 @@ class Register extends Component {
                 search
                 selection
                 options={statusOptions}
+                value={selectedValue}
                 placeholder="Select Status"
               />
             </div>
@@ -289,7 +302,7 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(Object.assign({}, loginAction), dispatch)
+  actions: bindActionCreators(Object.assign({}, loginAction, countryAction), dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Register);
