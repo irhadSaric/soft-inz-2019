@@ -18,7 +18,6 @@ class Register extends Component {
         confirmPassword: "",
         phone: ""
       },
-      statuses: [],
       countries: [],
       submitted: false
     };
@@ -79,8 +78,6 @@ class Register extends Component {
       { key: "bj", value: "bj", text: "Benin" },
       { key: "ba", value: "ba", text: "Bosnia and Herzegovina" }
     ];
-
-    const statusOptions = [{ key: "active", value: "active", text: "Active" }];
 
     return (
       <div className="registerDiv">
@@ -238,19 +235,6 @@ class Register extends Component {
                 selection
                 options={countryOptions}
                 placeholder="Select Country"
-              />
-            </div>
-            <div className={"formGroup"}>
-              <label htmlFor="status" className={"label"}>
-                Status
-              </label>
-              <Dropdown
-                clearable
-                fluid
-                search
-                selection
-                options={statusOptions}
-                placeholder="Select Status"
               />
             </div>
             <div className="formGroup registerFormGroup">
