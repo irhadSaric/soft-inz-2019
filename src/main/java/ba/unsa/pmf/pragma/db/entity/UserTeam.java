@@ -25,6 +25,10 @@ public class UserTeam extends BaseEntity{
     @Column(name = "nickname", nullable = false)
     private String nickname;
 
+    @ManyToOne
+    @JoinColumn(name = "status")
+    private Status status;
+
     public User getUser() {
         return user;
     }
@@ -63,5 +67,13 @@ public class UserTeam extends BaseEntity{
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

@@ -19,4 +19,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findUsersByEmailContaining(@Param("email") String email);
 
     User getUserByEmail(@Param("email") String email);
+
+    @Query(value = "select ut.user from UserTeam ut where ut.team.id = :teamId and ut.status.key = :key")
+    List<User> getUsersByTeamAndStatusKey(@Param("teamId") Long teamId, @Param("key") String key);
 }
