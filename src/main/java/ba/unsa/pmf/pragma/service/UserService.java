@@ -121,6 +121,7 @@ public class UserService {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
 
+        // FIXME: rewrite to fetch all roles with user permissions
         List<Role> userRoles = roleRepository.findRolesByKey("user");
         // Create records in the user_roles table to connect the newly created user to the default user permissions
         for (Role role : userRoles) {

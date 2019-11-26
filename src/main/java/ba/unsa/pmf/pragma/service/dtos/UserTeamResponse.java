@@ -1,5 +1,7 @@
 package ba.unsa.pmf.pragma.service.dtos;
 
+import ba.unsa.pmf.pragma.db.entity.Status;
+
 /**
  * @author malek.chahin
  * November, 24, 2019.
@@ -11,18 +13,18 @@ public class UserTeamResponse {
     private String roleKey;
     private String teamName;
     private String teamDescription;
-//    TODO add team members in this response
-
+    private Status status;
 
     public UserTeamResponse() {
     }
 
-    public UserTeamResponse(String nickname, String roleName, String roleKey, String teamName, String teamDescription) {
+    public UserTeamResponse(String nickname, String roleName, String roleKey, String teamName, String teamDescription, Status status) {
         this.nickname = nickname;
         this.roleName = roleName;
         this.roleKey = roleKey;
         this.teamName = teamName;
         this.teamDescription = teamDescription;
+        this.status = status;
     }
 
     public String getNickname() {
@@ -63,5 +65,13 @@ public class UserTeamResponse {
 
     public void setRoleKey(String roleKey) {
         this.roleKey = roleKey;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

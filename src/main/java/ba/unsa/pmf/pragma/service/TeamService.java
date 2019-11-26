@@ -1,12 +1,7 @@
 package ba.unsa.pmf.pragma.service;
 
-import ba.unsa.pmf.pragma.db.entity.Team;
-import ba.unsa.pmf.pragma.db.entity.User;
-import ba.unsa.pmf.pragma.db.entity.UserTeam;
-import ba.unsa.pmf.pragma.db.repository.RoleRepository;
-import ba.unsa.pmf.pragma.db.repository.TeamRepository;
-import ba.unsa.pmf.pragma.db.repository.UserRepository;
-import ba.unsa.pmf.pragma.db.repository.UserTeamRepository;
+import ba.unsa.pmf.pragma.db.entity.*;
+import ba.unsa.pmf.pragma.db.repository.*;
 import ba.unsa.pmf.pragma.service.dtos.CreateTeamRequest;
 import ba.unsa.pmf.pragma.service.dtos.UserTeamResponse;
 import javassist.NotFoundException;
@@ -32,6 +27,12 @@ public class TeamService {
     @Autowired
     private RoleRepository roleRepository;
 
+    @Autowired
+    private StatusRepository statusRepository;
+
+    @Autowired
+    private UserTeamService userTeamService;
+
     @Transactional
     public UserTeamResponse createTeam(CreateTeamRequest request) throws NotFoundException {
 
@@ -45,28 +46,25 @@ public class TeamService {
         Optional<User> optional = userRepository.findById(request.getUserId());
 
         if (optional.isEmpty()) {
-            throw new NotFoundException(String.format("User with %s id not found.", request.getUserId()));
+            throw new NotFoundException(String.format("User with %d id not found.", request.getUserId()));
         }
 
         User user = optional.get();
-        UserTeam userTeam = new UserTeam();
-        userTeam.setUser(user);
-        userTeam.setJoinDate(new Date(System.currentTimeMillis()));
-        userTeam.setTeam(team);
-        userTeam.setRole(roleRepository.getRoleByKey("lead"));
-        userTeam.setNickname(
-                (request.getNickname() == null || request.getNickname().equals("")) ?
-                user.getFirstName() + user.getLastName() :
+        UserTeam userTeam = userTeamService.addUserToTeam(
+                user,
+                team,
+                roleRepository.getRoleByKey("lead"),
+                statusRepository.getStatusByKey("active-team-member"),
                 request.getNickname()
         );
-        userTeamRepository.save(userTeam);
 
         return new UserTeamResponse(
                 userTeam.getNickname(),
                 userTeam.getRole().getName(),
                 userTeam.getRole().getKey(),
                 team.getName(),
-                team.getDescription()
+                team.getDescription(),
+                userTeam.getStatus()
         );
     }
 }

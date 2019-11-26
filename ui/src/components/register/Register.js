@@ -92,8 +92,6 @@ class Register extends Component {
       { key: "ba", value: "ba", text: "Bosnia and Herzegovina" }
     ];
 
-    const statusOptions = [{ key: "active", value: "active", text: "Active" }];
-
     return (
       <div className="registerDiv">
         <Container className="registerWrapper">
@@ -252,6 +250,7 @@ class Register extends Component {
                 placeholder="Select Country"
               />
             </div>
+<<<<<<< HEAD
             <div className={"formGroup"}>
               <label htmlFor="status" className={"label"}>
                 Status
@@ -266,6 +265,8 @@ class Register extends Component {
                 placeholder="Select Status"
               />
             </div>
+=======
+>>>>>>> 8052869524fa98522358d01fb0d61f8f2ae21aad
             <div className="formGroup registerFormGroup">
               <Link
                 to="/login"
