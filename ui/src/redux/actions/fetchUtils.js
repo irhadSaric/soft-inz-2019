@@ -1,5 +1,6 @@
 import request from 'superagent';
 import types from '../actionTypes';
+import config from 'config';
 
 const PROXY_ROUTE = '';
 
@@ -30,7 +31,7 @@ function postDispatch(opts) {
   return (dispatch) => {
     dispatch(requestOptions(opts.params, opts.types.request));
     return request
-      .post(PROXY_ROUTE)
+      .post(`${config.API_URL}/api/codebooks/countries/all`)
       .send(opts.params)
       .set('Accept', 'application/json')
       .set('xauthtoken', token)

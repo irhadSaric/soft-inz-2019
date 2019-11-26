@@ -17,7 +17,7 @@ class Register extends Component {
         password: "",
         phone: "",
       },
-      country: [],
+      countries: [],
       selectedValue: "",
       confirmPassword: "",
       submitted: false
@@ -31,6 +31,12 @@ class Register extends Component {
   componentDidMount(){
     const {actions} = this.props;
     actions.getAllCountries();
+    /*.then(
+      res => this.setState({
+        countries: res.countries,
+      }),
+    );*/
+
   }
 
   handleChange(event) {
@@ -56,13 +62,14 @@ class Register extends Component {
 
     this.setState({ submitted: true });
     const { user } = this.state;
-    /*if (user.firstName && user.lastName && user.email && user.password) {
+    if (user.firstName && user.lastName && user.email && user.password) {
       actions.register(user);
-    }*/
+    }
   }
 
   render() {
-    const { registering } = this.props;
+    const { registering, countries } = this.props;
+    console.log(countries);
     const { user, submitted, selectedValue } = this.state;
 
     const countryOptions = [
@@ -250,23 +257,6 @@ class Register extends Component {
                 placeholder="Select Country"
               />
             </div>
-<<<<<<< HEAD
-            <div className={"formGroup"}>
-              <label htmlFor="status" className={"label"}>
-                Status
-              </label>
-              <Dropdown
-                clearable
-                fluid
-                search
-                selection
-                options={statusOptions}
-                value={selectedValue}
-                placeholder="Select Status"
-              />
-            </div>
-=======
->>>>>>> 8052869524fa98522358d01fb0d61f8f2ae21aad
             <div className="formGroup registerFormGroup">
               <Link
                 to="/login"
@@ -299,7 +289,7 @@ class Register extends Component {
 }
 
 function mapStateToProps(state) {
-  return { user: state.user };
+  return { user: state.user, countries: state.countries };
 }
 
 const mapDispatchToProps = dispatch => ({
