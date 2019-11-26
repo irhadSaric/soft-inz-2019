@@ -17,7 +17,6 @@ class Register extends Component {
         password: "",
         phone: "",
       },
-      countries: [],
       selectedValue: "",
       confirmPassword: "",
       submitted: false

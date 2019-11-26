@@ -31,7 +31,6 @@ class UserProfile extends Component {
                     22 Friends
                 </a>
                 </Card.Content>
-                <a href="http://localhost:3000/editProfile">Edit profile</a>
                 <Link to="/editProfile" className="btn btn-link">Edit profile</Link>
             </Card>
         </Grid>

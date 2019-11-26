@@ -7,9 +7,9 @@ function country(state, action) {
         loading: true,
       };
     case types.GETALL_RESPONSE:
-      return {
-        countries: action.countries
-      };
+        return Object.assign([], state, {
+          countries: action.countries,
+        });
     default:
       return state
   }
@@ -17,8 +17,8 @@ function country(state, action) {
 
 function countryReducer(state, action) {
   if (typeof state === 'undefined') {
-    return {};
+    return [];
   }
-  return Object.assign({}, state, country(state, action));
+  return Object.assign([], state, country(state, action));
 }
 export default countryReducer;
