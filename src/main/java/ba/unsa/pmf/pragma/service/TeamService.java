@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -32,6 +33,11 @@ public class TeamService {
 
     @Autowired
     private UserTeamService userTeamService;
+
+    @Transactional
+    public List<Team> getAll(){
+        return teamRepository.findAll();
+    }
 
     @Transactional
     public UserTeamResponse createTeam(CreateTeamRequest request) throws NotFoundException {
