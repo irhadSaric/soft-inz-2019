@@ -66,7 +66,7 @@ public class UserService {
                 user.getLastName(),
                 user.getPhone(),
                 user.getCountry(),
-                null);
+                user.getAvatar());
     }
 
     @Transactional
