@@ -8,8 +8,10 @@ import ba.unsa.pmf.pragma.service.dtos.UserProfileData;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -33,7 +35,7 @@ public class UserController extends BaseController {
     }
 
     @PostMapping("/register")
-    public RegistrationResponse register(@Valid @RequestBody User user) {
+    public RegistrationResponse register(@Valid @RequestBody User user) throws IOException {
         return userService.register(user);
     }
 
@@ -50,5 +52,10 @@ public class UserController extends BaseController {
     @PutMapping("/api/user/profile/{id}")
     public UserProfileData updateUser(@PathVariable("id") Long id, @RequestBody UserProfileData userProfileData) throws NotFoundException {
         return userService.updateUser(id, userProfileData);
+    }
+
+    @PutMapping("/api/user/profile/{id}/upload")
+    public String uploadAvatar(@RequestParam("file") MultipartFile file, @PathVariable Long id) throws Exception {
+        return userService.uploadAvatar(id, file);
     }
 }
