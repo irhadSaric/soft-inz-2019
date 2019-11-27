@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -35,7 +34,7 @@ public class UserController extends BaseController {
     }
 
     @PostMapping("/register")
-    public RegistrationResponse register(@Valid @RequestBody User user) throws IOException {
+    public RegistrationResponse register(@Valid @RequestBody User user) {
         return userService.register(user);
     }
 
@@ -55,7 +54,7 @@ public class UserController extends BaseController {
     }
 
     @PutMapping("/api/user/profile/{id}/upload")
-    public String uploadAvatar(@RequestParam("file") MultipartFile file, @PathVariable Long id) throws Exception {
+    public UserProfileData uploadAvatar(@RequestParam("file") MultipartFile file, @PathVariable Long id) throws Exception {
         return userService.uploadAvatar(id, file);
     }
 }

@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -66,8 +65,8 @@ public class UserService {
                 user.getFirstName(),
                 user.getLastName(),
                 user.getPhone(),
-                user.getCountry()
-        );
+                user.getCountry(),
+                null);
     }
 
     @Transactional
@@ -120,8 +119,10 @@ public class UserService {
     }
 
     @Transactional
-    public String uploadAvatar(Long id, MultipartFile file) throws Exception {
+    public UserProfileData uploadAvatar(Long id, MultipartFile file) throws Exception {
         Optional<User> data = userRepository.findById(id);
+        UserProfileData userProfileData = new UserProfileData();
+
         if (data.isEmpty()){
             throw new NotFoundException("User not found.");
         }
@@ -133,6 +134,14 @@ public class UserService {
                 if (fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(".png")){
                     user.setAvatar(file.getBytes());
                     userRepository.save(user);
+
+                    userProfileData.setCountry(user.getCountry());
+                    userProfileData.setEmail(user.getEmail());
+                    userProfileData.setFirstName(user.getFirstName());
+                    userProfileData.setLastName(user.getLastName());
+                    userProfileData.setPhone(user.getPhone());
+                    userProfileData.setAvatar(user.getAvatar());
+
                 }
                 else{
                     throw new Exception("Allowed formats: .jpg .jpeg .png");
@@ -141,7 +150,7 @@ public class UserService {
                 throw new IOException("Uploading file failed.");//e.printStackTrace();
             }
         }
-        return "Avatar has been successfully uploaded";
+        return userProfileData;
     }
 
     private User saveUser(User user) {
