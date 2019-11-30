@@ -36,13 +36,13 @@ public class TeamController {
     }
 
     @GetMapping("/active/{userId}")
-    public List<UserTeamResponse>
+    public List<TeamInviteResponse>
     getActiveTeamsForUser(@PathVariable @NotNull Long userId) {
         return userTeamService.getActiveTeamsForUser(userId);
     }
 
     @GetMapping("/pending/{userId}")
-    public List<UserTeamResponse>
+    public List<TeamInviteResponse>
     getTeamInvitesForUser(@PathVariable @NotNull Long userId) {
         return userTeamService.getTeamInvitesForUser(userId);
     }

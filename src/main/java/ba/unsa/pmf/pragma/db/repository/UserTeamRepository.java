@@ -2,7 +2,7 @@ package ba.unsa.pmf.pragma.db.repository;
 
 import ba.unsa.pmf.pragma.db.entity.Team;
 import ba.unsa.pmf.pragma.db.entity.UserTeam;
-import ba.unsa.pmf.pragma.service.dtos.UserTeamResponse;
+import ba.unsa.pmf.pragma.service.dtos.TeamInviteResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -29,15 +29,15 @@ public interface UserTeamRepository extends JpaRepository<UserTeam, Long> {
     @Query(
         value =
         "select new " +
-        "ba.unsa.pmf.pragma.service.dtos.UserTeamResponse(" +
-                "ut.nickname, ut.role.name, ut.role.key, ut.team.name, ut.team.description, s" +
+        "ba.unsa.pmf.pragma.service.dtos.TeamInviteResponse(" +
+                "ut.user.id, ut.team.id, ut.team.name, ut.role.name, ut.role.key, s" +
         ") " +
         "from UserTeam ut " +
         "inner join Status s on s.id = ut.status.id " +
         "where ut.user.id = :userId " +
         "and s.key = :key"
     )
-    List<UserTeamResponse> getUserTeamResponseForUserByStatusKey(@Param("userId") Long userId, @Param("key") String key);
+    List<TeamInviteResponse> getUserTeamResponseForUserByStatusKey(@Param("userId") Long userId, @Param("key") String key);
 
     @Query(
         value =

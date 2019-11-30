@@ -43,13 +43,13 @@ public class UserTeamService {
     }
 
     @Transactional(readOnly = true)
-    public List<UserTeamResponse>
+    public List<TeamInviteResponse>
     getActiveTeamsForUser(@NotNull Long userId) {
         return userTeamRepository.getUserTeamResponseForUserByStatusKey(userId, "active-team-member");
     }
 
     @Transactional(readOnly = true)
-    public List<UserTeamResponse>
+    public List<TeamInviteResponse>
     getTeamInvitesForUser(@NotNull Long userId) {
         return userTeamRepository.getUserTeamResponseForUserByStatusKey(userId, "pending-team-member");
     }
@@ -60,7 +60,7 @@ public class UserTeamService {
     throws NotFoundException {
 
         if (
-            teamRepository.getTeamsForUserByStatusKey(request.getUserId(), "lead").
+            teamRepository.getTeamByUserAndRoleKeyAndStatusKey(request.getUserId(), "lead", "active-team-member").
             stream().noneMatch(team -> team.getId().equals(request.getTeamId()))
         ) {
             // If the requested UserTeam combination with lead role does not exist
@@ -78,7 +78,7 @@ public class UserTeamService {
         Status status = statusRepository.getStatusByKey("pending-team-member");
 
         addUserToTeam(invitedUser, team, role, status, null);
-        return new TeamInviteResponse(invitedUser.getId(), team.getId(), role.getName(), role.getKey(), status);
+        return new TeamInviteResponse(invitedUser.getId(), team.getId(), team.getName(), role.getName(), role.getKey(), status);
     }
 
     @Transactional
@@ -109,7 +109,7 @@ public class UserTeamService {
         return userRepository.getUsersByTeamAndStatusKey(teamId, "pending-team-member");
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public UserTeamResponse
     respondToPendingInvite(@NotNull Long userId, @NotNull Long teamId, @NotNull Boolean accept)
     throws NotFoundException {
