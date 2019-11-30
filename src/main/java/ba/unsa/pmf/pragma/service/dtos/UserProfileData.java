@@ -13,18 +13,16 @@ public class UserProfileData {
     private String lastName;
     private String phone;
     private Country country;
-    private byte[] avatar;
 
     public UserProfileData() {
     }
 
-    public UserProfileData(String email, String firstName, String lastName, String phone, Country country, byte[] avatar) {
+    public UserProfileData(String email, String firstName, String lastName, String phone, Country country) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
         this.country = country;
-        this.avatar = avatar;
     }
 
     public String getEmail() {
@@ -65,13 +63,5 @@ public class UserProfileData {
 
     public void setCountry(Country country) {
         this.country = country;
-    }
-
-    public byte[] getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(byte[] avatar) {
-        this.avatar = avatar;
     }
 }

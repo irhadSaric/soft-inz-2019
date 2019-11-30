@@ -65,8 +65,7 @@ public class UserService {
                 user.getFirstName(),
                 user.getLastName(),
                 user.getPhone(),
-                user.getCountry(),
-                user.getAvatar());
+                user.getCountry());
     }
 
     @Transactional
@@ -119,7 +118,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserProfileData uploadAvatar(Long id, MultipartFile file) throws Exception {
+    public UserProfileData uploadAvatar(Long id, MultipartFile file) throws NotFoundException, IOException {
         Optional<User> data = userRepository.findById(id);
         UserProfileData userProfileData = new UserProfileData();
 
@@ -140,11 +139,10 @@ public class UserService {
                     userProfileData.setFirstName(user.getFirstName());
                     userProfileData.setLastName(user.getLastName());
                     userProfileData.setPhone(user.getPhone());
-                    userProfileData.setAvatar(user.getAvatar());
 
                 }
                 else{
-                    throw new Exception("Allowed formats: .jpg .jpeg .png");
+                    throw new UnsupportedOperationException("Allowed formats: .jpg .jpeg .png");
                 }
             } catch (IOException e) {
                 throw new IOException("Uploading file failed.");//e.printStackTrace();
