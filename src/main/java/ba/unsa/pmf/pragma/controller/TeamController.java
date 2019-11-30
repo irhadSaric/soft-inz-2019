@@ -25,6 +25,11 @@ public class TeamController {
     @Autowired
     private UserTeamService userTeamService;
 
+    @GetMapping("/all")
+    public List<Team> getAll(){
+        return teamService.getAll();
+    }
+
     @PostMapping("/create-team")
     public UserTeamResponse createTeam(@RequestBody CreateTeamRequest request) throws NotFoundException {
         return teamService.createTeam(request);
