@@ -20,4 +20,16 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
             "and s.key = :key"
     )
     List<Team> getTeamsForUserByStatusKey(@Param("userId") Long userId, @Param("key") String key);
+
+    @Query(
+            value =
+            "select ut.team " +
+            "from UserTeam ut " +
+            "inner join Role r on r.id = ut.role.id " +
+            "inner join Status s on s.id = ut.status.id " +
+            "where ut.user.id = :userId " +
+            "and r.key = :roleKey " +
+            "and s.key = :statusKey"
+    )
+    List<Team> getTeamByUserAndRoleKeyAndStatusKey(@Param("userId") Long userId, @Param("roleKey") String roleKey, @Param("statusKey") String statusKey);
 }

@@ -13,13 +13,15 @@ public class TeamInviteResponse {
     private String roleName;
     private String roleKey;
     private Status status;
+    private String teamName;
 
     public TeamInviteResponse() {
     }
 
-    public TeamInviteResponse(Long userId, Long teamId, String roleName, String roleKey, Status status) {
+    public TeamInviteResponse(Long userId, Long teamId, String teamName, String roleName, String roleKey, Status status) {
         this.userId = userId;
         this.teamId = teamId;
+        this.teamName = teamName;
         this.roleName = roleName;
         this.roleKey = roleKey;
         this.status = status;
@@ -63,5 +65,13 @@ public class TeamInviteResponse {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
     }
 }
