@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -54,7 +55,17 @@ public class UserController extends BaseController {
     }
 
     @PutMapping("/api/user/profile/{id}/upload")
-    public UserProfileData uploadAvatar(@RequestParam("file") MultipartFile file, @PathVariable Long id) throws Exception {
+    public UserProfileData changeAvatar(@RequestParam("file") MultipartFile file, @PathVariable Long id) throws NotFoundException, IOException {
         return userService.uploadAvatar(id, file);
+    }
+
+    @PostMapping("/api/user/profile/{id}/upload")
+    public UserProfileData uploadAvatar(@RequestParam("file") MultipartFile file, @PathVariable Long id) throws NotFoundException, IOException {
+        return userService.uploadAvatar(id, file);
+    }
+
+    @GetMapping("/api/user/profile/{id}/avatar")
+    public byte[] getAvatar(@PathVariable Long id) throws NotFoundException {
+        return userService.getAvatar(id);
     }
 }

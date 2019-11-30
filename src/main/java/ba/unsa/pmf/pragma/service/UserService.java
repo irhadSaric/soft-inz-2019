@@ -167,4 +167,15 @@ public class UserService {
         }
         return user;
     }
+
+    public byte[] getAvatar(Long id) throws NotFoundException {
+        Optional<User> data = userRepository.findById(id);
+
+        if (data.isEmpty()){
+            throw new NotFoundException("User not found.");
+        }
+
+        User user = data.get();
+        return user.getAvatar();
+    }
 }
