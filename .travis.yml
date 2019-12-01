@@ -1,6 +1,12 @@
 language: java
-jdk: oraclejdk11
+jdk:
+  oraclejdk11
+env:
+  - NODE_VERSION=6
 
 script:
   - ls
   - cd src/main/java/ba/unsa/pmf/pragma/ && ls
+  - cd ui
+  - npm install
+  - npm start
