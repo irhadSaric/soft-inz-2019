@@ -1,16 +1,10 @@
 language: java
 jdk:
   oraclejdk11
-env:
-  - NODE_VERSION=12
 
 script:
-  - cd ui/
-  - npm install
-
-cache:
-  directories:
-    - node_modules
+  - ls
+  - cd src/main/java/ba/unsa/pmf/pragma/ && ls
 
 deploy:
   provider: heroku
@@ -18,4 +12,4 @@ deploy:
   keep-history: true
   api_key:
     secure: $HEROKU_API_KEY
-  app: pragma-dev
+  app: code-editor-api
