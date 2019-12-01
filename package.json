@@ -49,5 +49,8 @@
     "@types/react-dom": "^16.8.4",
     "http-proxy-middleware": "^0.19.1",
     "node-sass": "^4.12.0"
+  },
+  "devServer": {
+    "disableHostCheck": true
   }
 }
