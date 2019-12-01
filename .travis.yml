@@ -7,6 +7,6 @@ env:
 script:
   - ls
   - cd src/main/java/ba/unsa/pmf/pragma/ && ls
-  - cd ui
+  - cd ui/
   - npm install
   - npm start
