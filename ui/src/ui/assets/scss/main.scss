@@ -246,9 +246,14 @@
 .error-text {
   font-size: x-small;
   color: red;
-  margin-top: 5px;
+  margin-top: -8px;
+  height: 18px;
 }
 
 .error-input {
   border-color: red;
+}
+
+.ant-input-group-addon {
+  width: 100px;
 }

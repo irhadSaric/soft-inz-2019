@@ -1,13 +1,16 @@
 import Model from "../Model";
 import ValidatableObject from "../validation/ValidatableObject";
+import { ICountry } from "../country/Country";
 
 export interface TUser {
-  id: string;
+  id: number;
   email: string;
   firstName: string;
   lastName: string;
   password: string;
   phone: string;
+  country: ICountry;
+  status: string;
 }
 
 export interface IUser extends TUser {}
@@ -57,6 +60,18 @@ const User = Model(
       },
       set phone(value) {
         _user.phone = value;
+      },
+      get country() {
+        return _user.country;
+      },
+      set country(value: any) {
+        _user.country = value;
+      },
+      get status() {
+        return _user.status;
+      },
+      set status(value) {
+        _user.status = value;
       }
     };
 

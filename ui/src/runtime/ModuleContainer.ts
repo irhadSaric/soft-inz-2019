@@ -47,6 +47,9 @@ import LogoutInteractor from "../interactor/authentication/LogoutInteractor";
 import ShowRegistrationInteractor from "../interactor/authentication/ShowRegistrationInteractor";
 import CodebookService from "../service/codebook/CodebookService";
 import RegisterInteractor from "../interactor/authentication/RegisterInteractor";
+import ShowUserProfileInteractor from "../interactor/user/ShowUserProfileInteractor";
+import UpdateUserProfileInteractor from "../interactor/user/UpdateUserProfileInteractor";
+import GetUserProfileInteractor from "../interactor/user/GetUserProfileInteractor";
 
 //const DEFAULT_CACHE_TIMEOUT_MS = 15000;
 const ModuleContainer = (application: Application): IModuleContainer => {
@@ -141,7 +144,10 @@ const ModuleContainer = (application: Application): IModuleContainer => {
     loadUserPreferences: asInteractor(LoadUserPreferencesInteractor),
     logout: asInteractor(LogoutInteractor),
     showRegistration: asInteractor(ShowRegistrationInteractor),
-    register: asInteractor(RegisterInteractor)
+    register: asInteractor(RegisterInteractor),
+    showUserProfile: asInteractor(ShowUserProfileInteractor),
+    updateUserProfile: asInteractor(UpdateUserProfileInteractor),
+    getUserProfile: asInteractor(GetUserProfileInteractor)
   });
 
   return {

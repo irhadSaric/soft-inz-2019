@@ -1,5 +1,4 @@
 import React from "react";
-import { Button, Icon } from "antd";
 import Page, { PageProps } from "../Page";
 import { IUserPresenter } from "../../../presenter/user/UserPresenter";
 

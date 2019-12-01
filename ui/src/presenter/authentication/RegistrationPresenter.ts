@@ -58,10 +58,14 @@ const RegistrationPresenter = withStore<
     if (key === "country") {
       const countries = _store.getState<TRegistrationPresenter>().countries;
       const country = countries.filter(country => country.name === value)[0];
-      registrationData[key] = { id: country.id } as TCountry;
+      registrationData[key] = {
+        id: country ? country.id : undefined,
+        name: country ? country.name : undefined
+      } as TCountry;
     } else {
       registrationData[key] = value;
     }
+    _store.update({ registrationData });
     const registerValidationErrors = _store.getState<TRegistrationPresenter>()
       .registerValidationErrors;
     registerValidationErrors && validateRegistrationForm();
@@ -113,7 +117,7 @@ const RegistrationPresenter = withStore<
         "Phone must contain minimum 10 characters"
       );
     }
-    if (!registrationData.country) {
+    if (!registrationData.country || !registrationData.country.id) {
       registerValidationErrors.country.push("The Country field is required.");
     }
     _store.update({

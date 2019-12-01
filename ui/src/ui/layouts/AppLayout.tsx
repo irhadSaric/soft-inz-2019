@@ -39,7 +39,6 @@ export default class BaseLayout extends React.Component<Props, State> {
     this.state.store.unsubscribe(this.subscriptionId);
   }
 
-
   render() {
     const { children, translate, router } = this.props;
 
@@ -121,19 +120,10 @@ export default class BaseLayout extends React.Component<Props, State> {
                     <Icon type="desktop" />
                     <span>Option 2</span>
                   </Menu.Item>
-                  <SubMenu
-                    key="sub1"
-                    title={
-                      <span>
-                        <Icon type="user" />
-                        <span>User</span>
-                      </span>
-                    }
-                  >
-                    <Menu.Item key="3">Tom</Menu.Item>
-                    <Menu.Item key="4">Bill</Menu.Item>
-                    <Menu.Item key="5">Alex</Menu.Item>
-                  </SubMenu>
+                  <Menu.Item key="3" onClick={() => redirect("/user/profile")}>
+                    <Icon type="user" />
+                    <span>User Profile</span>
+                  </Menu.Item>
                 </Menu>
               </Sider>
               <Layout style={{ padding: "0 24px 24px" }}>

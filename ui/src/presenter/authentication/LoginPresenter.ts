@@ -2,7 +2,6 @@ import withStore, { TLoadingAwarePresenter, TPresentable } from "../withStore";
 import Application from "../../Application";
 import LoginInteractor from "../../interactor/authentication/LoginInteractor";
 import ShowErrorMessageInteractor from "../../interactor/notifications/ShowErrorMessageInteractor";
-import { Errors } from "../../common/Constants";
 
 export interface TLoginPresenter extends TLoadingAwarePresenter {
   email: string;
@@ -58,9 +57,10 @@ const LoginPresenter = withStore<ILoginPresenter, TLoginPresenter>(
         .execute(email, password);
 
       loader.stop("loginLoader");
-      error && _application.container
-        .resolve<ShowErrorMessageInteractor>("showErrorMessage")
-        .execute(error.message);
+      error &&
+        _application.container
+          .resolve<ShowErrorMessageInteractor>("showErrorMessage")
+          .execute(error.message);
     };
 
     const showRegistrationPage = () => {
