@@ -7,4 +7,15 @@ env:
 script:
   - cd ui/
   - npm install
-  - npm start
+
+cache:
+  directories:
+    - node_modules
+
+deploy:
+  provider: heroku
+  skip_cleanup: true
+  keep-history: true
+  api_key:
+    secure: $HEROKU_API_KEY
+  app: pragma-dev
