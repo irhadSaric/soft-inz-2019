@@ -1,0 +1,259 @@
+.logo {
+  width: 120px;
+  height: 31px;
+  margin: 16px 28px 16px 0;
+  float: left;
+}
+
+.logo img {
+  width: 120px;
+  float: left;
+  position: relative;
+  top: 8px;
+}
+
+.datagrid-add-btn {
+  margin-bottom: 2em;
+}
+
+.ant-form-item {
+  margin-bottom: 0px;
+  align-items: center;
+}
+
+.ant-modal-body {
+  padding-top: 5px;
+}
+
+.ant-divider-horizontal {
+  margin: 5px 0;
+}
+.ant-input-number {
+  width: 175px;
+}
+
+.ant-form-item-label {
+  line-height: 30px;
+}
+
+.ant-form-explain {
+  font-size: 12px;
+}
+
+.ant-btn {
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 4px;
+}
+
+.datagrid-add-btn {
+  display: flex;
+  margin-left: auto;
+}
+
+.ant-btn {
+  align-items: center;
+}
+
+.ant-form label {
+  font-size: 12px;
+}
+
+.ant-form-row-two-items {
+  flex-direction: row;
+  display: flex;
+  justify-content: space-between;
+}
+
+.ant-form-item-width {
+  width: 100%;
+}
+
+.ant-form-row-container {
+  flex-direction: column;
+  display: flex;
+  border-radius: 5px;
+}
+
+.ant-form-inline .ant-form-item > .ant-form-item-control-wrapper,
+.ant-form-inline .ant-form-item > .ant-form-item-label {
+  vertical-align: middle;
+}
+
+.ant-input {
+  font-size: 13px;
+}
+
+.login-container {
+  width: 700;
+  height: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 150px;
+}
+
+.login-header-container {
+  margin-bottom: 10px;
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+}
+
+.logo-container {
+  width: 70%;
+  height: auto;
+}
+
+.login-subheader-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-title {
+  font-size: 30px;
+  font-weight: bold;
+  color: #2c2c2b;
+  line-height: 1;
+}
+
+.login-subtitle {
+  font-size: 20px;
+  color: #2c2c2b;
+}
+
+.login-form-container {
+  width: 550px;
+  height: 320px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  align-items: center;
+}
+
+.login-title-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+.login-text {
+  font-size: 30px;
+  color: #0084c7;
+  font-weight: bold;
+}
+
+.login-form-item-container {
+  width: 350px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.login-button {
+  margin-top: 40px;
+  margin-left: 50px;
+  margin-right: 50px;
+  width: 100%;
+}
+
+//----------------------------------------------> APPLICANT DETAILS
+.applicant-details-container {
+  display: flex;
+  flex-direction: "row";
+}
+
+.applicant-details-wrapper {
+  width: 200px;
+}
+
+.applicant-details-label {
+  font-weight: bold;
+  margin-right: 15px;
+}
+
+//----------------------------------------------> MESSAGE
+.ant-message-notice-content {
+  display: initial;
+  background: transparent;
+  padding: 0px;
+}
+
+.anticon-close-circle {
+  display: none;
+}
+.anticon-check-circle {
+  display: none;
+}
+
+.anticon-exclamation-circle {
+  display: none;
+}
+
+.anticon-info-circle {
+  display: none;
+}
+
+.ant-alert-close-icon {
+  right: 0px;
+  position: absolute;
+}
+
+.ant-alert-message {
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+.ant-message {
+  width: auto;
+  left: unset;
+  right: 20px;
+}
+
+.ant-alert-message {
+  color: #2c2c2b;
+}
+
+.register-container {
+  width: 800;
+  height: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 150px;
+  align-items: flex-end;
+}
+
+.register-button {
+  margin-top: 40px;
+  margin-left: 5px;
+  margin-right: 5px;
+  width: 100%;
+}
+
+.register-title-wrapper {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.form-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.error-text {
+  font-size: x-small;
+  color: red;
+  margin-top: -8px;
+  height: 18px;
+}
+
+.error-input {
+  border-color: red;
+}
+
+.ant-input-group-addon {
+  width: 100px;
+}
