@@ -114,11 +114,7 @@ export default class BaseLayout extends React.Component<Props, State> {
                 >
                   <Menu.Item key="1" onClick={() => redirect("/home")}>
                     <Icon type="pie-chart" />
-                    <span>{translate("side_menu.home")}</span>
-                  </Menu.Item>
-                  <Menu.Item key="2">
-                    <Icon type="desktop" />
-                    <span>Option 2</span>
+                    <span>Dashboard</span>
                   </Menu.Item>
                   <Menu.Item key="3" onClick={() => redirect("/user/profile")}>
                     <Icon type="user" />

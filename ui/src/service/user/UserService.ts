@@ -27,7 +27,7 @@ const UserService = ({ httpService }): IUserService => {
       return buildUserList(responseJSON);
     },
     async getUserProfile(userId: number) {
-      const path = _http.buildPath(_basePath, userId.toString(), _profilePath);
+      const path = _http.buildPath(_basePath, _profilePath, userId.toString());
       const response = await _http.get(path);
       const responseJSON = await _http.toJSON(response);
       return User(responseJSON);

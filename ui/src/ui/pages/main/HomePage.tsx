@@ -1,7 +1,8 @@
 import React from "react";
-import { Button, Icon } from "antd";
+import { Button, Icon, Modal } from "antd";
 import Page, { PageProps } from "../Page";
 import { IHomePresenter } from "../../../presenter/main/HomePresenter";
+import CreateTeamForm from "./CreateTeamForm";
 export interface Props extends PageProps {}
 export interface State extends IHomePresenter {}
 
@@ -24,13 +25,42 @@ export default class HomePage extends React.Component<Props, State> {
   }
 
   render() {
+    const {
+      isCreateTeamModalVisible,
+      onCreateTeamBtnClick,
+      onCancelTeamModalButtonClick,
+      translate,
+      userList,
+      selectedUsers,
+      onChangeSelectUserList,
+      onChangeProjectDescriptionValue,
+      onChangeTeamNameValue,
+      teamName,
+      projectDescription
+    } = this.state;
     return (
       <Page {...this.props}>
-        <h2>Home Page</h2>
-        <Button type="primary">
-          Forward
-          <Icon type="right" />
+        <Button type="primary" onClick={onCreateTeamBtnClick}>
+          Create team
         </Button>
+        <Modal
+          title="Create team"
+          visible={isCreateTeamModalVisible}
+          onOk={() => console.log("OK")}
+          onCancel={onCancelTeamModalButtonClick}
+          maskClosable={false}
+        >
+          <CreateTeamForm
+            translate={translate}
+            users={userList}
+            selectedUsers={selectedUsers}
+            onChangeSelectUserList={onChangeSelectUserList}
+            onChangeProjectDescription={onChangeProjectDescriptionValue}
+            onChangeTeamName={onChangeTeamNameValue}
+            teamName={teamName}
+            projectDescription={projectDescription}
+          />
+        </Modal>
       </Page>
     );
   }
