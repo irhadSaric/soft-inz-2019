@@ -53,8 +53,8 @@ const CreateTeamForm = ({
         onChange={e => onChangeSelectUserList(e)}
         style={{ width: "100%", marginTop: 20 }}
       >
-        {users.map(user => (
-          <Option key={user.id}>{user.email}</Option>
+        {users.map((user, index) => (
+          <Option key={index}>{user.email}</Option>
         ))}
       </Select>
     </div>

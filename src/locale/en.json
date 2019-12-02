@@ -2,13 +2,9 @@
   "app": {
     "name": "Pragma"
   },
-  "side_menu": {
-    "home": "Home"
-  },
-  "login": {
-    "email": "Email",
-    "password": "Lozinka",
-    "required_messages": "Polje {{field}} je obavezno",
-    "login": "Prijavite se"
+  "pages": {
+    "home": "Dashbroads",
+    "user": "User",
+    "profile": "Profile"
   }
 }

@@ -53,7 +53,7 @@ const UserProfileForm = ({
         style={{ height: "auto", background: "#cccccc" }}
         type={"vertical"}
       />
-      <div style={{ display: "flex", flexDirection: "column" }}>
+      <div style={{ display: "flex", flexDirection: "column", marginLeft: 8 }}>
         <Form>
           <Form.Item
             validateStatus={

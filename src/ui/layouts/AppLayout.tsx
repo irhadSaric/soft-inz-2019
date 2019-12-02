@@ -3,6 +3,7 @@ import RootLayout from "./RootLayout";
 import { Layout, Menu, Breadcrumb, Icon } from "antd";
 import { TTranslate } from "../../service/locale/TranslationService";
 import { TPresentable } from "../../presenter/withStore";
+import BreadCrumbComponent from "../components/app/BreadCrumbComponent";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -43,6 +44,8 @@ export default class BaseLayout extends React.Component<Props, State> {
     const { children, translate, router } = this.props;
 
     const { userEmail } = this.state as any;
+
+    console.log(router);
 
     const redirect = path => {
       router.push({
@@ -123,11 +126,7 @@ export default class BaseLayout extends React.Component<Props, State> {
                 </Menu>
               </Sider>
               <Layout style={{ padding: "0 24px 24px" }}>
-                <Breadcrumb style={{ margin: "16px 0" }}>
-                  <Breadcrumb.Item>Home</Breadcrumb.Item>
-                  <Breadcrumb.Item>List</Breadcrumb.Item>
-                  <Breadcrumb.Item>App</Breadcrumb.Item>
-                </Breadcrumb>
+                <BreadCrumbComponent router={router} translate={translate} />
                 <Content
                   style={{
                     background: "#fff",

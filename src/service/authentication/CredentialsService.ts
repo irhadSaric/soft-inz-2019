@@ -9,6 +9,7 @@ let username: string = "";
 let roles: Array<IRole> = [];
 let permissions: Array<string> = [];
 let userId: number | undefined = undefined;
+let email: string = "";
 
 export interface ICredentialsService {
   setUsername(username: string): void;
@@ -26,6 +27,8 @@ export interface ICredentialsService {
   setPermissions(value: any): void;
   setUserId(userId: number): void;
   getUserId(): Promise<number | undefined>;
+  saveEmail(value: any): void;
+  getEmail(): void;
 }
 
 const CredentialsService = ({ storageService }): ICredentialsService => {
@@ -100,6 +103,14 @@ const CredentialsService = ({ storageService }): ICredentialsService => {
 
     async getUserId() {
       return userId;
+    },
+
+    saveEmail(value: string) {
+      email = value;
+    },
+
+    getEmail() {
+      return email;
     }
   };
 };

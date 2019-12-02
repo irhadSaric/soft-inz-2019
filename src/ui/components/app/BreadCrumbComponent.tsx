@@ -2,6 +2,7 @@ import * as React from "react";
 import { IRouter, TRoute } from "../../../runtime/Router";
 import { TTranslate } from "../../../service/locale/TranslationService";
 import Link from "./Link";
+import { Breadcrumb, Icon } from "antd";
 
 export interface State {}
 
@@ -10,7 +11,7 @@ export interface Props {
   translate: TTranslate;
 }
 
-export default class Breadcrumb extends React.Component<Props, State> {
+export default class BreadCrumbComponent extends React.Component<Props, State> {
   handleClick(event) {
     if (event.button !== 0 /* left click */) {
       return;
@@ -53,15 +54,17 @@ export default class Breadcrumb extends React.Component<Props, State> {
     return (
       <div className="sa-page-ribbon">
         <h1>{crumbs[crumbs.length - 1].name}</h1>
-        <ol className="breadcrumb" aria-label="breadcrumb" role="navigation">
-          {(crumbs || []).map((crumb, index) => (
-            <li key={`crumb-${index}`} className="breadcrumb-item">
-              <Link router={router} path={crumb.path} disabled={crumb.disabled}>
-                <span>{crumb.name}</span>
-              </Link>
-            </li>
-          ))}
-        </ol>
+        <Breadcrumb>
+          {(crumbs || []).map((crumb, index) =>
+            crumbs.length - 1 === index ? (
+              <Breadcrumb.Item key={index}>{crumb.name}</Breadcrumb.Item>
+            ) : (
+              <Breadcrumb.Item key={index} href={crumb.path}>
+                {crumb.name}
+              </Breadcrumb.Item>
+            )
+          )}
+        </Breadcrumb>
       </div>
     );
   }
