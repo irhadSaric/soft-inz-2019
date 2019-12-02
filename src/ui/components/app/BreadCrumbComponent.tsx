@@ -56,13 +56,15 @@ export default class BreadCrumbComponent extends React.Component<Props, State> {
         <h1>{crumbs[crumbs.length - 1].name}</h1>
         <Breadcrumb>
           {(crumbs || []).map((crumb, index) =>
-            crumbs.length - 1 === index ? (
-              <Breadcrumb.Item key={index}>{crumb.name}</Breadcrumb.Item>
-            ) : (
-              <Breadcrumb.Item key={index} href={crumb.path}>
-                {crumb.name}
-              </Breadcrumb.Item>
-            )
+            crumb.path !== "/home" ? (
+              crumbs.length - 1 === index ? (
+                <Breadcrumb.Item key={index}>{crumb.name}</Breadcrumb.Item>
+              ) : (
+                <Breadcrumb.Item key={index} href={crumb.path}>
+                  {crumb.name}
+                </Breadcrumb.Item>
+              )
+            ) : undefined
           )}
         </Breadcrumb>
       </div>

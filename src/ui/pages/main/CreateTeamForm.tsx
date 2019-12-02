@@ -54,7 +54,7 @@ const CreateTeamForm = ({
         style={{ width: "100%", marginTop: 20 }}
       >
         {users.map((user, index) => (
-          <Option key={index}>{user.email}</Option>
+          <Option key={user.id}>{user.email}</Option>
         ))}
       </Select>
     </div>
