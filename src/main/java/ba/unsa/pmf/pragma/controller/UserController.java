@@ -25,12 +25,12 @@ public class UserController extends BaseController {
     private UserService userService;
 
     @GetMapping("/api/user/find/all")
-    public List<User> findAllUsers() {
+    public List<UserProfileData> findAllUsers() {
         return userService.findAllUsers();
     }
 
     @GetMapping("/api/user/find/{email}")
-    public List<User> findAllUsersWithEmailContaining(@PathVariable("email") String email) {
+    public List<UserProfileData> findAllUsersWithEmailContaining(@PathVariable("email") String email) {
         return userService.findAllUsersWithEmailContaining(email);
     }
 
@@ -45,27 +45,34 @@ public class UserController extends BaseController {
     }
 
     @GetMapping("/api/user/profile/{id}")
-    public UserProfileData getUser(@PathVariable("id") Long id) {
+    public UserProfileData
+    getUser(@PathVariable("id") Long id) {
         return userService.getUser(id);
     }
 
     @PutMapping("/api/user/profile/{id}")
-    public UserProfileData updateUser(@PathVariable("id") Long id, @RequestBody UserProfileData userProfileData) throws NotFoundException {
+    public UserProfileData
+    updateUser(@PathVariable("id") Long id, @RequestBody UserProfileData userProfileData)
+    throws NotFoundException {
         return userService.updateUser(id, userProfileData);
     }
 
     @PutMapping("/api/user/profile/{id}/upload")
-    public UserProfileData changeAvatar(@RequestParam("file") MultipartFile file, @PathVariable Long id) throws NotFoundException, IOException {
+    public UserProfileData
+    changeAvatar(@RequestParam("file") MultipartFile file, @PathVariable Long id)
+    throws NotFoundException, IOException {
         return userService.uploadAvatar(id, file);
     }
 
     @PostMapping("/api/user/profile/{id}/upload")
-    public UserProfileData uploadAvatar(@RequestParam("file") MultipartFile file, @PathVariable Long id) throws NotFoundException, IOException {
+    public UserProfileData uploadAvatar(@RequestParam("file") MultipartFile file, @PathVariable Long id)
+    throws NotFoundException, IOException {
         return userService.uploadAvatar(id, file);
     }
 
     @GetMapping("/api/user/profile/{id}/avatar")
-    public byte[] getAvatar(@PathVariable Long id) throws NotFoundException {
+    public byte[] getAvatar(@PathVariable Long id)
+    throws NotFoundException {
         return userService.getAvatar(id);
     }
 }

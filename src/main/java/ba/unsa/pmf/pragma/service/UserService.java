@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -45,13 +46,13 @@ public class UserService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Transactional(readOnly = true)
-    public List<User> findAllUsers() {
+    public List<UserProfileData> findAllUsers() {
 //      TODO, If user has permission
-        return userRepository.findAll();
+        return userRepository.findAllUsers();
     }
 
     @Transactional(readOnly = true)
-    public List<User> findAllUsersWithEmailContaining(String email) {
+    public List<UserProfileData> findAllUsersWithEmailContaining(String email) {
 //      TODO, If user is active
         return userRepository.findUsersByEmailContaining(email);
     }
