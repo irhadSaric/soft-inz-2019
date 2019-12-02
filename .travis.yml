@@ -1,6 +1,19 @@
 language: java
-jdk: oraclejdk11
+jdk:
+  oraclejdk11
+
+branches:
+  only:
+    - develop
 
 script:
   - ls
   - cd src/main/java/ba/unsa/pmf/pragma/ && ls
+
+deploy:
+  provider: heroku
+  skip_cleanup: true
+  keep-history: true
+  api_key:
+    secure: $HEROKU_API_KEY
+  app: pragma-dev

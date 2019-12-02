@@ -1,6 +1,5 @@
 package ba.unsa.pmf.pragma.service;
 
-import ba.unsa.pmf.pragma.db.entity.Country;
 import ba.unsa.pmf.pragma.db.entity.Role;
 import ba.unsa.pmf.pragma.db.entity.User;
 import ba.unsa.pmf.pragma.db.entity.UserRole;
@@ -13,7 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,13 +46,13 @@ public class UserService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Transactional(readOnly = true)
-    public List<User> findAllUsers() {
+    public List<UserProfileData> findAllUsers() {
 //      TODO, If user has permission
-        return userRepository.findAll();
+        return userRepository.findAllUsers();
     }
 
     @Transactional(readOnly = true)
-    public List<User> findAllUsersWithEmailContaining(String email) {
+    public List<UserProfileData> findAllUsersWithEmailContaining(String email) {
 //      TODO, If user is active
         return userRepository.findUsersByEmailContaining(email);
     }
@@ -122,10 +124,45 @@ public class UserService {
         }
     }
 
+    @Transactional
+    public UserProfileData uploadAvatar(Long id, MultipartFile file) throws NotFoundException, IOException {
+        Optional<User> data = userRepository.findById(id);
+        UserProfileData userProfileData = new UserProfileData();
+
+        if (data.isEmpty()){
+            throw new NotFoundException("User not found.");
+        }
+        else{
+            User user = data.get();
+            try {
+                String fileName = file.getOriginalFilename();
+
+                if (fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(".png")){
+                    user.setAvatar(file.getBytes());
+                    userRepository.save(user);
+
+                    userProfileData.setCountry(user.getCountry());
+                    userProfileData.setEmail(user.getEmail());
+                    userProfileData.setFirstName(user.getFirstName());
+                    userProfileData.setLastName(user.getLastName());
+                    userProfileData.setPhone(user.getPhone());
+
+                }
+                else{
+                    throw new UnsupportedOperationException("Allowed formats: .jpg .jpeg .png");
+                }
+            } catch (IOException e) {
+                throw new IOException("Uploading file failed.");//e.printStackTrace();
+            }
+        }
+        return userProfileData;
+    }
+
     private User saveUser(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
 
+        // FIXME: rewrite to fetch all roles with user permissions
         List<Role> userRoles = roleRepository.findRolesByKey("user");
         // Create records in the user_roles table to connect the newly created user to the default user permissions
         for (Role role : userRoles) {
@@ -135,5 +172,16 @@ public class UserService {
             userRoleRepository.save(userRole);
         }
         return user;
+    }
+
+    public byte[] getAvatar(Long id) throws NotFoundException {
+        Optional<User> data = userRepository.findById(id);
+
+        if (data.isEmpty()){
+            throw new NotFoundException("User not found.");
+        }
+
+        User user = data.get();
+        return user.getAvatar();
     }
 }
