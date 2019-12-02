@@ -3,12 +3,15 @@ package ba.unsa.pmf.pragma.service;
 import ba.unsa.pmf.pragma.db.entity.*;
 import ba.unsa.pmf.pragma.db.repository.*;
 import ba.unsa.pmf.pragma.service.dtos.CreateTeamRequest;
+import ba.unsa.pmf.pragma.service.dtos.UserProfileData;
 import ba.unsa.pmf.pragma.service.dtos.UserTeamResponse;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -72,5 +75,41 @@ public class TeamService {
                 team.getDescription(),
                 userTeam.getStatus()
         );
+    }
+
+    @Transactional
+    public void uploadLogo(Long id, MultipartFile file) throws NotFoundException, IOException {
+        Optional<Team> data = teamRepository.findById(id);
+
+        if (data.isEmpty()){
+            throw new NotFoundException("Team not found.");
+        }
+        else{
+            Team team = data.get();
+            try {
+                String fileName = file.getOriginalFilename();
+
+                if (fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(".png")){
+                    team.setLogo(file.getBytes());
+                    teamRepository.save(team);
+                }
+                else{
+                    throw new UnsupportedOperationException("Allowed formats: .jpg .jpeg .png");
+                }
+            } catch (IOException e) {
+                throw new IOException("Uploading file failed.");//e.printStackTrace();
+            }
+        }
+    }
+
+    public byte[] getLogo(Long id) throws NotFoundException {
+        Optional<Team> data = teamRepository.findById(id);
+
+        if (data.isEmpty()){
+            throw new NotFoundException("Team not found.");
+        }
+
+        Team team = data.get();
+        return team.getLogo();
     }
 }
