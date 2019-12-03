@@ -8,6 +8,7 @@ import ba.unsa.pmf.pragma.db.entity.Country;
  */
 public class UserProfileData {
 
+    private Long id;
     private String email;
     private String firstName;
     private String lastName;
@@ -17,12 +18,29 @@ public class UserProfileData {
     public UserProfileData() {
     }
 
+    public UserProfileData(Long id, String email, String firstName, String lastName, String phone, Country country) {
+        this.id = id;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.country = country;
+    }
+
     public UserProfileData(String email, String firstName, String lastName, String phone, Country country) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
         this.country = country;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getEmail() {

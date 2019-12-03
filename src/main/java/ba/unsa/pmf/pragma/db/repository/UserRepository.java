@@ -19,7 +19,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(
             value =
             "select new ba.unsa.pmf.pragma.service.dtos.UserProfileData(" +
-            "u.email, u.firstName, u.lastName, u.phone, u.country" +
+            "u.id, u.email, u.firstName, u.lastName, u.phone, u.country" +
             ") " +
             "from User u " +
             "where u.email like concat('%', :email, '%')"
@@ -29,7 +29,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(
             value =
             "select new ba.unsa.pmf.pragma.service.dtos.UserProfileData(" +
-            "u.email, u.firstName, u.lastName, u.phone, u.country" +
+            "u.id, u.email, u.firstName, u.lastName, u.phone, u.country" +
             ")" +
             "from User u"
     )
