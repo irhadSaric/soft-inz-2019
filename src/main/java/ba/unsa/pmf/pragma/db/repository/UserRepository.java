@@ -15,16 +15,16 @@ import java.util.List;
  */
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-
-    @Query(
-            value =
-            "select new ba.unsa.pmf.pragma.service.dtos.UserProfileData(" +
-            "u.id, u.email, u.firstName, u.lastName, u.phone, u.country" +
-            ") " +
-            "from User u " +
-            "where u.email like concat('%', :email, '%')"
-    )
-    List<UserProfileData> findUsersByEmailContaining(@Param("email") String email);
+//
+//    @Query(
+//            value =
+//            "select new ba.unsa.pmf.pragma.service.dtos.UserProfileData(" +
+//            "u.id, u.email, u.firstName, u.lastName, u.phone, u.country" +
+//            ") " +
+//            "from User u " +
+//            "where u.email like concat('%', :email, '%')"
+//    )
+    List<User> findUsersByEmailContaining(@Param("email") String email);
 
     @Query(
             value =

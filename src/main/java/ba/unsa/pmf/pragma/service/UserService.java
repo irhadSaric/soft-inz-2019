@@ -46,13 +46,14 @@ public class UserService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Transactional(readOnly = true)
-    public List<UserProfileData> findAllUsers() {
+    public List<User> findAllUsers() {
 //      TODO, If user has permission
-        return userRepository.findAllUsers();
+//        return userRepository.findAllUsers();
+        return userRepository.findAll();
     }
 
     @Transactional(readOnly = true)
-    public List<UserProfileData> findAllUsersWithEmailContaining(String email) {
+    public List<User> findAllUsersWithEmailContaining(String email) {
 //      TODO, If user is active
         return userRepository.findUsersByEmailContaining(email);
     }
