@@ -50,6 +50,8 @@ import RegisterInteractor from "../interactor/authentication/RegisterInteractor"
 import ShowUserProfileInteractor from "../interactor/user/ShowUserProfileInteractor";
 import UpdateUserProfileInteractor from "../interactor/user/UpdateUserProfileInteractor";
 import GetUserProfileInteractor from "../interactor/user/GetUserProfileInteractor";
+import CreateTeamInteractor from "../interactor/team/CreateTeamInteractor";
+import TeamService from "../service/team/TeamService";
 
 //const DEFAULT_CACHE_TIMEOUT_MS = 15000;
 const ModuleContainer = (application: Application): IModuleContainer => {
@@ -120,7 +122,8 @@ const ModuleContainer = (application: Application): IModuleContainer => {
     userService: asFunction(UserService),
     authenticationService: asFunction(AuthenticationService),
     credentialsService: asFunction(CredentialsService),
-    codebookService: asFunction(CodebookService)
+    codebookService: asFunction(CodebookService),
+    teamService: asFunction(TeamService)
   });
 
   //areas
@@ -147,7 +150,8 @@ const ModuleContainer = (application: Application): IModuleContainer => {
     register: asInteractor(RegisterInteractor),
     showUserProfile: asInteractor(ShowUserProfileInteractor),
     updateUserProfile: asInteractor(UpdateUserProfileInteractor),
-    getUserProfile: asInteractor(GetUserProfileInteractor)
+    getUserProfile: asInteractor(GetUserProfileInteractor),
+    createTeam: asInteractor(CreateTeamInteractor)
   });
 
   return {

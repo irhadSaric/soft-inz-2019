@@ -1,8 +1,20 @@
 import withStore, { TPresentable, TLoadingAwarePresenter } from "../withStore";
 import Application from "../../Application";
 import { IUser } from "../../model/user/User";
+import CreateTeamInteractor from "../../interactor/team/CreateTeamInteractor";
+import { message } from "antd";
+
+export interface TCreateTeamPresentationModel {
+  description: string;
+  logo: string;
+  nickname: string;
+  teamName: string;
+  userId: number;
+}
 
 export interface THomePresenter extends TLoadingAwarePresenter {
+  userProfile: IUser; //proba
+  createTeamData: TCreateTeamPresentationModel;
   isCreateTeamModalVisible: boolean;
   userList: IUser[];
   selectedUsers: TSelectValuePresentationModel[];
@@ -17,6 +29,8 @@ export interface IHomePresenter extends THomePresenter, TPresentable {
   onChangeSelectUserList(value: TSelectValuePresentationModel[]): void;
   onChangeTeamNameValue(value: string): void;
   onChangeProjectDescriptionValue(value: string): void;
+  createTeam(): void;
+  loadUserProfile(userProfile: IUser): void; // proba
 }
 
 export interface TSelectValuePresentationModel {
@@ -25,6 +39,8 @@ export interface TSelectValuePresentationModel {
 }
 
 const defaultState: THomePresenter = {
+  userProfile: {} as IUser, //proba
+  createTeamData: {} as TCreateTeamPresentationModel,
   isCreateTeamModalVisible: false,
   userList: [],
   selectedUsers: [],
@@ -37,6 +53,12 @@ const HomePresenter = withStore<IHomePresenter, THomePresenter>(
     const _store = store;
     const _application: Application = application;
     const state = _store.getState<THomePresenter & TLoadingAwarePresenter>();
+
+    const loadUserProfile = (userProfile: IUser) => {
+      return _store.update({
+        userProfile //proba
+      });
+    };
 
     const onCreateTeamBtnClick = () => {
       _store.update({
@@ -72,6 +94,38 @@ const HomePresenter = withStore<IHomePresenter, THomePresenter>(
       });
     };
 
+    const createTeam = async () => {
+      loader.start("createTeamLoader");
+      const createTeamData = _store.getState<THomePresenter>().createTeamData;
+      const teamName = _store.getState<THomePresenter>().teamName;
+      const projectDescription = _store.getState<THomePresenter>()
+        .projectDescription;
+      const userProfile = _store.getState<THomePresenter>().userProfile;
+      console.log("useeeeeeeeeeeeeeeeer", userProfile.id);
+      await _application.container
+        .resolve<CreateTeamInteractor>("createTeam")
+        .execute(
+          projectDescription,
+          "logo", // createTeamData.logo,
+          "nickname", // createTeamData.nickname,
+          teamName,
+          userProfile.id //createTeamData.userId
+        );
+      //success();
+      _store.update({
+        isCreateTeamModalVisible: false
+      });
+    };
+
+    const success = () => {
+      message.config({
+        top: 200,
+        duration: 2,
+        maxCount: 3
+      });
+      message.success("This is a success message");
+    };
+
     return {
       ...state,
 
@@ -84,7 +138,9 @@ const HomePresenter = withStore<IHomePresenter, THomePresenter>(
       loadUserList,
       onChangeSelectUserList,
       onChangeProjectDescriptionValue,
-      onChangeTeamNameValue
+      onChangeTeamNameValue,
+      createTeam,
+      loadUserProfile //proba
     };
   },
   defaultState
