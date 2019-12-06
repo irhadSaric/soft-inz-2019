@@ -3,6 +3,7 @@ package ba.unsa.pmf.pragma.service;
 import ba.unsa.pmf.pragma.db.entity.*;
 import ba.unsa.pmf.pragma.db.repository.*;
 import ba.unsa.pmf.pragma.service.dtos.CreateTeamRequest;
+import ba.unsa.pmf.pragma.service.dtos.TeamWithoutLogo;
 import ba.unsa.pmf.pragma.service.dtos.UserProfileData;
 import ba.unsa.pmf.pragma.service.dtos.UserTeamResponse;
 import javassist.NotFoundException;
@@ -111,5 +112,25 @@ public class TeamService {
 
         Team team = data.get();
         return team.getLogo();
+    }
+
+    public TeamWithoutLogo getTeamDetails(Long id) throws  NotFoundException {
+        Optional<Team> data = teamRepository.findById(id);
+        if (data.isEmpty()){
+            throw new NotFoundException("Team not found.");
+        }
+        Team team = data.get();
+         return  new TeamWithoutLogo(team.getId(),team.getName(),team.getDescription(),team.getCreationDate(),team.getLastUpdated());
+    }
+
+    public  void editTeamDetails(Long id, TeamWithoutLogo teamDetails) throws  NotFoundException  {
+        Optional<Team> data = teamRepository.findById(id);
+        if (data.isEmpty()){
+            throw new NotFoundException("Team not found.");
+        }
+        Team team = data.get();
+        team.setDescription(teamDetails.getDescription());
+        team.setName(teamDetails.getName());
+        teamRepository.save(team);
     }
 }
