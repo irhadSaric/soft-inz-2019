@@ -6,17 +6,26 @@ import HomePresenter, {
 import { IUserService } from "../../service/user/UserService";
 import { IUser } from "../../model/user/User";
 import { ICredentialsService } from "../../service/authentication/CredentialsService";
+import { ITeamService } from "../../service/team/TeamService";
+import { ITeam } from "../../model/team/Team";
 
 export default class ShowHomeInteractor {
   private application: Application;
   private output?: IHomePresenter;
   private userService: IUserService;
   private credentialsService: ICredentialsService; //proba
+  private teamService: ITeamService;
 
-  constructor({ application, userService, credentialsService }: any) {
+  constructor({
+    application,
+    userService,
+    credentialsService,
+    teamService
+  }: any) {
     this.application = application;
     this.userService = userService;
     this.credentialsService = credentialsService;
+    this.teamService = teamService;
   }
 
   execute() {
@@ -28,6 +37,7 @@ export default class ShowHomeInteractor {
         createTeamData: {} as TCreateTeamPresentationModel,
         isCreateTeamModalVisible: false,
         userList: [],
+        teamList: [],
         selectedUsers: [],
         teamName: "",
         projectDescription: ""
@@ -43,7 +53,9 @@ export default class ShowHomeInteractor {
     });
 
     this.userService.getUsers().then(this.output && this.output.loadUserList);
-
+    this.teamService
+      .getAllTeams()
+      .then(this.output && this.output.loadTeamList);
     return this.output;
   }
 }

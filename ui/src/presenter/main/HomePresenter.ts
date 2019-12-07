@@ -3,6 +3,8 @@ import Application from "../../Application";
 import { IUser } from "../../model/user/User";
 import CreateTeamInteractor from "../../interactor/team/CreateTeamInteractor";
 import { message } from "antd";
+import InviteUserToTeamInteractor from "../../interactor/team/InviteUserToTeamInteractor";
+import { ITeam } from "../../model/team/Team";
 
 export interface TCreateTeamPresentationModel {
   description: string;
@@ -17,6 +19,7 @@ export interface THomePresenter extends TLoadingAwarePresenter {
   createTeamData: TCreateTeamPresentationModel;
   isCreateTeamModalVisible: boolean;
   userList: IUser[];
+  teamList: ITeam[];
   selectedUsers: TSelectValuePresentationModel[];
   teamName: string;
   projectDescription: string;
@@ -31,6 +34,8 @@ export interface IHomePresenter extends THomePresenter, TPresentable {
   onChangeProjectDescriptionValue(value: string): void;
   createTeam(): void;
   loadUserProfile(userProfile: IUser): void; // proba
+  inviteUserToTeam(invitedUserId: number, teamId: number, userId: number): void;
+  loadTeamList(teamList: ITeam[]): void;
 }
 
 export interface TSelectValuePresentationModel {
@@ -43,6 +48,7 @@ const defaultState: THomePresenter = {
   createTeamData: {} as TCreateTeamPresentationModel,
   isCreateTeamModalVisible: false,
   userList: [],
+  teamList: [],
   selectedUsers: [],
   teamName: "",
   projectDescription: ""
@@ -94,36 +100,58 @@ const HomePresenter = withStore<IHomePresenter, THomePresenter>(
       });
     };
 
+    const loadTeamList = (teamList: ITeam[]) => {
+      _store.update({
+        teamList
+      });
+    };
+
     const createTeam = async () => {
       loader.start("createTeamLoader");
       const createTeamData = _store.getState<THomePresenter>().createTeamData;
       const teamName = _store.getState<THomePresenter>().teamName;
       const projectDescription = _store.getState<THomePresenter>()
         .projectDescription;
+      const selectedUsers = _store.getState<THomePresenter>().selectedUsers;
       const userProfile = _store.getState<THomePresenter>().userProfile;
-      console.log("useeeeeeeeeeeeeeeeer", userProfile.id);
-      await _application.container
+      console.log(selectedUsers);
+      const response = await _application.container
         .resolve<CreateTeamInteractor>("createTeam")
         .execute(
           projectDescription,
-          "logo", // createTeamData.logo,
-          "nickname", // createTeamData.nickname,
+          // "", // createTeamData.logo,
+          // "", // createTeamData.nickname,
           teamName,
           userProfile.id //createTeamData.userId
         );
+      /* const teamList = _store.getState<THomePresenter>().teamList; // ne apdejtuje se lista nakon dodavanja tima
+      teamList.forEach(team => {
+        console.log(team.id, team.name);
+      });
+      let lastTeamId = teamList[teamList.length - 1].id + 1; */
+      selectedUsers.forEach(element => {
+        inviteUserToTeam(Number(element.key), response.teamId, userProfile.id);
+      });
       //success();
       _store.update({
         isCreateTeamModalVisible: false
       });
     };
 
-    const success = () => {
-      message.config({
-        top: 200,
-        duration: 2,
-        maxCount: 3
-      });
-      message.success("This is a success message");
+    const inviteUserToTeam = async (
+      invitedUserId: number,
+      teamId: number,
+      userId: number
+    ) => {
+      await _application.container
+        .resolve<InviteUserToTeamInteractor>("inviteUserToTeam")
+        .execute(
+          invitedUserId,
+          // "", // createTeamData.logo,
+          // "", // createTeamData.nickname,
+          teamId,
+          userId //createTeamData.userId
+        );
     };
 
     return {
@@ -140,7 +168,9 @@ const HomePresenter = withStore<IHomePresenter, THomePresenter>(
       onChangeProjectDescriptionValue,
       onChangeTeamNameValue,
       createTeam,
-      loadUserProfile //proba
+      inviteUserToTeam,
+      loadUserProfile, //proba
+      loadTeamList
     };
   },
   defaultState

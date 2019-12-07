@@ -24,21 +24,21 @@ const Team = Model(
       get id() {
         return _team.id;
       },
-      set id(value) {
-        _team.id = value;
-      },
+      // set id(value) {
+      //   _team.id = value;
+      // },
       get name() {
         return _team.name;
       },
-      set name(value) {
-        _team.name = value;
-      },
+      // set name(value) {
+      //   _team.name = value;
+      // },
       get description() {
         return _team.description;
-      },
-      set description(value) {
-        _team.description = value;
       }
+      // set description(value) {
+      //   _team.description = value;
+      // }
     };
 
     return create(team);

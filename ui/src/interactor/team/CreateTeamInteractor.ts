@@ -15,19 +15,21 @@ export default class CreateTeamInteractor {
 
   async execute(
     description: string,
-    logo: string,
-    nickname: string,
+    //logo: string,
+    //nickname: string,
     teamName: string,
     userId: number
   ) {
     try {
-      await this.teamService.createTeam(
+      const response = await this.teamService.createTeam(
         description,
-        logo,
-        nickname,
+        //logo,
+        //nickname,
         teamName,
         userId
       );
+      //console.log(response);
+      return response;
     } catch (error) {
       console.log(error);
       return error;
