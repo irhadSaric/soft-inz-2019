@@ -74,8 +74,8 @@ public class TeamService {
                 userTeam.getRole().getKey(),
                 team.getName(),
                 team.getDescription(),
-                userTeam.getStatus()
-        );
+                userTeam.getStatus(),
+                team.getId());
     }
 
     @Transactional
