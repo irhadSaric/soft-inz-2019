@@ -4,10 +4,7 @@ import ba.unsa.pmf.pragma.db.entity.Team;
 import ba.unsa.pmf.pragma.db.entity.User;
 import ba.unsa.pmf.pragma.service.TeamService;
 import ba.unsa.pmf.pragma.service.UserTeamService;
-import ba.unsa.pmf.pragma.service.dtos.CreateTeamRequest;
-import ba.unsa.pmf.pragma.service.dtos.TeamInviteRequest;
-import ba.unsa.pmf.pragma.service.dtos.TeamInviteResponse;
-import ba.unsa.pmf.pragma.service.dtos.UserTeamResponse;
+import ba.unsa.pmf.pragma.service.dtos.*;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -90,5 +87,15 @@ public class TeamController {
     @GetMapping("/{id}/logo")
     public byte[] getLogo(@PathVariable Long id) throws NotFoundException {
         return teamService.getLogo(id);
+    }
+
+    @GetMapping("/{teamId}/details")
+    public TeamWithoutLogo getTeamDetails(@PathVariable Long teamId) throws NotFoundException {
+        return  teamService.getTeamDetails(teamId);
+    }
+
+    @PutMapping("/{teamId}/edit")
+    public void editTeamDetails(@RequestBody TeamWithoutLogo teamDetails, @PathVariable Long teamId) throws NotFoundException {
+        teamService.editTeamDetails(teamId,teamDetails);
     }
 }
