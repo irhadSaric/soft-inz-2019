@@ -7,13 +7,13 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "ticket_types")
 public class TicketType extends LookupEntity{
-    @Column(name = "description", insertable = false, unique = true, updatable = false, nullable = false)
+    @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "score", insertable = false, updatable = false, nullable = false)
+    @Column(name = "score", nullable = false)
     private Long score;
 
-    @Column(name = "duration", insertable = false, updatable = false, nullable = false)
+    @Column(name = "duration", nullable = false)
     private Long duration;
 
     public String getDescription() {
