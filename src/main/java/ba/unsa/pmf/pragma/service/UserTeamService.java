@@ -135,7 +135,8 @@ public class UserTeamService {
             userTeam.getRole().getKey(),
             userTeam.getTeam().getName(),
             userTeam.getTeam().getDescription(),
-            userTeam.getStatus()
+            userTeam.getStatus(),
+                teamId
         );
     }
 }

@@ -14,17 +14,27 @@ public class UserTeamResponse {
     private String teamName;
     private String teamDescription;
     private Status status;
+    private Long teamId;
 
     public UserTeamResponse() {
     }
 
-    public UserTeamResponse(String nickname, String roleName, String roleKey, String teamName, String teamDescription, Status status) {
+    public UserTeamResponse(String nickname, String roleName, String roleKey, String teamName, String teamDescription, Status status,Long teamId) {
         this.nickname = nickname;
         this.roleName = roleName;
         this.roleKey = roleKey;
         this.teamName = teamName;
         this.teamDescription = teamDescription;
         this.status = status;
+        this.teamId = teamId;
+    }
+
+    public Long getTeamId() {
+        return teamId;
+    }
+
+    public void setTeamId(Long teamId) {
+        this.teamId = teamId;
     }
 
     public String getNickname() {

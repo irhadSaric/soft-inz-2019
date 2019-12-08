@@ -25,12 +25,12 @@ public class UserController extends BaseController {
     private UserService userService;
 
     @GetMapping("/api/user/find/all")
-    public List<UserProfileData> findAllUsers() {
+    public List<User> findAllUsers() {
         return userService.findAllUsers();
     }
 
     @GetMapping("/api/user/find/{email}")
-    public List<UserProfileData> findAllUsersWithEmailContaining(@PathVariable("email") String email) {
+    public List<User> findAllUsersWithEmailContaining(@PathVariable("email") String email) {
         return userService.findAllUsersWithEmailContaining(email);
     }
 
