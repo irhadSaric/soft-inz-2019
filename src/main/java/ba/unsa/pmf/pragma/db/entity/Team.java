@@ -2,6 +2,7 @@ package ba.unsa.pmf.pragma.db.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 import java.util.Date;
 
