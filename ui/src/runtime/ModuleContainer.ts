@@ -50,6 +50,8 @@ import RegisterInteractor from "../interactor/authentication/RegisterInteractor"
 import ShowUserProfileInteractor from "../interactor/user/ShowUserProfileInteractor";
 import UpdateUserProfileInteractor from "../interactor/user/UpdateUserProfileInteractor";
 import GetUserProfileInteractor from "../interactor/user/GetUserProfileInteractor";
+import TeamArea from "../areas/TeamArea";
+import ShowTeamInteractor from "../interactor/team/ShowTeamInteractor";
 
 //const DEFAULT_CACHE_TIMEOUT_MS = 15000;
 const ModuleContainer = (application: Application): IModuleContainer => {
@@ -127,6 +129,7 @@ const ModuleContainer = (application: Application): IModuleContainer => {
   _container.register({
     homeArea: asClass(HomeArea).singleton(),
     userArea: asClass(UserArea).singleton(),
+    teamArea: asClass(TeamArea).singleton(),
     authenticationArea: asClass(AuthenticationArea)
   });
 
@@ -147,7 +150,8 @@ const ModuleContainer = (application: Application): IModuleContainer => {
     register: asInteractor(RegisterInteractor),
     showUserProfile: asInteractor(ShowUserProfileInteractor),
     updateUserProfile: asInteractor(UpdateUserProfileInteractor),
-    getUserProfile: asInteractor(GetUserProfileInteractor)
+    getUserProfile: asInteractor(GetUserProfileInteractor),
+    showTeam: asInteractor(ShowTeamInteractor)
   });
 
   return {
