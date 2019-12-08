@@ -37,7 +37,8 @@ export default class HomePage extends React.Component<Props, State> {
       onChangeTeamNameValue,
       teamName,
       projectDescription,
-      createTeam
+      createTeam,
+      createTeamValidationErrors
     } = this.state;
     return (
       <Page {...this.props}>
@@ -64,10 +65,8 @@ export default class HomePage extends React.Component<Props, State> {
             onChangeTeamName={onChangeTeamNameValue}
             teamName={teamName}
             projectDescription={projectDescription}
+            validationErrors={createTeamValidationErrors}
           />
-          {/* <Button type="primary" onClick={createTeam}>
-            Submit
-          </Button> */}
         </Modal>
       </Page>
     );

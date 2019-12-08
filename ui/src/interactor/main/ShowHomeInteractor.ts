@@ -13,7 +13,7 @@ export default class ShowHomeInteractor {
   private application: Application;
   private output?: IHomePresenter;
   private userService: IUserService;
-  private credentialsService: ICredentialsService; //proba
+  private credentialsService: ICredentialsService;
   private teamService: ITeamService;
 
   constructor({
@@ -53,9 +53,6 @@ export default class ShowHomeInteractor {
     });
 
     this.userService.getUsers().then(this.output && this.output.loadUserList);
-    this.teamService
-      .getAllTeams()
-      .then(this.output && this.output.loadTeamList);
     return this.output;
   }
 }

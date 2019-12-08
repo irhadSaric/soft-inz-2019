@@ -15,9 +15,10 @@ export interface TCreateTeamPresentationModel {
 }
 
 export interface THomePresenter extends TLoadingAwarePresenter {
-  userProfile: IUser; //proba
+  userProfile: IUser;
   createTeamData: TCreateTeamPresentationModel;
   isCreateTeamModalVisible: boolean;
+  createTeamValidationErrors?: any;
   userList: IUser[];
   teamList: ITeam[];
   selectedUsers: TSelectValuePresentationModel[];
@@ -47,6 +48,7 @@ const defaultState: THomePresenter = {
   userProfile: {} as IUser, //proba
   createTeamData: {} as TCreateTeamPresentationModel,
   isCreateTeamModalVisible: false,
+  createTeamValidationErrors: undefined,
   userList: [],
   teamList: [],
   selectedUsers: [],
@@ -74,7 +76,10 @@ const HomePresenter = withStore<IHomePresenter, THomePresenter>(
 
     const onCancelTeamModalButtonClick = () => {
       _store.update({
-        isCreateTeamModalVisible: false
+        isCreateTeamModalVisible: false,
+        teamName: "",
+        projectDescription: "",
+        selectedUsers: []
       });
     };
 
@@ -92,12 +97,18 @@ const HomePresenter = withStore<IHomePresenter, THomePresenter>(
       _store.update({
         teamName: value
       });
+      const createTeamValidationErrors = _store.getState<THomePresenter>()
+        .createTeamValidationErrors;
+      createTeamValidationErrors && validateCreateTeamForm();
     };
 
     const onChangeProjectDescriptionValue = (value: string) => {
       _store.update({
         projectDescription: value
       });
+      const createTeamValidationErrors = _store.getState<THomePresenter>()
+        .createTeamValidationErrors;
+      createTeamValidationErrors && validateCreateTeamForm();
     };
 
     const loadTeamList = (teamList: ITeam[]) => {
@@ -106,36 +117,78 @@ const HomePresenter = withStore<IHomePresenter, THomePresenter>(
       });
     };
 
-    const createTeam = async () => {
-      loader.start("createTeamLoader");
-      const createTeamData = _store.getState<THomePresenter>().createTeamData;
+    const validateCreateTeamForm = () => {
       const teamName = _store.getState<THomePresenter>().teamName;
       const projectDescription = _store.getState<THomePresenter>()
         .projectDescription;
-      const selectedUsers = _store.getState<THomePresenter>().selectedUsers;
-      const userProfile = _store.getState<THomePresenter>().userProfile;
-      console.log(selectedUsers);
-      const response = await _application.container
-        .resolve<CreateTeamInteractor>("createTeam")
-        .execute(
-          projectDescription,
-          // "", // createTeamData.logo,
-          // "", // createTeamData.nickname,
-          teamName,
-          userProfile.id //createTeamData.userId
+      let createTeamValidationErrors = _store.getState<THomePresenter>()
+        .createTeamValidationErrors;
+      createTeamValidationErrors = {
+        teamName: [],
+        projectDescription: []
+      };
+      if (!teamName) {
+        createTeamValidationErrors.teamName.push(
+          "The Team Name field is required."
         );
-      /* const teamList = _store.getState<THomePresenter>().teamList; // ne apdejtuje se lista nakon dodavanja tima
-      teamList.forEach(team => {
-        console.log(team.id, team.name);
-      });
-      let lastTeamId = teamList[teamList.length - 1].id + 1; */
-      selectedUsers.forEach(element => {
-        inviteUserToTeam(Number(element.key), response.teamId, userProfile.id);
-      });
-      //success();
+      }
+      if (!projectDescription) {
+        createTeamValidationErrors.projectDescription.push(
+          "The Description field is required."
+        );
+      }
       _store.update({
-        isCreateTeamModalVisible: false
+        /* createTeamValidationErrors.teamName.length ||
+        createTeamValidationErrors.projectDescription.length
+          ? true
+          : false, */
+        createTeamValidationErrors
       });
+    };
+
+    const createTeam = async () => {
+      validateCreateTeamForm();
+      const createTeamValidationErrors = _store.getState<THomePresenter>()
+        .createTeamValidationErrors;
+      if (
+        !(
+          createTeamValidationErrors.teamName.length ||
+          createTeamValidationErrors.projectDescription.length
+        )
+      )
+        try {
+          loader.start("createTeamLoader");
+          const createTeamData = _store.getState<THomePresenter>()
+            .createTeamData;
+          const teamName = _store.getState<THomePresenter>().teamName;
+          const projectDescription = _store.getState<THomePresenter>()
+            .projectDescription;
+          const selectedUsers = _store.getState<THomePresenter>().selectedUsers;
+          const userProfile = _store.getState<THomePresenter>().userProfile;
+          console.log(selectedUsers);
+          const response = await _application.container
+            .resolve<CreateTeamInteractor>("createTeam")
+            .execute(
+              projectDescription,
+              // "", // createTeamData.logo,
+              // "", // createTeamData.nickname,
+              teamName,
+              userProfile.id //createTeamData.userId
+            );
+          selectedUsers.forEach(element => {
+            inviteUserToTeam(
+              Number(element.key),
+              response.teamId,
+              userProfile.id
+            );
+          });
+          //success();
+          _store.update({
+            isCreateTeamModalVisible: false
+          });
+        } catch (error) {
+          console.log("error");
+        }
     };
 
     const inviteUserToTeam = async (
@@ -169,7 +222,7 @@ const HomePresenter = withStore<IHomePresenter, THomePresenter>(
       onChangeTeamNameValue,
       createTeam,
       inviteUserToTeam,
-      loadUserProfile, //proba
+      loadUserProfile,
       loadTeamList
     };
   },

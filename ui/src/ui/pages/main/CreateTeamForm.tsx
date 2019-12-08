@@ -14,7 +14,8 @@ const CreateTeamForm = ({
   onChangeTeamName,
   onChangeProjectDescription,
   teamName,
-  projectDescription
+  projectDescription,
+  validationErrors
 }: {
   translate: any;
   users: IUser[];
@@ -24,17 +25,28 @@ const CreateTeamForm = ({
   onChangeProjectDescription(value: string): void;
   teamName: string;
   projectDescription: string;
+  validationErrors: any;
 }) => {
+  const checkValidationErrors = (fieldName: string) => {
+    return validationErrors && validationErrors[fieldName].length > 0;
+  };
   return (
     <div>
-      <Input
-        addonBefore={<Text>Team name</Text>}
-        placeholder={"Team Name"}
-        value={teamName}
-        onChange={e => onChangeTeamName(e.target.value)}
-        allowClear={true}
-        style={{ marginTop: 20 }}
-      />
+      <div>
+        <Input
+          addonBefore={<Text>Team name</Text>}
+          placeholder={"Team Name"}
+          value={teamName}
+          onChange={e => onChangeTeamName(e.target.value)}
+          allowClear={true}
+          style={{ marginTop: 20 }}
+        />
+        {checkValidationErrors("teamName") && (
+          <Text className={"error-text"}>
+            {validationErrors["teamName"][0]}
+          </Text>
+        )}
+      </div>
       <Input.TextArea
         placeholder={"Description"}
         value={projectDescription}
@@ -42,6 +54,11 @@ const CreateTeamForm = ({
         autosize={{ minRows: 4 }}
         style={{ marginTop: 20 }}
       />
+      {checkValidationErrors("projectDescription") && (
+        <Text className={"error-text"}>
+          {validationErrors["projectDescription"][0]}
+        </Text>
+      )}
       <Select
         mode="multiple"
         labelInValue
