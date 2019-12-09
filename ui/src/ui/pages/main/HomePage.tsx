@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Icon, Modal } from "antd";
+import { Button, Icon, Modal, Avatar } from "antd";
 import Page, { PageProps } from "../Page";
 import { IHomePresenter } from "../../../presenter/main/HomePresenter";
 import CreateTeamForm from "./CreateTeamForm";
@@ -36,7 +36,9 @@ export default class HomePage extends React.Component<Props, State> {
       onChangeProjectDescriptionValue,
       onChangeTeamNameValue,
       teamName,
-      projectDescription
+      projectDescription,
+      createTeam,
+      createTeamValidationErrors
     } = this.state;
     return (
       <Page {...this.props}>
@@ -46,10 +48,14 @@ export default class HomePage extends React.Component<Props, State> {
         <Modal
           title="Create team"
           visible={isCreateTeamModalVisible}
-          onOk={() => console.log("OK")}
+          onOk={createTeam}
           onCancel={onCancelTeamModalButtonClick}
           maskClosable={false}
         >
+          <Avatar style={{ marginLeft: 50 }} size={150} icon="team" />
+          <Button style={{ marginLeft: 30 }} type={"link"}>
+            Upload photo
+          </Button>
           <CreateTeamForm
             translate={translate}
             users={userList}
@@ -59,6 +65,7 @@ export default class HomePage extends React.Component<Props, State> {
             onChangeTeamName={onChangeTeamNameValue}
             teamName={teamName}
             projectDescription={projectDescription}
+            validationErrors={createTeamValidationErrors}
           />
         </Modal>
       </Page>
