@@ -1,5 +1,6 @@
 package ba.unsa.pmf.pragma.service;
 
+import ba.unsa.pmf.pragma.db.entity.Iteration;
 import ba.unsa.pmf.pragma.db.entity.Project;
 import ba.unsa.pmf.pragma.db.entity.Team;
 import ba.unsa.pmf.pragma.db.repository.ProjectRepository;
@@ -65,5 +66,30 @@ public class ProjectService {
 
     public List<Project> getAll() {
         return projectRepository.findAll();
+    }
+
+    public List<Iteration> getAllIterationsForProject(Long id) {
+        return projectRepository.getAllIterationsForProject(id);
+    }
+
+    public Project editProject(Long id, CreateProjectRequest request) throws NotFoundException {
+        Optional<Project> data = projectRepository.findById(id);
+        if (data.isEmpty()){
+            throw new NotFoundException("Project not found");
+        }
+
+        Project project = data.get();
+        project.setStatusId(request.getStatus());
+        project.setEndDate(request.getEndDate());
+        project.setName(request.getName());
+        project.setDescription(request.getDescription());
+
+        Optional<Team> team = teamRepository.findById(request.getTeamId());
+        if (team.isEmpty()){
+            throw new NotFoundException("Team not found");
+        }
+        project.setTeam(team.get());
+        projectRepository.save(project);
+        return project;
     }
 }

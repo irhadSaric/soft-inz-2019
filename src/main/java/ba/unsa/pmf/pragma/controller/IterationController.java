@@ -8,6 +8,8 @@ import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/iteration")
 public class IterationController {
@@ -22,5 +24,10 @@ public class IterationController {
     @GetMapping("/get/{id}")
     public Iteration getIteration(@PathVariable("id") Long id) throws NotFoundException {
         return iterationService.getIteration(id);
+    }
+
+    @GetMapping("/get/all")
+    public List<Iteration> findAll(){
+        return iterationService.findAll();
     }
 }
