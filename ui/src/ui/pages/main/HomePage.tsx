@@ -2,7 +2,8 @@ import React from "react";
 import { Button, Icon, Modal, Avatar } from "antd";
 import Page, { PageProps } from "../Page";
 import { IHomePresenter } from "../../../presenter/main/HomePresenter";
-import CreateTeamForm from "./CreateTeamForm";
+import CreateTeamForm from "../team/CreateTeamForm";
+import ShowTeamInvitesList from "../team/ShowTeamInvitesList";
 export interface Props extends PageProps {}
 export interface State extends IHomePresenter {}
 
@@ -38,8 +39,12 @@ export default class HomePage extends React.Component<Props, State> {
       teamName,
       projectDescription,
       createTeam,
-      createTeamValidationErrors
+      createTeamValidationErrors,
+      teamInvitesForUser,
+      userProfile
     } = this.state;
+    console.log(teamInvitesForUser[0]);
+    const listItems = teamInvitesForUser.map(team => <li>{team.teamId}</li>);
     return (
       <Page {...this.props}>
         <Button type="primary" onClick={onCreateTeamBtnClick}>
@@ -68,6 +73,10 @@ export default class HomePage extends React.Component<Props, State> {
             validationErrors={createTeamValidationErrors}
           />
         </Modal>
+        <ShowTeamInvitesList
+          teamInvitesForUser={teamInvitesForUser}
+          userProfile={userProfile}
+        />
       </Page>
     );
   }

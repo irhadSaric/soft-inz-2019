@@ -5,6 +5,10 @@ import CreateTeamInteractor from "../../interactor/team/CreateTeamInteractor";
 import { message } from "antd";
 import InviteUserToTeamInteractor from "../../interactor/team/InviteUserToTeamInteractor";
 import { ITeam } from "../../model/team/Team";
+import {
+  TTeamInviteResponse,
+  ITeamInviteResponse
+} from "../../model/team/TeamInviteResponse";
 
 export interface TCreateTeamPresentationModel {
   description: string;
@@ -22,6 +26,7 @@ export interface THomePresenter extends TLoadingAwarePresenter {
   userList: IUser[];
   teamList: ITeam[];
   selectedUsers: TSelectValuePresentationModel[];
+  teamInvitesForUser: ITeamInviteResponse[];
   teamName: string;
   projectDescription: string;
 }
@@ -37,6 +42,7 @@ export interface IHomePresenter extends THomePresenter, TPresentable {
   loadUserProfile(userProfile: IUser): void; // proba
   inviteUserToTeam(invitedUserId: number, teamId: number, userId: number): void;
   loadTeamList(teamList: ITeam[]): void;
+  loadTeamInvitesForUser(teamInvitesForUser: ITeamInviteResponse[]): void;
 }
 
 export interface TSelectValuePresentationModel {
@@ -52,6 +58,7 @@ const defaultState: THomePresenter = {
   userList: [],
   teamList: [],
   selectedUsers: [],
+  teamInvitesForUser: [],
   teamName: "",
   projectDescription: ""
 };
@@ -63,6 +70,7 @@ const HomePresenter = withStore<IHomePresenter, THomePresenter>(
     const state = _store.getState<THomePresenter & TLoadingAwarePresenter>();
 
     const loadUserProfile = (userProfile: IUser) => {
+      console.log("eg");
       return _store.update({
         userProfile //proba
       });
@@ -114,6 +122,16 @@ const HomePresenter = withStore<IHomePresenter, THomePresenter>(
     const loadTeamList = (teamList: ITeam[]) => {
       _store.update({
         teamList
+      });
+    };
+
+    const loadTeamInvitesForUser = (
+      teamInvitesForUser: ITeamInviteResponse[]
+    ) => {
+      console.log("hehehe");
+      console.log(teamInvitesForUser);
+      _store.update({
+        teamInvitesForUser
       });
     };
 
@@ -207,6 +225,8 @@ const HomePresenter = withStore<IHomePresenter, THomePresenter>(
         );
     };
 
+    //const loadTeamInvitesForUser = ()
+
     return {
       ...state,
 
@@ -222,6 +242,7 @@ const HomePresenter = withStore<IHomePresenter, THomePresenter>(
       onChangeTeamNameValue,
       createTeam,
       inviteUserToTeam,
+      loadTeamInvitesForUser,
       loadUserProfile,
       loadTeamList
     };

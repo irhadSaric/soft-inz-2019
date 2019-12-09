@@ -1,5 +1,8 @@
 import { IHttpService } from "../HttpService";
 import Team, { ITeam } from "../../model/team/Team";
+import TeamInviteResponse, {
+  ITeamInviteResponse
+} from "../../model/team/TeamInviteResponse";
 
 export interface ITeamService {
   createTeam(
@@ -16,6 +19,7 @@ export interface ITeamService {
   ): Promise<any>;
   getAllTeamsForUser(userId: number): Promise<ITeam[]>;
   getAllTeams(): Promise<ITeam[]>;
+  getTeamInvitesForUser(userId: number): Promise<ITeamInviteResponse[]>;
 }
 
 const TeamService = ({ httpService }): ITeamService => {
@@ -24,9 +28,14 @@ const TeamService = ({ httpService }): ITeamService => {
   const _createTeam: string = "/create-team";
   const _invite: string = "/invite";
   const _all: string = "/all";
+  const _pending: string = "/pending";
 
   const buildTeamList = (data: any): ITeam[] => {
     return data.map(item => Team(item));
+  };
+
+  const buildTeamInvitesList = (data: any): ITeamInviteResponse[] => {
+    return data.map(item => TeamInviteResponse(item));
   };
 
   return {
@@ -75,6 +84,12 @@ const TeamService = ({ httpService }): ITeamService => {
       const response = await _http.get(path);
       const responseJSON = await _http.toJSON(response);
       return buildTeamList(responseJSON);
+    },
+    async getTeamInvitesForUser(userId: number) {
+      const path = _http.buildPath(_basePath, _pending, userId.toString());
+      const response = await _http.get(path);
+      const responseJSON = await _http.toJSON(response);
+      return buildTeamInvitesList(responseJSON);
     }
   };
 };
