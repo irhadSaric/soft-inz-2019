@@ -33,7 +33,7 @@ export default class ShowHomeInteractor {
       application: this.application,
 
       initialState: {
-        userProfile: {} as IUser, //proba
+        userProfile: {} as IUser,
         createTeamData: {} as TCreateTeamPresentationModel,
         isCreateTeamModalVisible: false,
         userList: [],
@@ -45,7 +45,6 @@ export default class ShowHomeInteractor {
     });
 
     this.credentialsService.getEmailFromStorage().then(email => {
-      //proba
       email &&
         this.userService
           .getUserByEmail(email)

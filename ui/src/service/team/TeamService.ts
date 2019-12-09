@@ -4,8 +4,6 @@ import Team, { ITeam } from "../../model/team/Team";
 export interface ITeamService {
   createTeam(
     description: string,
-    //logo: string,
-    //nickname: string,
     teamName: string,
     userId: number
   ): Promise<any>;
@@ -30,19 +28,11 @@ const TeamService = ({ httpService }): ITeamService => {
   };
 
   return {
-    async createTeam(
-      description: string,
-      //logo: string,
-      //nickname: string,
-      teamName: string,
-      userId: number
-    ) {
+    async createTeam(description: string, teamName: string, userId: number) {
       const path = _http.buildPath(_basePath, _createTeam);
       const response = await _http.post(path, {
         params: {
           description,
-          //logo,
-          //nickname,
           teamName,
           userId
         }
