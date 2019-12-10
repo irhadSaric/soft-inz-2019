@@ -14,6 +14,7 @@ export interface ITeamService {
   ): Promise<any>;
   getAllTeamsForUser(userId: number): Promise<ITeam[]>;
   getAllTeams(): Promise<ITeam[]>;
+  getActiveTeams(userId: number): Promise<ITeam[]>;
 }
 
 const TeamService = ({ httpService }): ITeamService => {
@@ -22,6 +23,7 @@ const TeamService = ({ httpService }): ITeamService => {
   const _createTeam: string = "/create-team";
   const _invite: string = "/invite";
   const _all: string = "/all";
+  const _active: string = "/active";
 
   const buildTeamList = (data: any): ITeam[] => {
     return data.map(item => Team(item));
@@ -62,6 +64,12 @@ const TeamService = ({ httpService }): ITeamService => {
     },
     async getAllTeams() {
       const path = _http.buildPath(_basePath, _all);
+      const response = await _http.get(path);
+      const responseJSON = await _http.toJSON(response);
+      return buildTeamList(responseJSON);
+    },
+    async getActiveTeams(userId) {
+      const path = _http.buildPath(_basePath, _all, userId.toString());
       const response = await _http.get(path);
       const responseJSON = await _http.toJSON(response);
       return buildTeamList(responseJSON);

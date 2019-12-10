@@ -23,6 +23,7 @@ export interface THomePresenter extends TLoadingAwarePresenter {
   selectedUsers: TSelectValuePresentationModel[];
   teamName: string;
   projectDescription: string;
+  activeTeamList: ITeam[];
 }
 
 export interface IHomePresenter extends THomePresenter, TPresentable {
@@ -36,6 +37,7 @@ export interface IHomePresenter extends THomePresenter, TPresentable {
   loadUserProfile(userProfile: IUser): void; // proba
   inviteUserToTeam(invitedUserId: number, teamId: number, userId: number): void;
   loadTeamList(teamList: ITeam[]): void;
+  loadActiveTeamList(teamList: ITeam[]): void;
 }
 
 export interface TSelectValuePresentationModel {
@@ -52,7 +54,8 @@ const defaultState: THomePresenter = {
   teamList: [],
   selectedUsers: [],
   teamName: "",
-  projectDescription: ""
+  projectDescription: "",
+  activeTeamList: []
 };
 
 const HomePresenter = withStore<IHomePresenter, THomePresenter>(
@@ -186,6 +189,11 @@ const HomePresenter = withStore<IHomePresenter, THomePresenter>(
         .resolve<InviteUserToTeamInteractor>("inviteUserToTeam")
         .execute(invitedUserId, teamId, userId);
     };
+    const loadActiveTeamList = (activeTeamList: ITeam[]) => {
+      _store.update({
+        activeTeamList
+      });
+    };
 
     return {
       ...state,
@@ -203,7 +211,8 @@ const HomePresenter = withStore<IHomePresenter, THomePresenter>(
       createTeam,
       inviteUserToTeam,
       loadUserProfile,
-      loadTeamList
+      loadTeamList,
+      loadActiveTeamList
     };
   },
   defaultState

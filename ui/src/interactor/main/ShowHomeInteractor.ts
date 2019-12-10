@@ -40,7 +40,8 @@ export default class ShowHomeInteractor {
         teamList: [],
         selectedUsers: [],
         teamName: "",
-        projectDescription: ""
+        projectDescription: "",
+        activeTeamList: []
       }
     });
 
