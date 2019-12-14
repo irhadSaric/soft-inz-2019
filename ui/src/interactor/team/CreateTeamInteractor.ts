@@ -1,5 +1,3 @@
-import Application from "../../Application";
-import { IRouter } from "../../runtime/Router";
 import { ITeamService } from "../../service/team/TeamService";
 
 export default class CreateTeamInteractor {
@@ -11,12 +9,7 @@ export default class CreateTeamInteractor {
 
   async execute(description: string, teamName: string, userId: number) {
     try {
-      const response = await this.teamService.createTeam(
-        description,
-        teamName,
-        userId
-      );
-      return response;
+      return this.teamService.createTeam(description, teamName, userId);
     } catch (error) {
       console.log(error);
       return error;

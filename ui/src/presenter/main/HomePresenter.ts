@@ -2,7 +2,6 @@ import withStore, { TPresentable, TLoadingAwarePresenter } from "../withStore";
 import Application from "../../Application";
 import { IUser } from "../../model/user/User";
 import CreateTeamInteractor from "../../interactor/team/CreateTeamInteractor";
-import { message } from "antd";
 import InviteUserToTeamInteractor from "../../interactor/team/InviteUserToTeamInteractor";
 import RespondToPendingInviteInteractor from "../../interactor/team/RespondToPendingInviteInteractor";
 import { ITeam } from "../../model/team/Team";
@@ -174,8 +173,6 @@ const HomePresenter = withStore<IHomePresenter, THomePresenter>(
       )
         try {
           loader.start("createTeamLoader");
-          const createTeamData = _store.getState<THomePresenter>()
-            .createTeamData;
           const teamName = _store.getState<THomePresenter>().teamName;
           const projectDescription = _store.getState<THomePresenter>()
             .projectDescription;
@@ -191,7 +188,7 @@ const HomePresenter = withStore<IHomePresenter, THomePresenter>(
             .execute("Uspješno ste kreirali tim");
           selectedUsers.forEach(element => {
             inviteUserToTeam(
-              Number(element.key),
+              parseInt(element.key, 10),
               response.teamId,
               userProfile.id
             );
