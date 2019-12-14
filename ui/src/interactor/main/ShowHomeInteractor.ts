@@ -9,6 +9,7 @@ import { ICredentialsService } from "../../service/authentication/CredentialsSer
 import { ITeamService } from "../../service/team/TeamService";
 import { ITeam } from "../../model/team/Team";
 import { isUserWhitespacable } from "@babel/types";
+import { ITeamInviteResponse } from "../../model/team/TeamInviteResponse";
 
 export default class ShowHomeInteractor {
   private application: Application;
@@ -34,7 +35,7 @@ export default class ShowHomeInteractor {
       application: this.application,
 
       initialState: {
-        userProfile: {} as IUser, //proba
+        userProfile: {} as IUser,
         createTeamData: {} as TCreateTeamPresentationModel,
         isCreateTeamModalVisible: false,
         userList: [],
@@ -47,34 +48,20 @@ export default class ShowHomeInteractor {
     });
 
     this.credentialsService.getEmailFromStorage().then(email => {
-      //proba
-      email &&
-        this.userService.getUserByEmail(email).then(user => {
-          user &&
-            this.teamService
-              .getTeamInvitesForUser(user.id)
-              .then(this.output && this.output.loadTeamInvitesForUser);
-        });
-    });
-
-    this.credentialsService.getEmailFromStorage().then(email => {
-      //proba
-      email &&
-        this.userService
-          .getUserByEmail(email)
-          .then(this.output && this.output.loadUserProfile);
-    });
-
-    /* this.credentialsService.getEmailFromStorage().then(email => {
-      //proba
-      email &&
-        this.userService.getUserByEmail(email).then(user => {
-          user &&
-            this.teamService.getTeamInvitesForUser(user.id).then(teams => {
-              console.log(teams);
+      if (email) {
+        this.userService.getUserByEmail(email).then((user: IUser) => {
+          this.teamService
+            .getTeamInvitesForUser(user.id)
+            .then((teamInvitesForUser: ITeamInviteResponse[]) => {
+              console.log("g");
+              this.output &&
+                this.output.loadTeamInvitesForUser(teamInvitesForUser);
             });
+          this.output && this.output.loadUserProfile(user);
+          console.log("h");
         });
-    }); */
+      }
+    });
 
     this.userService.getUsers().then(this.output && this.output.loadUserList);
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Icon, Modal, Avatar } from "antd";
+import { Button, Icon, Modal, Avatar, Divider } from "antd";
 import Page, { PageProps } from "../Page";
 import { IHomePresenter } from "../../../presenter/main/HomePresenter";
 import CreateTeamForm from "../team/CreateTeamForm";
@@ -41,41 +41,45 @@ export default class HomePage extends React.Component<Props, State> {
       createTeam,
       createTeamValidationErrors,
       teamInvitesForUser,
-      userProfile
+      respondToPendingInvite
     } = this.state;
-    console.log(teamInvitesForUser[0]);
-    const listItems = teamInvitesForUser.map(team => <li>{team.teamId}</li>);
     return (
-      <Page {...this.props}>
-        <Button type="primary" onClick={onCreateTeamBtnClick}>
-          Create team
-        </Button>
-        <Modal
-          title="Create team"
-          visible={isCreateTeamModalVisible}
-          onOk={createTeam}
-          onCancel={onCancelTeamModalButtonClick}
-          maskClosable={false}
-        >
-          <Avatar style={{ marginLeft: 50 }} size={150} icon="team" />
-          <Button style={{ marginLeft: 30 }} type={"link"}>
-            Upload photo
+      <Page {...this.props} style={{ display: "flex" }}>
+        <div>
+          <Button type="primary" onClick={onCreateTeamBtnClick}>
+            Create team
           </Button>
-          <CreateTeamForm
-            translate={translate}
-            users={userList}
-            selectedUsers={selectedUsers}
-            onChangeSelectUserList={onChangeSelectUserList}
-            onChangeProjectDescription={onChangeProjectDescriptionValue}
-            onChangeTeamName={onChangeTeamNameValue}
-            teamName={teamName}
-            projectDescription={projectDescription}
-            validationErrors={createTeamValidationErrors}
-          />
-        </Modal>
+          <Modal
+            title="Create team"
+            visible={isCreateTeamModalVisible}
+            onOk={createTeam}
+            onCancel={onCancelTeamModalButtonClick}
+            maskClosable={false}
+          >
+            <Avatar style={{ marginLeft: 50 }} size={150} icon="team" />
+            <Button style={{ marginLeft: 30 }} type={"link"}>
+              Upload photo
+            </Button>
+            <CreateTeamForm
+              translate={translate}
+              users={userList}
+              selectedUsers={selectedUsers}
+              onChangeSelectUserList={onChangeSelectUserList}
+              onChangeProjectDescription={onChangeProjectDescriptionValue}
+              onChangeTeamName={onChangeTeamNameValue}
+              teamName={teamName}
+              projectDescription={projectDescription}
+              validationErrors={createTeamValidationErrors}
+            />
+          </Modal>
+        </div>
+        <Divider
+          style={{ height: "auto", background: "#cccccc" }}
+          type={"vertical"}
+        />
         <ShowTeamInvitesList
           teamInvitesForUser={teamInvitesForUser}
-          userProfile={userProfile}
+          respondToPendingInvite={respondToPendingInvite}
         />
       </Page>
     );
