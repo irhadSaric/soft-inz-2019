@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Icon, Modal, Avatar } from "antd";
+import { Button, Icon, Modal, Avatar, Menu, Dropdown, message } from "antd";
 import Page, { PageProps } from "../Page";
 import { IHomePresenter } from "../../../presenter/main/HomePresenter";
 import CreateTeamForm from "./CreateTeamForm";
@@ -69,20 +69,13 @@ export default class HomePage extends React.Component<Props, State> {
             validationErrors={createTeamValidationErrors}
           />
         </Modal>
-        {
-          activeTeamList.map(list => {
-            const { id, name, description } = list;
-            return <div>
-              {id}
-              {name}
-              {description}
-            </div>
-          }
-          )
+        <Dropdown overlay={activeTeamList}>
+        <a className="ant-dropdown-link" href="#">
+          Active Team List <Icon type="down" />
+          </a>
+        </Dropdown>
 
-
-        }
-
+         
       </Page>
     );
 

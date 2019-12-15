@@ -53,6 +53,8 @@ import GetUserProfileInteractor from "../interactor/user/GetUserProfileInteracto
 import CreateTeamInteractor from "../interactor/team/CreateTeamInteractor";
 import TeamService from "../service/team/TeamService";
 import InviteUserToTeamInteractor from "../interactor/team/InviteUserToTeamInteractor";
+import GetActiveTeamInteractor from "../interactor/team/GetActiveTeamInteractor"; //-----------
+import Team from "../model/team/Team";
 
 //const DEFAULT_CACHE_TIMEOUT_MS = 15000;
 const ModuleContainer = (application: Application): IModuleContainer => {
@@ -153,7 +155,8 @@ const ModuleContainer = (application: Application): IModuleContainer => {
     updateUserProfile: asInteractor(UpdateUserProfileInteractor),
     getUserProfile: asInteractor(GetUserProfileInteractor),
     createTeam: asInteractor(CreateTeamInteractor),
-    inviteUserToTeam: asInteractor(InviteUserToTeamInteractor)
+    inviteUserToTeam: asInteractor(InviteUserToTeamInteractor),
+    getActiveTeamList: asInteractor(GetActiveTeamInteractor) // ----------
   });
 
   return {

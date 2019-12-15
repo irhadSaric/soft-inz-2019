@@ -7,7 +7,7 @@ import { IUserService } from "../../service/user/UserService";
 import { IUser } from "../../model/user/User";
 import { ICredentialsService } from "../../service/authentication/CredentialsService";
 import { ITeamService } from "../../service/team/TeamService";
-import { ITeam } from "../../model/team/Team";
+import { IActiveTeamList } from "../../model/team/ActiveTeamList";
 
 export default class ShowHomeInteractor {
   private application: Application;
@@ -20,7 +20,7 @@ export default class ShowHomeInteractor {
     application,
     userService,
     credentialsService,
-    teamService
+    teamService //--------
   }: any) {
     this.application = application;
     this.userService = userService;
@@ -53,6 +53,11 @@ export default class ShowHomeInteractor {
     });
 
     this.userService.getUsers().then(this.output && this.output.loadUserList);
+
+    this.teamService
+      .getActiveTeamList(userId)
+      .then(this.output.loadActiveTeamList); //-------
+
     return this.output;
   }
 }

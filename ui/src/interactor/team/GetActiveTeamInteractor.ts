@@ -1,7 +1,8 @@
 import Application from "../../Application";
 import { ITeamService } from "../../service/team/TeamService";
 
-export default class GetActiveTeamsInteractor {
+export default class GetActiveTeamInteractor {
+  //za kasnije ce biti potreban
   private application: Application;
   private teamService: ITeamService;
 
@@ -11,6 +12,6 @@ export default class GetActiveTeamsInteractor {
   }
 
   async execute(userId: number) {
-    return this.teamService.getActiveTeams(userId); //proba
+    return this.teamService.getActiveTeamList(userId);
   }
 }

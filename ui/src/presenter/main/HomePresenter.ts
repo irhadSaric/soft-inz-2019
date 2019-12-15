@@ -4,6 +4,7 @@ import { IUser } from "../../model/user/User";
 import CreateTeamInteractor from "../../interactor/team/CreateTeamInteractor";
 import InviteUserToTeamInteractor from "../../interactor/team/InviteUserToTeamInteractor";
 import { ITeam } from "../../model/team/Team";
+import { IActiveTeamList } from "../../model/team/ActiveTeamList";
 
 export interface TCreateTeamPresentationModel {
   description: string;
@@ -23,7 +24,7 @@ export interface THomePresenter extends TLoadingAwarePresenter {
   selectedUsers: TSelectValuePresentationModel[];
   teamName: string;
   projectDescription: string;
-  activeTeamList: ITeam[];
+  activeTeamList: IActiveTeamList[]; //----------
 }
 
 export interface IHomePresenter extends THomePresenter, TPresentable {
@@ -37,7 +38,7 @@ export interface IHomePresenter extends THomePresenter, TPresentable {
   loadUserProfile(userProfile: IUser): void; // proba
   inviteUserToTeam(invitedUserId: number, teamId: number, userId: number): void;
   loadTeamList(teamList: ITeam[]): void;
-  loadActiveTeamList(teamList: ITeam[]): void;
+  loadActiveTeamList(activeTeamList: IActiveTeamList[]): void; //--------------
 }
 
 export interface TSelectValuePresentationModel {
@@ -55,7 +56,7 @@ const defaultState: THomePresenter = {
   selectedUsers: [],
   teamName: "",
   projectDescription: "",
-  activeTeamList: []
+  activeTeamList: [] //-------------
 };
 
 const HomePresenter = withStore<IHomePresenter, THomePresenter>(
@@ -189,7 +190,8 @@ const HomePresenter = withStore<IHomePresenter, THomePresenter>(
         .resolve<InviteUserToTeamInteractor>("inviteUserToTeam")
         .execute(invitedUserId, teamId, userId);
     };
-    const loadActiveTeamList = (activeTeamList: ITeam[]) => {
+
+    const loadActiveTeamList = (activeTeamList: IActiveTeamList[]) => {
       _store.update({
         activeTeamList
       });
