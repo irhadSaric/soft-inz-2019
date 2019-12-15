@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -140,5 +141,10 @@ public class TicketService {
         return new TicketResponse(ticket.getName(),ticket.getDescription(),
                 ticket.getStartDate(),ticket.getEndDate(),ticket.getAssignee().getId(),ticket.getStatus().getId(),
                 ticket.getIteration().getId(),ticket.getTicketType().getId());
+    }
+
+    @Transactional
+    public List<Ticket> getBacklogTickets(){
+        return ticketRepository.getTicketByTicketType("Backlog");
     }
 }

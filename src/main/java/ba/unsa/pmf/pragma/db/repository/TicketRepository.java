@@ -14,5 +14,8 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
     @Query(value = "select t from Ticket t where t.iteration.id = :iterationId")
     List<Ticket> getTicketsForIteration(Long iterationId);
 
+    @Query(value = "select t from Ticket t where t.ticketType.name = :ticketType")
+    List<Ticket> getTicketByTicketType(String ticketType);
+
 
 }

@@ -1,5 +1,6 @@
 package ba.unsa.pmf.pragma.controller;
 
+import ba.unsa.pmf.pragma.db.entity.Ticket;
 import ba.unsa.pmf.pragma.service.TicketService;
 import ba.unsa.pmf.pragma.service.dtos.CreateTicketRequest;
 import ba.unsa.pmf.pragma.service.dtos.TicketResponse;
@@ -7,6 +8,8 @@ import ba.unsa.pmf.pragma.service.dtos.NameAndDescription;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/ticket")
@@ -43,5 +46,10 @@ public class TicketController {
     @PutMapping("{ticketId}/assign-user/{userId}")
     public void assignUserToTask(@PathVariable Long ticketId, @PathVariable Long userId) throws  NotFoundException {
         ticketService.assignUserToTask(ticketId,userId);
+    }
+
+    @GetMapping("/backlog")
+    public List<Ticket> findBacklogTickets(){
+        return ticketService.getBacklogTickets();
     }
 }
