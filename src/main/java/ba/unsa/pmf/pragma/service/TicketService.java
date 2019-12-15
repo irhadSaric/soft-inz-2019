@@ -39,18 +39,25 @@ public class TicketService {
         ticket.setEndDate(request.getEndDate());
         ticket.setStartDate(new Date());
 
-        Optional<User> assignee = userRepository.findById(request.getAssigneeId());
-        if(assignee.isEmpty()){
-            throw new NotFoundException("User not found");
+        if(request.getStatusId() != null) {
+            Optional<Status> status = statusRepository.findById(request.getStatusId());
+            if (status.isEmpty()) {
+                throw new NotFoundException("Status not found");
+            }
+            ticket.setStatus(status.get());
+            Optional<User> assignee = userRepository.findById(request.getAssigneeId());
+            if(assignee.isEmpty()){
+                throw new NotFoundException("User not found");
+            }
+            ticket.setAssignee(assignee.get());
         }
-        ticket.setAssignee(assignee.get());
-
-        Optional<Status> status = statusRepository.findById(request.getStatusId());
-        if(status.isEmpty())
+        else
         {
-            throw new NotFoundException("Status not found");
+            Status ticketStatus = statusRepository.getStatusByKey("backlog");
+            ticket.setStatus(ticketStatus);
         }
-        ticket.setStatus(status.get());
+
+
 
         Optional<TicketType> ticketType = ticketTypeRepository.findById((request.getTicketTypeId()));
         if(ticketType.isEmpty())
@@ -67,10 +74,13 @@ public class TicketService {
         ticket.setIteration(iteration.get());
 
         ticket = ticketRepository.save(ticket);
-
-       return new TicketResponse(ticket.getName(),ticket.getDescription(),
+        if(request.getStatusId() != null)
+            return new TicketResponse(ticket.getName(),ticket.getDescription(),
                 ticket.getStartDate(),ticket.getEndDate(),ticket.getAssignee().getId(),ticket.getStatus().getId(),
                 ticket.getIteration().getId(),ticket.getTicketType().getId());
+        else
+            return new TicketResponse(ticket.getName(),ticket.getDescription(),
+                    ticket.getStartDate(),ticket.getEndDate(), ticket.getIteration().getId(),ticket.getTicketType().getId());
     }
 
     public void changeTypeOfTicket(Long ticketId, Short ticketTypeId) throws  NotFoundException {

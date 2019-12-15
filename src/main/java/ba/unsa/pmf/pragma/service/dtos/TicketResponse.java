@@ -25,6 +25,14 @@ public class TicketResponse {
         this.iterationId = iterationId;
         this.ticketTypeId = ticketTypeId;
     }
+    public TicketResponse(String name, String description, Date startDate, Date endDate, Long iterationId, Short ticketTypeId) {
+        this.name = name;
+        this.description = description;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.iterationId = iterationId;
+        this.ticketTypeId = ticketTypeId;
+    }
 
     public String getName() {
         return name;

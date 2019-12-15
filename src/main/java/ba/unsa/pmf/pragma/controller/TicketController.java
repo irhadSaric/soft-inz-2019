@@ -15,8 +15,6 @@ public class TicketController {
     @Autowired
     TicketService ticketService;
 
-    //TODO automatski mapperi!?, closingTicket??
-    //da li treba prosiriti TicketResponse sa imenom usera i other details??
     @PostMapping("create")
     public TicketResponse create(@RequestBody CreateTicketRequest request) throws NotFoundException {
         return  ticketService.create(request);
