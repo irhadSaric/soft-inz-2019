@@ -3,9 +3,11 @@ package ba.unsa.pmf.pragma.controller;
 import ba.unsa.pmf.pragma.db.entity.Country;
 import ba.unsa.pmf.pragma.db.entity.Status;
 import ba.unsa.pmf.pragma.db.entity.StatusType;
+import ba.unsa.pmf.pragma.db.entity.TicketType;
 import ba.unsa.pmf.pragma.service.CountryService;
 import ba.unsa.pmf.pragma.service.StatusService;
 import ba.unsa.pmf.pragma.service.StatusTypeService;
+import ba.unsa.pmf.pragma.service.TicketTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +32,9 @@ public class CodebooksController {
     @Autowired
     private StatusTypeService statusTypeService;
 
+    @Autowired
+    private TicketTypeService ticketTypeService;
+
     @GetMapping("/countries/all")
     public List<Country> getAllCountries() {
         return countryService.getAllCountries();
@@ -42,4 +47,7 @@ public class CodebooksController {
 
     @GetMapping("/statusTypes/all")
     public List<StatusType> getAllStatusTypes() { return statusTypeService.getAllStatusTypes(); }
+
+    @GetMapping("/ticket-types/all")
+    public List<TicketType> getAllTicketTypes() {return  ticketTypeService.getAllTicketTypes();}
 }
