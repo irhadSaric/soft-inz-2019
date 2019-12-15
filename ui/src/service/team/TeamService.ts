@@ -1,8 +1,8 @@
 import { IHttpService } from "../HttpService";
 import Team, { ITeam } from "../../model/team/Team";
-import TeamInviteResponse, {
-  ITeamInviteResponse
-} from "../../model/team/TeamInviteResponse";
+import TeamInvite, {
+  ITeamInvite
+} from "../../model/team/TeamInvite";
 
 export interface ITeamService {
   createTeam(
@@ -17,7 +17,7 @@ export interface ITeamService {
   ): Promise<any>;
   getAllTeamsForUser(userId: number): Promise<ITeam[]>;
   getAllTeams(): Promise<ITeam[]>;
-  getTeamInvitesForUser(userId: number): Promise<ITeamInviteResponse[]>;
+  getTeamInvitesForUser(userId: number): Promise<ITeamInvite[]>;
   respondToPendingInvite(
     userId: number,
     teamId: number,
@@ -38,8 +38,8 @@ const TeamService = ({ httpService }): ITeamService => {
     return data.map(item => Team(item));
   };
 
-  const buildTeamInvitesList = (data: any): ITeamInviteResponse[] => {
-    return data.map(item => TeamInviteResponse(item));
+  const buildTeamInvitesList = (data: any): ITeamInvite[] => {
+    return data.map(item => TeamInvite(item));
   };
 
   return {

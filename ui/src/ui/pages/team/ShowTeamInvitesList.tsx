@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ITeamInviteResponse } from "../../../model/team/TeamInviteResponse";
+import { ITeamInvite } from "../../../model/team/TeamInvite";
 import { Input, Divider, Popover, Button } from "antd";
 import { IUser } from "../../../model/user/User";
 
@@ -7,7 +7,7 @@ const ShowTeamInvitesList = ({
   teamInvitesForUser,
   respondToPendingInvite
 }: {
-  teamInvitesForUser: ITeamInviteResponse[];
+  teamInvitesForUser: ITeamInvite[];
   respondToPendingInvite(userId: number, teamId: number, accept: boolean): void;
 }) => {
   const listItems = teamInvitesForUser.map(team => (

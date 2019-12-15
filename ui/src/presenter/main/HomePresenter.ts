@@ -6,9 +6,9 @@ import InviteUserToTeamInteractor from "../../interactor/team/InviteUserToTeamIn
 import RespondToPendingInviteInteractor from "../../interactor/team/RespondToPendingInviteInteractor";
 import { ITeam } from "../../model/team/Team";
 import {
-  TTeamInviteResponse,
-  ITeamInviteResponse
-} from "../../model/team/TeamInviteResponse";
+  TTeamInvite,
+  ITeamInvite
+} from "../../model/team/TeamInvite";
 import GetTeamInvitesForUserInteractor from "../../interactor/team/GetTeamInvitesForUserInteractor";
 import ShowSuccessMessageInteractor from "../../interactor/notifications/ShowSuccessMessageInteractor";
 import ShowErrorMessageInteractor from "../../interactor/notifications/ShowErrorMessageInteractor";
@@ -29,7 +29,7 @@ export interface THomePresenter extends TLoadingAwarePresenter {
   userList: IUser[];
   teamList: ITeam[];
   selectedUsers: TSelectValuePresentationModel[];
-  teamInvitesForUser: ITeamInviteResponse[];
+  teamInvitesForUser: ITeamInvite[];
   teamName: string;
   projectDescription: string;
 }
@@ -45,7 +45,7 @@ export interface IHomePresenter extends THomePresenter, TPresentable {
   loadUserProfile(userProfile: IUser): void; // proba
   inviteUserToTeam(invitedUserId: number, teamId: number, userId: number): void;
   loadTeamList(teamList: ITeam[]): void;
-  loadTeamInvitesForUser(teamInvitesForUser: ITeamInviteResponse[]): void;
+  loadTeamInvitesForUser(teamInvitesForUser: ITeamInvite[]): void;
   respondToPendingInvite(userId: number, teamId: number, accept: boolean): void;
 }
 
@@ -129,7 +129,7 @@ const HomePresenter = withStore<IHomePresenter, THomePresenter>(
     };
 
     const loadTeamInvitesForUser = (
-      teamInvitesForUser: ITeamInviteResponse[]
+      teamInvitesForUser: ITeamInvite[]
     ) => {
       return _store.update({
         teamInvitesForUser
@@ -182,7 +182,7 @@ const HomePresenter = withStore<IHomePresenter, THomePresenter>(
           const response = await _application.container
             .resolve<CreateTeamInteractor>("createTeam")
             .execute(projectDescription, teamName, userProfile.id);
-          loader.stop("registerLoader");
+          loader.stop("createTeamLoader");
           _application.container
             .resolve<ShowSuccessMessageInteractor>("showSuccessMessage")
             .execute("Uspješno ste kreirali tim");

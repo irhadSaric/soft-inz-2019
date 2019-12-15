@@ -7,7 +7,7 @@ import { IUserService } from "../../service/user/UserService";
 import { IUser } from "../../model/user/User";
 import { ICredentialsService } from "../../service/authentication/CredentialsService";
 import { ITeamService } from "../../service/team/TeamService";
-import { ITeamInviteResponse } from "../../model/team/TeamInviteResponse";
+import { ITeamInvite } from "../../model/team/TeamInvite";
 
 export default class ShowHomeInteractor {
   private application: Application;
@@ -50,7 +50,7 @@ export default class ShowHomeInteractor {
         this.userService.getUserByEmail(email).then((user: IUser) => {
           this.teamService
             .getTeamInvitesForUser(user.id)
-            .then((teamInvitesForUser: ITeamInviteResponse[]) => {
+            .then((teamInvitesForUser: ITeamInvite[]) => {
               this.output &&
                 this.output.loadTeamInvitesForUser(teamInvitesForUser);
             });
