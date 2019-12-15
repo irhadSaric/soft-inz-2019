@@ -4,7 +4,7 @@ import ba.unsa.pmf.pragma.db.entity.Status;
 
 import java.util.Date;
 
-public class CreateIterationResponse {
+public class IterationResponse {
     private String description;
     private Date startDate;
     private Date endDate;
@@ -12,10 +12,10 @@ public class CreateIterationResponse {
     private Long projectId;
     private Status status;
 
-    public CreateIterationResponse() {
+    public IterationResponse() {
     }
 
-    public CreateIterationResponse(String description, Date startDate, Date endDate, String name, Long projectId, Status status) {
+    public IterationResponse(String description, Date startDate, Date endDate, String name, Long projectId, Status status) {
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
