@@ -1,4 +1,3 @@
-import { number } from "prop-types";
 import Model from "../Model";
 import ValidatableObject from "../validation/ValidatableObject";
 import { IStatusType } from "./StatusType";

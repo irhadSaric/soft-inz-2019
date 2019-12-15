@@ -197,7 +197,7 @@ const HomePresenter = withStore<IHomePresenter, THomePresenter>(
             isCreateTeamModalVisible: false
           });
         } catch (error) {
-          loader.stop("registerLoader");
+          loader.stop("createTeamLoader");
           _application.container
             .resolve<ShowErrorMessageInteractor>("showErrorMessage")
             .execute(error.message);

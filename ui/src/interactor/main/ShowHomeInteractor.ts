@@ -7,8 +7,6 @@ import { IUserService } from "../../service/user/UserService";
 import { IUser } from "../../model/user/User";
 import { ICredentialsService } from "../../service/authentication/CredentialsService";
 import { ITeamService } from "../../service/team/TeamService";
-import { ITeam } from "../../model/team/Team";
-import { isUserWhitespacable } from "@babel/types";
 import { ITeamInviteResponse } from "../../model/team/TeamInviteResponse";
 
 export default class ShowHomeInteractor {
@@ -53,12 +51,10 @@ export default class ShowHomeInteractor {
           this.teamService
             .getTeamInvitesForUser(user.id)
             .then((teamInvitesForUser: ITeamInviteResponse[]) => {
-              console.log("g");
               this.output &&
                 this.output.loadTeamInvitesForUser(teamInvitesForUser);
             });
           this.output && this.output.loadUserProfile(user);
-          console.log("h");
         });
       }
     });
