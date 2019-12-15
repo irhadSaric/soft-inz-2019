@@ -1,5 +1,7 @@
 package ba.unsa.pmf.pragma.service.dtos;
 
+import ba.unsa.pmf.pragma.db.entity.Status;
+
 import java.util.Date;
 
 public class CreateProjectRequest {
@@ -7,15 +9,17 @@ public class CreateProjectRequest {
     private Date endDate;
     private String name;
     private Long teamId;
+    private Status status;
 
     public CreateProjectRequest() {
     }
 
-    public CreateProjectRequest(String description, Date endDate, String name, Long teamId) {
+    public CreateProjectRequest(String description, Date endDate, String name, Long teamId, Status status) {
         this.description = description;
         this.endDate = endDate;
         this.name = name;
         this.teamId = teamId;
+        this.status = status;
     }
 
     public String getDescription() {
@@ -48,5 +52,13 @@ public class CreateProjectRequest {
 
     public void setTeamId(Long teamId) {
         this.teamId = teamId;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

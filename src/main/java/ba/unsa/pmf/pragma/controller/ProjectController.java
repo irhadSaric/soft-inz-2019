@@ -1,5 +1,6 @@
 package ba.unsa.pmf.pragma.controller;
 
+import ba.unsa.pmf.pragma.db.entity.Iteration;
 import ba.unsa.pmf.pragma.db.entity.Project;
 import ba.unsa.pmf.pragma.service.ProjectService;
 import ba.unsa.pmf.pragma.service.dtos.CreateProjectRequest;
@@ -28,9 +29,19 @@ public class ProjectController {
         return projectService.getProject(id);
     }
 
+    @PutMapping("/{id}")
+    public Project editProject(@PathVariable("id") Long id, @RequestBody CreateProjectRequest request) throws NotFoundException {
+        return projectService.editProject(id, request);
+    }
+
     @PostMapping("/create")
     public CreateProjectResponse createProject(@RequestBody CreateProjectRequest createProjectRequest) throws NotFoundException {
         return projectService.createProject(createProjectRequest);
+    }
+
+    @GetMapping("/iterations/{id}")
+    public List<Iteration> getIterationsForProject(@PathVariable("id") Long id){
+        return projectService.getAllIterationsForProject(id);
     }
 
 
