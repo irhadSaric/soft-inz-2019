@@ -1,5 +1,8 @@
 import { IHttpService } from "../HttpService";
 import Team, { ITeam } from "../../model/team/Team";
+import TeamInvite, {
+  ITeamInvite
+} from "../../model/team/TeamInvite";
 
 export interface ITeamService {
   createTeam(
@@ -14,6 +17,12 @@ export interface ITeamService {
   ): Promise<any>;
   getAllTeamsForUser(userId: number): Promise<ITeam[]>;
   getAllTeams(): Promise<ITeam[]>;
+  getTeamInvitesForUser(userId: number): Promise<ITeamInvite[]>;
+  respondToPendingInvite(
+    userId: number,
+    teamId: number,
+    accept: boolean
+  ): Promise<any>;
 }
 
 const TeamService = ({ httpService }): ITeamService => {
@@ -22,9 +31,15 @@ const TeamService = ({ httpService }): ITeamService => {
   const _createTeam: string = "/create-team";
   const _invite: string = "/invite";
   const _all: string = "/all";
+  const _pending: string = "/pending";
+  const _respond: string = "/respond";
 
   const buildTeamList = (data: any): ITeam[] => {
     return data.map(item => Team(item));
+  };
+
+  const buildTeamInvitesList = (data: any): ITeamInvite[] => {
+    return data.map(item => TeamInvite(item));
   };
 
   return {
@@ -52,7 +67,7 @@ const TeamService = ({ httpService }): ITeamService => {
           userId
         }
       });
-      return _http.toText(response); // test
+      return _http.toText(response);
     },
     async getAllTeamsForUser(userId: number) {
       const path = _http.buildPath(_basePath, _all, userId.toString());
@@ -65,6 +80,30 @@ const TeamService = ({ httpService }): ITeamService => {
       const response = await _http.get(path);
       const responseJSON = await _http.toJSON(response);
       return buildTeamList(responseJSON);
+    },
+    async getTeamInvitesForUser(userId: number) {
+      const path = _http.buildPath(_basePath, _pending, userId.toString());
+      const response = await _http.get(path);
+      const responseJSON = await _http.toJSON(response);
+      return buildTeamInvitesList(responseJSON);
+    },
+    async respondToPendingInvite(
+      userId: number,
+      teamId: number,
+      accept: boolean
+    ) {
+      let query: string = "?accept=";
+      accept ? (query += "true") : (query += "false");
+      const path = _http.buildPath(
+        _basePath,
+        _pending,
+        userId.toString(),
+        _respond,
+        teamId.toString(),
+        query
+      );
+      const response = await _http.post(path);
+      return _http.toText(response);
     }
   };
 };
