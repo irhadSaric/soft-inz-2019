@@ -48,8 +48,8 @@ public class TicketController {
         ticketService.assignUserToTask(ticketId,userId);
     }
 
-    @GetMapping("/backlog")
-    public List<Ticket> findBacklogTickets(){
-        return ticketService.getBacklogTickets();
+    @GetMapping("{iterationId}/{ticketType}")
+    public List<Ticket> findTicketsByType(@PathVariable Long iterationId, @PathVariable String ticketType){
+        return ticketService.findTicketsByType(iterationId, ticketType);
     }
 }

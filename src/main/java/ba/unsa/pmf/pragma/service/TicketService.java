@@ -144,7 +144,7 @@ public class TicketService {
     }
 
     @Transactional
-    public List<Ticket> getBacklogTickets(){
-        return ticketRepository.getTicketByTicketType("Backlog");
+    public List<Ticket> findTicketsByType(Long iterationId, String ticketType){
+        return ticketRepository.getTicketByTicketType(iterationId, ticketType);
     }
 }
