@@ -26,15 +26,11 @@ export default class TeamPage extends React.Component<Props, State> {
 
   render() {
     const {
-      userProfile,
-      countries,
-      translate,
+      teamDetails,
       isEditableForm,
       onEditBtnClick,
       onCancelBtnClick,
       editButtonDisabled,
-      onChangeUserData,
-      updateUserProfile,
       editValidationErrors,
       projectDescription,
       onChangeProjectDescription
@@ -45,16 +41,11 @@ export default class TeamPage extends React.Component<Props, State> {
         style={{ justifyContent: "center", display: "flex" }}
       >
         <TeamForm
-          userProfile={userProfile}
-          countries={countries}
-          translate={translate}
+          teamDetails={teamDetails}
           isEditable={isEditableForm}
           onEditBtnClick={onEditBtnClick}
           onCancelBtnClick={onCancelBtnClick}
           editButtonDisabled={editButtonDisabled}
-          onChangeUserData={onChangeUserData}
-          isLoading={this.state.loaders.editUserLoader}
-          updateUserProfile={updateUserProfile}
           validationErrors={editValidationErrors}
           projectDescription={projectDescription}
           onChangeProjectDescription={onChangeProjectDescription}

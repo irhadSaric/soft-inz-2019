@@ -1,34 +1,23 @@
 import * as React from "react";
-import { ICountry } from "../../../model/country/Country";
-import { Avatar, Button, Divider, Input, Select, Form } from "antd";
-import { IUser } from "../../../model/user/User";
+import { Avatar, Button, Divider, Input, Form } from "antd";
 import Text from "antd/lib/typography/Text";
+import { ITeamDetails } from "../../../model/team/TeamDetails";
 
 const TeamForm = ({
-  translate,
-  userProfile,
-  countries,
+  teamDetails,
   isEditable,
   onEditBtnClick,
   onCancelBtnClick,
   editButtonDisabled,
-  onChangeUserData,
-  isLoading,
-  updateUserProfile,
   validationErrors,
   projectDescription,
   onChangeProjectDescription,
 }: {
-  translate: any;
-  userProfile: IUser;
-  countries: ICountry[];
+  teamDetails: ITeamDetails;
   isEditable: boolean;
   onEditBtnClick: any;
   onCancelBtnClick: any;
   editButtonDisabled: boolean;
-  onChangeUserData(key: string, value: any): void;
-  isLoading: boolean;
-  updateUserProfile: any;
   validationErrors: any;
   projectDescription: string;
   onChangeProjectDescription(value: string): void;
@@ -65,8 +54,8 @@ const TeamForm = ({
               <Input
                 addonBefore={<Text>Team Name</Text>}
                 placeholder={"Team Name"}
-                value={userProfile.firstName}
-                onChange={e => onChangeUserData("firstName", e.target.value)}
+                value={teamDetails.name}
+                //onChange={e => onChangeUserData("firstName", e.target.value)}
                 allowClear={true}
                 style={{ marginTop: 20, width: 400 }}
                 readOnly={!isEditable}
@@ -93,91 +82,6 @@ const TeamForm = ({
             />
             </div>
           </Form.Item>
-
-          <Form.Item
-            validateStatus={
-              checkValidationErrors("email") ? "error" : undefined
-            }
-          >
-            <div className={"form-item"}>
-              <Input
-                addonBefore={<Text>Email</Text>}
-                placeholder={"Email"}
-                value={userProfile.email}
-                onChange={e => onChangeUserData("email", e.target.value)}
-                allowClear={true}
-                style={{ marginTop: 20, width: 400 }}
-                readOnly={!isEditable}
-              />
-              {checkValidationErrors("email") && (
-                <Text className={"error-text"}>
-                  {validationErrors["email"][0]}
-                </Text>
-              )}
-            </div>
-          </Form.Item>
-
-          <Form.Item
-            validateStatus={
-              checkValidationErrors("phone") ? "error" : undefined
-            }
-          >
-            <div className={"form-item"}>
-              <Input
-                addonBefore={<Text>Phone</Text>}
-                placeholder={"Phone"}
-                value={userProfile.phone}
-                onChange={e => onChangeUserData("phone", e.target.value)}
-                allowClear={true}
-                style={{ marginTop: 20, width: 400 }}
-                readOnly={!isEditable}
-              />
-              {checkValidationErrors("phone") && (
-                <Text className={"error-text"}>
-                  {validationErrors["phone"][0]}
-                </Text>
-              )}
-            </div>
-          </Form.Item>
-
-          {!isEditable ? (
-            <Input
-              addonBefore={<Text>Country</Text>}
-              placeholder={"Country"}
-              value={userProfile.country && userProfile.country.name}
-              allowClear={true}
-              style={{ marginTop: 20, width: 400 }}
-              readOnly={!isEditable}
-            />
-          ) : (
-            <Form.Item
-              validateStatus={
-                checkValidationErrors("country") ? "error" : undefined
-              }
-            >
-              <div className={"form-item"}>
-                <Select
-                  placeholder={"Select Country"}
-                  allowClear
-                  showSearch={true}
-                  style={{ marginTop: 20, width: 400 }}
-                  onChange={e => onChangeUserData("country", e)}
-                  value={userProfile.country && userProfile.country.name}
-                >
-                  {countries.map(item => (
-                    <Select.Option key={item.id} value={item.name}>
-                      {item.name}
-                    </Select.Option>
-                  ))}
-                </Select>
-                {checkValidationErrors("country") && (
-                  <Text className={"error-text"}>
-                    {validationErrors["country"][0]}
-                  </Text>
-                )}
-              </div>
-            </Form.Item>
-          )}
         </Form>
 
         {isEditable && (
@@ -194,9 +98,7 @@ const TeamForm = ({
             </Button>
             <Button
               type={"primary"}
-              loading={isLoading}
               disabled={editButtonDisabled}
-              onClick={updateUserProfile}
             >
               Save
             </Button>

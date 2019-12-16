@@ -3,51 +3,33 @@ import { IUserService } from "../../service/user/UserService";
 import TeamPresenter, {
   ITeamPresenter
 } from "../../presenter/team/TeamPresenter";
-import { IUser } from "../../model/user/User";
-import { ICredentialsService } from "../../service/authentication/CredentialsService";
-import { ICodebookService } from "../../service/codebook/CodebookService";
+import { ITeamDetails } from "../../model/team/TeamDetails";
+import { ITeamService } from "../../service/team/TeamService";
 
 export default class ShowTeamInteractor {
   private application: Application;
   private output?: ITeamPresenter;
-  private userService: IUserService;
-  private credentialsService: ICredentialsService;
-  private codebookService: ICodebookService;
+  private teamService: ITeamService;
 
-  constructor({
-    application,
-    userService,
-    credentialsService,
-    codebookService
-  }: any) {
+  constructor({ application, teamService }: any) {
     this.application = application;
-    this.userService = userService;
-    this.credentialsService = credentialsService;
-    this.codebookService = codebookService;
+    this.teamService = teamService;
   }
 
   execute() {
     this.output = TeamPresenter({
       application: this.application,
       initialState: {
-        userProfile: {} as IUser,
-        countries: [],
+        teamDetails: {} as ITeamDetails,
         isEditableForm: false,
         editButtonDisabled: false,
         projectDescription: ""
       }
     });
 
-    this.credentialsService.getEmailFromStorage().then(email => {
-      email &&
-        this.userService
-          .getUserByEmail(email)
-          .then(this.output && this.output.loadUserProfile);
-    });
-
-    this.codebookService
-      .getCountries()
-      .then(this.output && this.output.loadCountries);
+    this.teamService
+      .getTeamDetails(4)
+      .then(this.output && this.output.loadTeamDetails);
 
     return this.output;
   }
