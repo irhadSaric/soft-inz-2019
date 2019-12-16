@@ -103,4 +103,9 @@ public class TeamController {
     public void deleteTeam(@PathVariable Long teamId) throws NotFoundException {
         teamService.deleteTeam(teamId);
     }
+
+    @DeleteMapping("/leave/{teamId}/{userId}")
+    public void leaveTeam(@PathVariable Long teamId, @PathVariable Long userId) throws NotFoundException {
+        teamService.leaveTeam(teamId, userId);
+    }
 }
