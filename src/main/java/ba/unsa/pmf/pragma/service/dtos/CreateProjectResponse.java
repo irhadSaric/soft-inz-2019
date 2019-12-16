@@ -1,37 +1,27 @@
-package ba.unsa.pmf.pragma.db.entity;
+package ba.unsa.pmf.pragma.service.dtos;
 
-import javax.persistence.*;
+import ba.unsa.pmf.pragma.db.entity.Status;
+
 import java.util.Date;
 
-@Entity
-@Table(name = "projects")
-public class Project extends BaseEntity {
-    @Column(name = "name", nullable = false)
+public class CreateProjectResponse {
     private String name;
-
-    @ManyToOne
-    @JoinColumn(name = "status_id", nullable = false)
     private Status statusId;
-
-    @Column(name = "start_date", nullable = false)
     private Date startDate;
-
-    @Column(name = "end_date", nullable = false)
     private Date endDate;
-
-    @Column(name = "description")
     private String description;
+    private Long teamId;
 
-    @ManyToOne
-    @JoinColumn(name = "team_id", nullable = false)
-    private Team team;
-
-    public Team getTeam() {
-        return team;
+    public CreateProjectResponse() {
     }
 
-    public void setTeam(Team team) {
-        this.team = team;
+    public CreateProjectResponse(String name, Status statusId, Date startDate, Date endDate, String description, Long teamId) {
+        this.name = name;
+        this.statusId = statusId;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.description = description;
+        this.teamId = teamId;
     }
 
     public String getName() {
@@ -72,5 +62,13 @@ public class Project extends BaseEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Long getTeamId() {
+        return teamId;
+    }
+
+    public void setTeamId(Long teamId) {
+        this.teamId = teamId;
     }
 }

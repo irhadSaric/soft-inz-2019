@@ -52,6 +52,11 @@ import UpdateUserProfileInteractor from "../interactor/user/UpdateUserProfileInt
 import GetUserProfileInteractor from "../interactor/user/GetUserProfileInteractor";
 import TeamArea from "../areas/TeamArea";
 import ShowTeamInteractor from "../interactor/team/ShowTeamInteractor";
+import CreateTeamInteractor from "../interactor/team/CreateTeamInteractor";
+import TeamService from "../service/team/TeamService";
+import InviteUserToTeamInteractor from "../interactor/team/InviteUserToTeamInteractor";
+import RespondToPendingInviteInteractor from "../interactor/team/RespondToPendingInviteInteractor";
+import GetTeamInvitesForUserInteractor from "../interactor/team/GetTeamInvitesForUserInteractor";
 
 //const DEFAULT_CACHE_TIMEOUT_MS = 15000;
 const ModuleContainer = (application: Application): IModuleContainer => {
@@ -122,7 +127,8 @@ const ModuleContainer = (application: Application): IModuleContainer => {
     userService: asFunction(UserService),
     authenticationService: asFunction(AuthenticationService),
     credentialsService: asFunction(CredentialsService),
-    codebookService: asFunction(CodebookService)
+    codebookService: asFunction(CodebookService),
+    teamService: asFunction(TeamService)
   });
 
   //areas
@@ -151,7 +157,14 @@ const ModuleContainer = (application: Application): IModuleContainer => {
     showUserProfile: asInteractor(ShowUserProfileInteractor),
     updateUserProfile: asInteractor(UpdateUserProfileInteractor),
     getUserProfile: asInteractor(GetUserProfileInteractor),
+<<<<<<< HEAD
     showTeam: asInteractor(ShowTeamInteractor)
+=======
+    createTeam: asInteractor(CreateTeamInteractor),
+    inviteUserToTeam: asInteractor(InviteUserToTeamInteractor),
+    respondToPendingInvite: asInteractor(RespondToPendingInviteInteractor),
+    getTeamInvitesForUser: asInteractor(GetTeamInvitesForUserInteractor)
+>>>>>>> af26e95316db8b830b216298177f480408127768
   });
 
   return {
