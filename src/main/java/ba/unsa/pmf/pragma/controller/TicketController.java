@@ -48,6 +48,11 @@ public class TicketController {
         ticketService.assignUserToTask(ticketId,userId);
     }
 
+    @PutMapping("{ticketId}/assign-iteration/{iterationId}")
+    public  void assignIterationToTicket(@PathVariable Long ticketId, @PathVariable Long iterationId) throws  NotFoundException{
+        ticketService.assignIterationToTicket(ticketId,iterationId);
+    }
+
     @GetMapping("{iterationId}/{ticketType}")
     public List<Ticket> findTicketsByType(@PathVariable Long iterationId, @PathVariable String ticketType){
         return ticketService.findTicketsByType(iterationId, ticketType);
