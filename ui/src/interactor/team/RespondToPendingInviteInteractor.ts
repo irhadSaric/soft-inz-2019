@@ -1,15 +1,15 @@
 import { ITeamService } from "../../service/team/TeamService";
 
-export default class InviteUserToTeamInteractor {
+export default class RespondToPendingInviteInteractor {
   private teamService: ITeamService;
 
   constructor({ teamService }) {
     this.teamService = teamService;
   }
 
-  async execute(invitedUserId: number, teamId: number, userId: number) {
+  async execute(userId: number, teamId: number, accept: boolean) {
     try {
-      await this.teamService.inviteUserToTeam(invitedUserId, teamId, userId);
+      await this.teamService.respondToPendingInvite(userId, teamId, accept);
     } catch (error) {
       console.log(error);
       return error;
