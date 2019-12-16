@@ -52,7 +52,7 @@ public class IterationService {
         iteration.setStatus(status);
 
         iteration = iterationRepository.save(iteration);
-        return entitiyToDto(iteration);
+        return entityToDto(iteration);
     }
 
     public IterationResponse getIteration(Long id) throws NotFoundException {
@@ -61,22 +61,23 @@ public class IterationService {
             throw new NotFoundException("Iteration not found");
         }
 
-        return entitiyToDto(iteration.get());
+        return entityToDto(iteration.get());
     }
-
+    @Transactional(readOnly = true)
     public List<IterationResponse> findAll() {
 
         List<Iteration> iterations =  iterationRepository.findAll();
         List<IterationResponse> response = new ArrayList<>();
-        iterations.forEach(iteration -> response.add(entitiyToDto(iteration)));
+        iterations.forEach(iteration -> response.add(entityToDto(iteration)));
         return  response;
     }
 
+    @Transactional(readOnly = true)
     public List<TicketResponse> getAllIterationTickets(Long iterationId) {
         List<Ticket> tickets =  ticketRepository.getTicketsForIteration(iterationId);
         List<TicketResponse> response = new ArrayList<>();
         tickets.forEach(ticket -> response.add(new TicketResponse(ticket.getName(),ticket.getDescription(),
-                ticket.getStartDate(),ticket.getEndDate(),ticket.getAssignee().getId(),ticket.getStatus().getId(),
+                ticket.getStartDate(),ticket.getEndDate(),ticket.getAssignee().getId(),ticket.getStatus(),
                 ticket.getIteration().getId(),ticket.getTicketType().getId())));
         return response;
     }
@@ -91,18 +92,12 @@ public class IterationService {
 
         Status status = statusRepository.getStatusByKey("closed-iteration");
         iteration.get().setStatus(status);
-
-        List<Ticket> tickets = ticketRepository.getTicketsForIteration(iterationId);
-
-        tickets.forEach(ticket -> {if(!ticket.getStatus().getKey().equals("done")){
-            Status ticketStatus = statusRepository.getStatusByKey("backlog");
-            ticket.setStatus(ticketStatus);
-            ticketRepository.save(ticket);
-        }});
+        Status ticketStatus = statusRepository.getStatusByKey("backlog");
+        ticketRepository.setTicketsToBacklog(ticketStatus.getId(),iterationId);
 
     }
 
-    IterationResponse entitiyToDto(Iteration iteration)
+    private IterationResponse entityToDto(Iteration iteration)
     {
         IterationResponse iterationResponse = new IterationResponse();
         iterationResponse.setDescription(iteration.getDescription());

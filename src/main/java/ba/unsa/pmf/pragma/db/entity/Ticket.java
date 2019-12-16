@@ -27,11 +27,11 @@ public class Ticket extends BaseEntity{
     private Status status;
 
     @ManyToOne
-    @JoinColumn(name = "iteration_id", nullable = false)
+    @JoinColumn(name = "iteration_id")
     private Iteration iteration;
 
     @ManyToOne
-    @JoinColumn(name = "ticket_type_id", nullable = false)
+    @JoinColumn(name = "ticket_type_id")
     private TicketType ticketType;
 
     public String getName() {
