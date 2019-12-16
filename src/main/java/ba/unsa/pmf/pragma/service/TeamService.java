@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -132,5 +133,19 @@ public class TeamService {
         team.setDescription(teamDetails.getDescription());
         team.setName(teamDetails.getName());
         teamRepository.save(team);
+    }
+
+    @Transactional
+    public void deleteTeam(Long id) throws NotFoundException {
+        Optional<Team> data = teamRepository.findById(id);
+        if (data.isEmpty()){
+            throw new NotFoundException("Team not found");
+        }
+        Team team = data.get();
+        List<UserTeam> userTeams = userTeamRepository.getByTeamId(team.getId());
+        for (UserTeam userTeam : userTeams){
+            userTeamRepository.delete(userTeam);
+        }
+        teamRepository.delete(team);
     }
 }
