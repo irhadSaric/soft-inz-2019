@@ -146,7 +146,7 @@ public class TeamService {
 
     @Transactional
     public void deleteTeam(Long id) throws NotFoundException {
-        //TODO Treba provjeriti da li je user leader, kako ?
+        // Treba provjeriti da li je user leader, kako ?
         Optional<Team> data = teamRepository.findById(id);
         if (data.isEmpty()){
             throw new NotFoundException("Team not found");
@@ -174,7 +174,7 @@ public class TeamService {
 
     @Transactional
     public void leaveTeam(Long teamId, Long userId) throws NotFoundException {
-        //TODO provjeriti slucaj kada u timu postoji samo 1 clan i slucaj kada lider izlazi iz tima
+        // provjeriti slucaj kada u timu postoji samo 1 clan i slucaj kada lider izlazi iz tima
 
         Optional<Team> data = teamRepository.findById(teamId);
         if (data.isEmpty()){
