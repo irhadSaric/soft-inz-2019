@@ -39,6 +39,15 @@ public class TeamService {
     @Autowired
     private UserTeamService userTeamService;
 
+    @Autowired
+    private ProjectRepository projectRepository;
+
+    @Autowired
+    private IterationRepository iterationRepository;
+
+    @Autowired
+    private TicketRepository ticketRepository;
+
     @Transactional
     public List<Team> getAll(){
         return teamRepository.findAll();
@@ -137,7 +146,7 @@ public class TeamService {
 
     @Transactional
     public void deleteTeam(Long id) throws NotFoundException {
-        //TODO Treba provjeriti da li je user leader
+        //TODO Treba provjeriti da li je user leader, kako ?
         Optional<Team> data = teamRepository.findById(id);
         if (data.isEmpty()){
             throw new NotFoundException("Team not found");
@@ -146,6 +155,19 @@ public class TeamService {
         List<UserTeam> userTeams = userTeamRepository.getByTeamId(team.getId());
         for (UserTeam userTeam : userTeams){
             userTeamRepository.delete(userTeam);
+        }
+
+        List<Project> teamProjects = projectRepository.getAllByTeamId(team.getId());
+        for(Project project : teamProjects){
+            List<Iteration> projectIterations = iterationRepository.getAllByProjectId(project.getId());
+            for(Iteration iteration : projectIterations){
+                List<Ticket> iterationTickets = ticketRepository.getTicketsForIteration(iteration.getId());
+                for(Ticket ticket : iterationTickets){
+                    ticketRepository.delete(ticket);
+                }
+                iterationRepository.delete(iteration);
+            }
+            projectRepository.delete(project);
         }
         teamRepository.delete(team);
     }
