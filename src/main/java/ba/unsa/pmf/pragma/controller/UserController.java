@@ -75,4 +75,9 @@ public class UserController extends BaseController {
     throws NotFoundException {
         return userService.getAvatar(id);
     }
+
+    @GetMapping("/api/get-users-for-invitation/{userId}")
+    public List<User> getUsersForInvitation(@PathVariable Long userId) {
+        return userService.findUsersForInvitation(userId);
+    }
 }

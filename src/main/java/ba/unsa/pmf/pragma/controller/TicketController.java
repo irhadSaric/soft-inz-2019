@@ -44,4 +44,9 @@ public class TicketController {
     public void assignUserToTask(@PathVariable Long ticketId, @PathVariable Long userId) throws  NotFoundException {
         ticketService.assignUserToTask(ticketId,userId);
     }
+
+    @PutMapping("{ticketId}/assign-iteration/{iterationId}")
+    public  void assignIterationToTicket(@PathVariable Long ticketId, @PathVariable Long iterationId) throws  NotFoundException{
+        ticketService.assignIterationToTicket(ticketId,iterationId);
+    }
 }

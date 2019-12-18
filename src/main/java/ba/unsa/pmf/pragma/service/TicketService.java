@@ -39,48 +39,13 @@ public class TicketService {
         ticket.setEndDate(request.getEndDate());
         ticket.setStartDate(new Date());
 
-        if(request.getStatusId() != null) {
-            Optional<Status> status = statusRepository.findById(request.getStatusId());
-            if (status.isEmpty()) {
-                throw new NotFoundException("Status not found");
-            }
-            ticket.setStatus(status.get());
-            Optional<User> assignee = userRepository.findById(request.getAssigneeId());
-            if(assignee.isEmpty()){
-                throw new NotFoundException("User not found");
-            }
-            ticket.setAssignee(assignee.get());
-        }
-        else
-        {
-            Status ticketStatus = statusRepository.getStatusByKey("backlog");
-            ticket.setStatus(ticketStatus);
-        }
-
-
-
-        Optional<TicketType> ticketType = ticketTypeRepository.findById((request.getTicketTypeId()));
-        if(ticketType.isEmpty())
-        {
-            throw new NotFoundException("Ticket type not found");
-        }
-        ticket.setTicketType(ticketType.get());
-
-        Optional<Iteration> iteration = iterationRepository.findById(request.getIterationId());
-        if(iteration.isEmpty())
-        {
-            throw new NotFoundException("Iteration not found");
-        }
-        ticket.setIteration(iteration.get());
+        Status ticketStatus = statusRepository.getStatusByKey("backlog");
+        ticket.setStatus(ticketStatus);
 
         ticket = ticketRepository.save(ticket);
-        if(request.getStatusId() != null)
-            return new TicketResponse(ticket.getName(),ticket.getDescription(),
-                ticket.getStartDate(),ticket.getEndDate(),ticket.getAssignee().getId(),ticket.getStatus().getId(),
-                ticket.getIteration().getId(),ticket.getTicketType().getId());
-        else
-            return new TicketResponse(ticket.getName(),ticket.getDescription(),
-                    ticket.getStartDate(),ticket.getEndDate(), ticket.getIteration().getId(),ticket.getTicketType().getId());
+
+        return new TicketResponse(ticket.getName(),ticket.getDescription(), ticket.getStartDate(),
+                ticket.getEndDate(),ticket.getStatus());
     }
 
     public void changeTypeOfTicket(Long ticketId, Short ticketTypeId) throws  NotFoundException {
@@ -137,8 +102,31 @@ public class TicketService {
     public TicketResponse getTicket(Long ticketId) throws  NotFoundException {
         Ticket ticket = getTicketById(ticketId);
 
-        return new TicketResponse(ticket.getName(),ticket.getDescription(),
-                ticket.getStartDate(),ticket.getEndDate(),ticket.getAssignee().getId(),ticket.getStatus().getId(),
-                ticket.getIteration().getId(),ticket.getTicketType().getId());
+        TicketResponse response = new TicketResponse(ticket.getName(),ticket.getDescription(), ticket.getStartDate(),
+                ticket.getEndDate(),ticket.getStatus());
+
+        if(ticket.getTicketType()!= null)
+           response.setTicketTypeId(ticket.getTicketType().getId());
+        if(ticket.getIteration() != null)
+            response.setIterationId(ticket.getIteration().getId());
+        if(ticket.getAssignee() != null)
+            response.setAssigneeId(ticket.getAssignee().getId());
+        return response;
+    }
+
+    public void assignIterationToTicket(Long ticketId, Long iterationId) throws NotFoundException {
+        Optional<Iteration> iteration = iterationRepository.findById(iterationId);
+        if(iteration.isEmpty())
+        {
+            throw new NotFoundException("Iteration not found");
+        }
+        Optional<Ticket> ticketOpt = ticketRepository.findById(ticketId);
+        if(ticketOpt.isEmpty())
+        {
+            throw new NotFoundException("Ticket not found");
+        }
+        Ticket ticket = ticketOpt.get();
+        ticket.setIteration(iteration.get());
+        ticketRepository.save(ticket);
     }
 }
