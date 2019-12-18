@@ -188,6 +188,16 @@ public class TeamService {
         if(userTeam == null){
             throw new NotFoundException("User is not team member");
         }
+
+        List<UserTeam> listUserTeam = userTeamRepository.getByTeamId(userTeam.getTeam().getId());
+        if(listUserTeam.size() == 1){
+            this.deleteTeam(userTeam.getTeam().getId());
+            return;
+        }
+
+        if(userTeam.getRole().getKey() == "lead"){
+            // Sta kada lider izlazi iz tima a ima u timu vise ljudi ?
+        }
         userTeamRepository.delete(userTeam);
     }
 }
