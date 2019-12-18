@@ -42,6 +42,7 @@ public class IterationService {
         iteration.setStartDate(new Date(System.currentTimeMillis()));
         iteration.setName(createIterationRequest.getName());
 
+
         Optional<Project> project = projectRepository.findById(createIterationRequest.getProjectId());
         if(project.isEmpty()){
             throw new NotFoundException("Project not found");
@@ -84,14 +85,16 @@ public class IterationService {
 
     @Transactional
     public void finishIteration(Long iterationId) throws NotFoundException {
-        Optional<Iteration> iteration = iterationRepository.findById(iterationId);
+        Optional<Iteration> iterationOpt = iterationRepository.findById(iterationId);
 
-        if(iteration.isEmpty()){
+        if(iterationOpt.isEmpty()){
             throw new NotFoundException("Iteration not found");
         }
 
         Status status = statusRepository.getStatusByKey("closed-iteration");
-        iteration.get().setStatus(status);
+        Iteration iteration = iterationOpt.get();
+        iteration.setStatus(status);
+        iterationRepository.save(iteration);
         Status ticketStatus = statusRepository.getStatusByKey("backlog");
         ticketRepository.setTicketsToBacklog(ticketStatus.getId(),iterationId);
 
