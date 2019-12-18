@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -128,5 +130,15 @@ public class TicketService {
         Ticket ticket = ticketOpt.get();
         ticket.setIteration(iteration.get());
         ticketRepository.save(ticket);
+    }
+
+    @Transactional
+    public List<TicketResponse> findTicketsByType(Long iterationId, String ticketType){
+        List<Ticket> tickets = ticketRepository.getTicketByTicketType(iterationId, ticketType);
+        List<TicketResponse> response = new ArrayList<>();
+        tickets.forEach(ticket -> response.add(new TicketResponse(ticket.getName(),ticket.getDescription(),
+                ticket.getStartDate(),ticket.getEndDate(),ticket.getAssignee().getId(),ticket.getStatus(),
+                ticket.getIteration().getId(),ticket.getTicketType().getId())));
+        return response;
     }
 }

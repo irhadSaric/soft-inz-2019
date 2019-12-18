@@ -15,6 +15,9 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
     @Query(value = "select t from Ticket t where t.iteration.id = :iterationId")
     List<Ticket> getTicketsForIteration(Long iterationId);
 
+    @Query(value = "select t from Ticket t where t.ticketType.name = :ticketType and t.iteration.id = :iterationId")
+    List<Ticket> getTicketByTicketType(Long iterationId, String ticketType);
+
     @Modifying
     @Query(value = "update Ticket t set t.status.id = :statusId where t.iteration.id = :iterationId" )
     void setTicketsToBacklog(Short statusId, Long iterationId);
