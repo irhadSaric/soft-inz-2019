@@ -31,7 +31,7 @@ export default class LoginInteractor {
 
       await this.credentialsService.setRoles(roles);
       await this.credentialsService.setPermissions(permissions);
-      await this.credentialsService.setUserId(userId);
+      await this.credentialsService.saveUserIdToStorage(userId);
 
       this.credentialsService.saveEmailToStorage(email);
       this.credentialsService.setIsLoggedIn(true);

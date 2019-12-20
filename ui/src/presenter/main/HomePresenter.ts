@@ -162,7 +162,6 @@ const HomePresenter = withStore<IHomePresenter, THomePresenter>(
             .projectDescription;
           const selectedUsers = _store.getState<THomePresenter>().selectedUsers;
           const userProfile = _store.getState<THomePresenter>().userProfile;
-          console.log(selectedUsers);
           const response = await _application.container
             .resolve<CreateTeamInteractor>("createTeam")
             .execute(projectDescription, teamName, userProfile.id);

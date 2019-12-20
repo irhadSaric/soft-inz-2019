@@ -8,7 +8,6 @@ let isLoggedIn: boolean | undefined = undefined;
 let username: string = "";
 let roles: Array<IRole> = [];
 let permissions: Array<string> = [];
-let userId: number | undefined = undefined;
 
 export interface ICredentialsService {
   setUsername(username: string): void;
@@ -24,8 +23,8 @@ export interface ICredentialsService {
   savePasswordToStorage(password: string): Promise<void>;
   getPermissions(): Promise<string[]>;
   setPermissions(value: any): void;
-  setUserId(userId: number): void;
-  getUserId(): Promise<number | undefined>;
+  saveUserIdToStorage(userId: number): void;
+  getUserIdFromStorage(): Promise<number | undefined>;
 }
 
 const CredentialsService = ({ storageService }): ICredentialsService => {
@@ -94,12 +93,12 @@ const CredentialsService = ({ storageService }): ICredentialsService => {
       });
     },
 
-    async setUserId(value: number) {
-      userId = value;
+    async saveUserIdToStorage(value: number) {
+      return _storageService.save(StorageKeys.USER_ID, value);
     },
 
-    async getUserId() {
-      return userId;
+    async getUserIdFromStorage() {
+      return _storageService.get(StorageKeys.USER_ID);
     }
   };
 };
