@@ -24,7 +24,7 @@ export interface THomePresenter extends TLoadingAwarePresenter {
   selectedUsers: TSelectValuePresentationModel[];
   teamName: string;
   projectDescription: string;
-  activeTeamList: IActiveTeamList[]; //----------
+  activeTeamList: IActiveTeamList[];
 }
 
 export interface IHomePresenter extends THomePresenter, TPresentable {
@@ -38,7 +38,7 @@ export interface IHomePresenter extends THomePresenter, TPresentable {
   loadUserProfile(userProfile: IUser): void; // proba
   inviteUserToTeam(invitedUserId: number, teamId: number, userId: number): void;
   loadTeamList(teamList: ITeam[]): void;
-  loadActiveTeamList(activeTeamList: IActiveTeamList[]): void; //--------------
+  loadActiveTeamList(activeTeamList: IActiveTeamList[]): void;
 }
 
 export interface TSelectValuePresentationModel {

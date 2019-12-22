@@ -20,7 +20,7 @@ export default class ShowHomeInteractor {
     application,
     userService,
     credentialsService,
-    teamService //--------
+    teamService
   }: any) {
     this.application = application;
     this.userService = userService;

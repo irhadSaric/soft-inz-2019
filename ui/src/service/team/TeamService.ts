@@ -2,7 +2,7 @@ import { IHttpService } from "../HttpService";
 import Team, { ITeam } from "../../model/team/Team";
 import ActiveTeamList, {
   IActiveTeamList
-} from "../../model/team/ActiveTeamList"; //----------------
+} from "../../model/team/ActiveTeamList";
 
 export interface ITeamService {
   createTeam(
@@ -17,7 +17,7 @@ export interface ITeamService {
   ): Promise<any>;
   getAllTeamsForUser(userId: number): Promise<ITeam[]>;
   getAllTeams(): Promise<ITeam[]>;
-  getActiveTeamList(userId: number): Promise<IActiveTeamList[]>; //----------------
+  getActiveTeamList(userId: number): Promise<IActiveTeamList[]>;
 }
 
 const TeamService = ({ httpService }): ITeamService => {
@@ -61,7 +61,7 @@ const TeamService = ({ httpService }): ITeamService => {
           userId
         }
       });
-      return _http.toText(response); // test
+      return _http.toText(response);
     },
     async getAllTeamsForUser(userId: number) {
       const path = _http.buildPath(_basePath, _all, userId.toString());
