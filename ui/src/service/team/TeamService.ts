@@ -33,7 +33,6 @@ const TeamService = ({ httpService }): ITeamService => {
   };
 
   const buildActiveTeamList = (data: any): IActiveTeamList[] => {
-    //------
     return data.map(item => ActiveTeamList(item));
   };
 

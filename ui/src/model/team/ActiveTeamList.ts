@@ -2,9 +2,11 @@ import Model from "../Model";
 import ValidatableObject from "../validation/ValidatableObject";
 
 export interface TActiveTeamList {
-  description: string;
-  id: number;
-  name: string;
+  userId: number;
+  teamId: number; 
+  roleName: string;
+  roleKey: string;
+  teamName: string;
 }
 
 export interface IActiveTeamList extends TActiveTeamList {}
@@ -19,14 +21,20 @@ const ActiveTeamList = Model(
     };
 
     let activeTeamList = {
-      get id() {
-        return _activeTeamList.id;
+      get userId() {
+        return _activeTeamList.userId;
       },
-      get name() {
-        return _activeTeamList.name;
+      get teamId() {
+        return _activeTeamList.teamId;
       },
-      get description() {
-        return _activeTeamList.description;
+      get roleName() {
+        return _activeTeamList.roleName;
+      },
+      get roleKey() {
+        return _activeTeamList.roleKey;
+      },
+      get teamName() {
+        return _activeTeamList.teamName;
       }
     };
 

@@ -1,10 +1,11 @@
 import React from "react";
-import { Button, Icon, Modal, Avatar, Menu, Dropdown, message } from "antd";
+import { Button, Modal, Avatar } from "antd";
 import Page, { PageProps } from "../Page";
 import { IHomePresenter } from "../../../presenter/main/HomePresenter";
 import CreateTeamForm from "./CreateTeamForm";
-export interface Props extends PageProps { }
-export interface State extends IHomePresenter { }
+import ActiveTeamListComponent from "./ActiveTeamListComponent";
+export interface Props extends PageProps {}
+export interface State extends IHomePresenter {}
 
 export default class HomePage extends React.Component<Props, State> {
   private subscriptionId: number = 0;
@@ -69,15 +70,11 @@ export default class HomePage extends React.Component<Props, State> {
             validationErrors={createTeamValidationErrors}
           />
         </Modal>
-        <Dropdown overlay={activeTeamList}>
-        <a className="ant-dropdown-link" href="#">
-          Active Team List <Icon type="down" />
-          </a>
-        </Dropdown>
-
-         
+        <ActiveTeamListComponent
+          translate={translate}
+          activeTeamList={activeTeamList}
+        />
       </Page>
     );
-
   }
 }
