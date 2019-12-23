@@ -19,19 +19,22 @@ import java.util.Optional;
 public class TicketService {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    TicketRepository ticketRepository;
+    private TicketRepository ticketRepository;
 
     @Autowired
-    IterationRepository iterationRepository;
+    private IterationRepository iterationRepository;
 
     @Autowired
-    StatusRepository statusRepository;
+    private StatusRepository statusRepository;
 
     @Autowired
-    TicketTypeRepository ticketTypeRepository;
+    private TicketTypeRepository ticketTypeRepository;
+
+    @Autowired
+    private ProjectRepository projectRepository;
 
     @Transactional
     public TicketResponse create(CreateTicketRequest request) throws NotFoundException {
@@ -44,10 +47,14 @@ public class TicketService {
         Status ticketStatus = statusRepository.getStatusByKey("backlog");
         ticket.setStatus(ticketStatus);
 
+        Optional<Project> project = projectRepository.findById(request.getProjectId());
+        if(project.isEmpty()){
+            throw new NotFoundException("Ticket type not found");
+        }
+        ticket.setProject(project.get());
         ticket = ticketRepository.save(ticket);
 
-        return new TicketResponse(ticket.getName(),ticket.getDescription(), ticket.getStartDate(),
-                ticket.getEndDate(),ticket.getStatus());
+        return entityToDto(ticket);
     }
 
     public void changeTypeOfTicket(Long ticketId, Short ticketTypeId) throws  NotFoundException {
@@ -104,9 +111,7 @@ public class TicketService {
     public TicketResponse getTicket(Long ticketId) throws  NotFoundException {
         Ticket ticket = getTicketById(ticketId);
 
-        TicketResponse response = new TicketResponse(ticket.getName(),ticket.getDescription(), ticket.getStartDate(),
-                ticket.getEndDate(),ticket.getStatus());
-
+        TicketResponse response = entityToDto(ticket);
         if(ticket.getTicketType()!= null)
            response.setTicketTypeId(ticket.getTicketType().getId());
         if(ticket.getIteration() != null)
@@ -115,30 +120,35 @@ public class TicketService {
             response.setAssigneeId(ticket.getAssignee().getId());
         return response;
     }
-
-    public void assignIterationToTicket(Long ticketId, Long iterationId) throws NotFoundException {
+    @Transactional
+    public void assignIterationToTickets(List<Long> tickets, Long iterationId) throws NotFoundException {
         Optional<Iteration> iteration = iterationRepository.findById(iterationId);
         if(iteration.isEmpty())
         {
             throw new NotFoundException("Iteration not found");
         }
-        Optional<Ticket> ticketOpt = ticketRepository.findById(ticketId);
-        if(ticketOpt.isEmpty())
-        {
-            throw new NotFoundException("Ticket not found");
-        }
-        Ticket ticket = ticketOpt.get();
-        ticket.setIteration(iteration.get());
-        ticketRepository.save(ticket);
+        ticketRepository.assignIterationToTickets(iterationId,tickets);
     }
 
     @Transactional
     public List<TicketResponse> findTicketsByType(Long iterationId, String ticketType){
         List<Ticket> tickets = ticketRepository.getTicketByTicketType(iterationId, ticketType);
         List<TicketResponse> response = new ArrayList<>();
-        tickets.forEach(ticket -> response.add(new TicketResponse(ticket.getName(),ticket.getDescription(),
-                ticket.getStartDate(),ticket.getEndDate(),ticket.getAssignee().getId(),ticket.getStatus(),
-                ticket.getIteration().getId(),ticket.getTicketType().getId())));
+        tickets.forEach(ticket -> response.add(entityToDtoFull(ticket)));
         return response;
+    }
+
+    private TicketResponse entityToDto(Ticket ticket)
+    {
+       return  new TicketResponse(ticket.getName(),ticket.getDescription(), ticket.getStartDate(),
+                ticket.getEndDate(),ticket.getStatus(),ticket.getProject().getId());
+
+    }
+
+    private TicketResponse entityToDtoFull(Ticket ticket)
+    {
+       return new TicketResponse(ticket.getName(),ticket.getDescription(),
+                ticket.getStartDate(),ticket.getEndDate(),ticket.getAssignee().getId(),ticket.getStatus(),
+                ticket.getIteration().getId(),ticket.getTicketType().getId(),ticket.getProject().getId());
     }
 }

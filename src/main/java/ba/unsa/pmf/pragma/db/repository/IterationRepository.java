@@ -3,6 +3,7 @@ package ba.unsa.pmf.pragma.db.repository;
 import ba.unsa.pmf.pragma.db.entity.Iteration;
 import ba.unsa.pmf.pragma.db.entity.Project;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -20,4 +21,6 @@ public interface IterationRepository extends JpaRepository<Iteration, Long> {
                     "inner join Status s on s.id = i.status.id "+
                     "where p.id=:projectId and s.key='active-iteration'")
     Short getNumberOfActiveIterations(@Param("projectId") Long projectId);
+
+
 }

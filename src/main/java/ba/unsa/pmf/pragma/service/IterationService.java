@@ -82,12 +82,7 @@ public class IterationService {
 
     @Transactional(readOnly = true)
     public List<TicketResponse> getAllIterationTickets(Long iterationId) {
-        List<Ticket> tickets =  ticketRepository.getTicketsForIteration(iterationId);
-        List<TicketResponse> response = new ArrayList<>();
-        tickets.forEach(ticket -> response.add(new TicketResponse(ticket.getName(),ticket.getDescription(),
-                ticket.getStartDate(),ticket.getEndDate(),ticket.getAssignee().getId(),ticket.getStatus(),
-                ticket.getIteration().getId(),ticket.getTicketType().getId())));
-        return response;
+        return ticketRepository.getTicketsForIteration2(iterationId);
     }
 
     @Transactional
@@ -104,6 +99,7 @@ public class IterationService {
         iterationRepository.save(iteration);
         Status ticketStatus = statusRepository.getStatusByKey("backlog");
         ticketRepository.setTicketsToBacklog(ticketStatus.getId(),iterationId);
+
 
     }
 
