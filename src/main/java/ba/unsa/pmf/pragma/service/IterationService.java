@@ -35,13 +35,14 @@ public class IterationService {
     @Autowired
     private TicketRepository ticketRepository;
 
+    @Transactional
     public IterationResponse createIteration(CreateIterationRequest createIterationRequest) throws NotFoundException {
+
         Iteration iteration = new Iteration();
         iteration.setDescription(createIterationRequest.getDescription());
         iteration.setEndDate(createIterationRequest.getEndDate());
         iteration.setStartDate(new Date(System.currentTimeMillis()));
         iteration.setName(createIterationRequest.getName());
-
 
         Optional<Project> project = projectRepository.findById(createIterationRequest.getProjectId());
         if(project.isEmpty()){
@@ -64,6 +65,7 @@ public class IterationService {
 
         return entityToDto(iteration.get());
     }
+
     @Transactional(readOnly = true)
     public List<IterationResponse> findAll() {
 
@@ -82,7 +84,7 @@ public class IterationService {
     public void finishIteration(Long iterationId) throws NotFoundException {
         Optional<Iteration> iterationOpt = iterationRepository.findById(iterationId);
 
-        if(iterationOpt.isEmpty()){
+        if (iterationOpt.isEmpty()) {
             throw new NotFoundException("Iteration not found");
         }
 

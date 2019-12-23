@@ -80,7 +80,7 @@ public class TeamController {
     }
 
     @PostMapping("/{id}/upload")
-    public void changeLogo(@RequestParam("file") MultipartFile file, @PathVariable Long id) throws NotFoundException, IOException {
+    public void changeLogo(@RequestBody MultipartFile file, @PathVariable Long id) throws NotFoundException, IOException {
         teamService.uploadLogo(id, file);
     }
 
