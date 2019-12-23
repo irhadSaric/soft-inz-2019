@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -37,6 +38,15 @@ public class TeamService {
 
     @Autowired
     private UserTeamService userTeamService;
+
+    @Autowired
+    private ProjectRepository projectRepository;
+
+    @Autowired
+    private IterationRepository iterationRepository;
+
+    @Autowired
+    private TicketRepository ticketRepository;
 
     @Transactional
     public List<Team> getAll(){
@@ -132,5 +142,62 @@ public class TeamService {
         team.setDescription(teamDetails.getDescription());
         team.setName(teamDetails.getName());
         teamRepository.save(team);
+    }
+
+    @Transactional
+    public void deleteTeam(Long id) throws NotFoundException {
+        // Treba provjeriti da li je user leader, kako ?
+        Optional<Team> data = teamRepository.findById(id);
+        if (data.isEmpty()){
+            throw new NotFoundException("Team not found");
+        }
+        Team team = data.get();
+        List<UserTeam> userTeams = userTeamRepository.getByTeamId(team.getId());
+        for (UserTeam userTeam : userTeams){
+            userTeamRepository.delete(userTeam);
+        }
+
+        List<Project> teamProjects = projectRepository.getAllByTeamId(team.getId());
+        for(Project project : teamProjects){
+            List<Iteration> projectIterations = iterationRepository.getAllByProjectId(project.getId());
+            for(Iteration iteration : projectIterations){
+                List<Ticket> iterationTickets = ticketRepository.getTicketsForIteration(iteration.getId());
+                for(Ticket ticket : iterationTickets){
+                    ticketRepository.delete(ticket);
+                }
+                iterationRepository.delete(iteration);
+            }
+            projectRepository.delete(project);
+        }
+        teamRepository.delete(team);
+    }
+
+    @Transactional
+    public void leaveTeam(Long teamId, Long userId) throws NotFoundException {
+        // provjeriti slucaj kada u timu postoji samo 1 clan i slucaj kada lider izlazi iz tima
+
+        Optional<Team> data = teamRepository.findById(teamId);
+        if (data.isEmpty()){
+            throw new NotFoundException("Team not found");
+        }
+        Optional<User> userData = userRepository.findById(userId);
+        if (userData.isEmpty()){
+            throw new NotFoundException("User not found");
+        }
+        UserTeam userTeam = userTeamRepository.getByTeamIdAndUserId(teamId, userId);
+        if(userTeam == null){
+            throw new NotFoundException("User is not team member");
+        }
+
+        List<UserTeam> listUserTeam = userTeamRepository.getByTeamId(userTeam.getTeam().getId());
+        if(listUserTeam.size() == 1){
+            this.deleteTeam(userTeam.getTeam().getId());
+            return;
+        }
+
+        if(userTeam.getRole().getKey() == "lead"){
+            // Sta kada lider izlazi iz tima a ima u timu vise ljudi ?
+        }
+        userTeamRepository.delete(userTeam);
     }
 }

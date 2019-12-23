@@ -139,4 +139,9 @@ public class UserTeamService {
                 teamId
         );
     }
+
+    @Transactional
+    public List<UserTeam> getAll(){
+        return userTeamRepository.findAll();
+    }
 }

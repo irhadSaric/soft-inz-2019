@@ -98,4 +98,14 @@ public class TeamController {
     public void editTeamDetails(@RequestBody TeamWithoutLogo teamDetails, @PathVariable Long teamId) throws NotFoundException {
         teamService.editTeamDetails(teamId,teamDetails);
     }
+
+    @DeleteMapping("/delete/{teamId}")
+    public void deleteTeam(@PathVariable Long teamId) throws NotFoundException {
+        teamService.deleteTeam(teamId);
+    }
+
+    @DeleteMapping("/leave/{teamId}/{userId}")
+    public void leaveTeam(@PathVariable Long teamId, @PathVariable Long userId) throws NotFoundException {
+        teamService.leaveTeam(teamId, userId);
+    }
 }
