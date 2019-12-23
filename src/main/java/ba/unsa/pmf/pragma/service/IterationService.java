@@ -37,6 +37,11 @@ public class IterationService {
 
     @Transactional
     public IterationResponse createIteration(CreateIterationRequest createIterationRequest) throws NotFoundException {
+        Short activeIterations = iterationRepository.getNumberOfActiveIterations(createIterationRequest.getProjectId());
+
+        if (activeIterations >= 1){
+            throw new IllegalStateException("This project already has active iteration");
+        }
 
         Iteration iteration = new Iteration();
         iteration.setDescription(createIterationRequest.getDescription());
