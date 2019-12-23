@@ -1,6 +1,5 @@
 import withStore, { TLoadingAwarePresenter, TPresentable } from "../withStore";
 import Application from "../../Application";
-import { ICountry } from "../../model/country/Country";
 import { ITeamDetails } from "../../model/team/TeamDetails";
 
 export interface TTeamPresenter extends TLoadingAwarePresenter {
@@ -14,7 +13,8 @@ export interface ITeamPresenter extends TTeamPresenter, TPresentable {
   loadTeamDetails(teamDetails: ITeamDetails): void;
   onEditBtnClick(): void;
   onCancelBtnClick(): void;
-  onChangeProjectDescription(value: string): void;
+  onChangeTeamData(key: string, value: any): void;
+  onChangeTeamDescriptionValue(value: string): void;
 }
 
 const defaultState: TTeamPresenter = {
@@ -45,8 +45,48 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
       _store.update({ isEditableForm: false });
     };
 
-    const onChangeProjectDescription = () => {
-      _store.update({ isEditableForm: false });
+    const validateEditTeamForm = () => {
+      const teamDetails = _store.getState<TTeamPresenter>().teamDetails;
+      let editValidationErrors = _store.getState<TTeamPresenter>()
+        .editValidationErrors;
+      editValidationErrors = {
+        name: [],
+        description: []
+      };
+      if (!teamDetails.name) {
+        editValidationErrors.name.push("The Name field is required.");
+      }
+      if (!teamDetails.description) {
+        editValidationErrors.lastName.push(
+          "The Description field is required."
+        );
+      }
+      _store.update({
+        editButtonDisabled:
+          editValidationErrors.name.length ||
+          editValidationErrors.description.length
+            ? true
+            : false,
+        editValidationErrors
+      });
+    };
+
+    const onChangeTeamData = (key: string, value: any) => {
+      let teamDetails = _store.getState<TTeamPresenter>().teamDetails;
+      //teamDetails[key] = value;
+      _store.update({ teamDetails });
+      const editValidationErrors = _store.getState<TTeamPresenter>()
+        .editValidationErrors;
+      editValidationErrors && validateEditTeamForm();
+    };
+
+    const onChangeTeamDescriptionValue = (value: string) => {
+      _store.update({
+        description: value
+      });
+      const editValidationErrors = _store.getState<TTeamPresenter>()
+        .editValidationErrors;
+      editValidationErrors && validateEditTeamForm();
     };
 
     return {
@@ -58,7 +98,8 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
       translate,
       onEditBtnClick,
       onCancelBtnClick,
-      onChangeProjectDescription
+      onChangeTeamData,
+      onChangeTeamDescriptionValue
     };
   },
   defaultState

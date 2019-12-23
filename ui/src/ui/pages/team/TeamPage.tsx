@@ -32,8 +32,8 @@ export default class TeamPage extends React.Component<Props, State> {
       onCancelBtnClick,
       editButtonDisabled,
       editValidationErrors,
-      projectDescription,
-      onChangeProjectDescription
+      onChangeTeamData,
+      onChangeTeamDescriptionValue
     } = this.state;
     return (
       <Page
@@ -47,8 +47,8 @@ export default class TeamPage extends React.Component<Props, State> {
           onCancelBtnClick={onCancelBtnClick}
           editButtonDisabled={editButtonDisabled}
           validationErrors={editValidationErrors}
-          projectDescription={projectDescription}
-          onChangeProjectDescription={onChangeProjectDescription}
+          onChangeTeamData={onChangeTeamData}
+          onChangeTeamDescription={onChangeTeamDescriptionValue}
         />
       </Page>
     );

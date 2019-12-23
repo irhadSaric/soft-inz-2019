@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Avatar, Button, Divider, Input, Form } from "antd";
+import { Avatar, Button, Divider, Input, Form, List } from "antd";
 import Text from "antd/lib/typography/Text";
 import { ITeamDetails } from "../../../model/team/TeamDetails";
 
@@ -10,8 +10,8 @@ const TeamForm = ({
   onCancelBtnClick,
   editButtonDisabled,
   validationErrors,
-  projectDescription,
-  onChangeProjectDescription,
+  onChangeTeamData,
+  onChangeTeamDescription,
 }: {
   teamDetails: ITeamDetails;
   isEditable: boolean;
@@ -19,12 +19,22 @@ const TeamForm = ({
   onCancelBtnClick: any;
   editButtonDisabled: boolean;
   validationErrors: any;
-  projectDescription: string;
-  onChangeProjectDescription(value: string): void;
+  onChangeTeamData(key: string, value: any): void;
+  onChangeTeamDescription(value: string): void;
 }) => {
   const checkValidationErrors = (fieldName: string) => {
     return validationErrors && validationErrors[fieldName].length > 0;
   };
+  console.log(teamDetails);
+  const data = [
+    'Project 1.',
+    'Project 2.',
+  ];
+  const data2 = [
+    'User 1.',
+    'User 2.',
+    'User 3.',
+  ];
   return (
     <div
       style={{
@@ -47,7 +57,7 @@ const TeamForm = ({
         <Form>
           <Form.Item
             validateStatus={
-              checkValidationErrors("firstName") ? "error" : undefined
+              checkValidationErrors("name") ? "error" : undefined
             }
           >
             <div className={"form-item"}>
@@ -55,31 +65,54 @@ const TeamForm = ({
                 addonBefore={<Text>Team Name</Text>}
                 placeholder={"Team Name"}
                 value={teamDetails.name}
-                //onChange={e => onChangeUserData("firstName", e.target.value)}
+                onChange={e => onChangeTeamData("name", e.target.value)}
                 allowClear={true}
                 style={{ marginTop: 20, width: 400 }}
                 readOnly={!isEditable}
               />
-              {checkValidationErrors("firstName") && (
+              {checkValidationErrors("name") && (
                 <Text className={"error-text"}>
-                  {validationErrors["firstName"][0]}
+                  {validationErrors["name"][0]}
                 </Text>
               )}
             </div>
           </Form.Item>
           <Form.Item
             validateStatus={
-              checkValidationErrors("lastName") ? "error" : undefined
+              checkValidationErrors("description") ? "error" : undefined
             }
           >
             <div className={"form-item"}>
             <Input.TextArea
               placeholder={"Description"}
-              value={projectDescription}
-              onChange={e => onChangeProjectDescription(e.target.value)}
+              value={teamDetails.description}
+              onChange={e => onChangeTeamDescription(e.target.value)}
               autosize={{ minRows: 4 }}
               style={{ marginTop: 20 }}
+              readOnly={!isEditable}
             />
+            </div>
+          </Form.Item>
+          <Form.Item>
+            <div className={"form-item"}>
+              <h3 style={{ margin: '16px 0' }}>Projects</h3>
+              <List
+                size="small"
+                bordered
+                dataSource={data}
+                renderItem={item => <List.Item>{item}</List.Item>}
+              />
+            </div>
+          </Form.Item>
+          <Form.Item>
+            <div className={"form-item"}>
+              <h3 style={{ margin: '16px 0' }}>Users</h3>
+              <List
+                size="small"
+                bordered
+                dataSource={data2}
+                renderItem={item => <List.Item>{item}</List.Item>}
+              />
             </div>
           </Form.Item>
         </Form>
