@@ -1,7 +1,6 @@
 package ba.unsa.pmf.pragma.controller;
 
-import ba.unsa.pmf.pragma.db.entity.Iteration;
-import ba.unsa.pmf.pragma.db.entity.Ticket;
+
 import ba.unsa.pmf.pragma.service.IterationService;
 import ba.unsa.pmf.pragma.service.dtos.CreateIterationRequest;
 import ba.unsa.pmf.pragma.service.dtos.IterationResponse;

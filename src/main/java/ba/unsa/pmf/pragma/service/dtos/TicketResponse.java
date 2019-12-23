@@ -1,5 +1,6 @@
 package ba.unsa.pmf.pragma.service.dtos;
 
+import ba.unsa.pmf.pragma.db.entity.Status;
 import ba.unsa.pmf.pragma.db.entity.TicketType;
 
 import java.util.Date;
@@ -11,27 +12,27 @@ public class TicketResponse {
     private Date startDate;
     private Date endDate;
     private Long assigneeId;
-    private Short statusId;
+    private Status status;
     private Long iterationId;
     private Short ticketTypeId;
 
-    public TicketResponse(String name, String description, Date startDate, Date endDate, Long assigneeId, Short statusId, Long iterationId, Short ticketTypeId) {
+
+    public TicketResponse(String name, String description, Date startDate, Date endDate, Long assigneeId, Status status, Long iterationId, Short ticketTypeId) {
         this.name = name;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
         this.assigneeId = assigneeId;
-        this.statusId = statusId;
+        this.status = status;
         this.iterationId = iterationId;
         this.ticketTypeId = ticketTypeId;
     }
-    public TicketResponse(String name, String description, Date startDate, Date endDate, Long iterationId, Short ticketTypeId) {
+    public TicketResponse(String name, String description, Date startDate, Date endDate,Status status) {
         this.name = name;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.iterationId = iterationId;
-        this.ticketTypeId = ticketTypeId;
+        this.status = status;
     }
 
     public String getName() {
@@ -74,12 +75,10 @@ public class TicketResponse {
         this.assigneeId = assigneeId;
     }
 
-    public Short getStatusId() {
-        return statusId;
-    }
+    public Status getStatus() { return status; }
 
-    public void setStatusId(Short statusId) {
-        this.statusId = statusId;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public Long getIterationId() {

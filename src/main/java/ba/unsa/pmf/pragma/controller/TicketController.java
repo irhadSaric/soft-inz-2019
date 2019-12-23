@@ -8,6 +8,8 @@ import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/ticket")
 public class TicketController {
@@ -43,5 +45,15 @@ public class TicketController {
     @PutMapping("{ticketId}/assign-user/{userId}")
     public void assignUserToTask(@PathVariable Long ticketId, @PathVariable Long userId) throws  NotFoundException {
         ticketService.assignUserToTask(ticketId,userId);
+    }
+
+    @PutMapping("{ticketId}/assign-iteration/{iterationId}")
+    public  void assignIterationToTicket(@PathVariable Long ticketId, @PathVariable Long iterationId) throws  NotFoundException{
+        ticketService.assignIterationToTicket(ticketId,iterationId);
+    }
+
+    @GetMapping("{iterationId}/{ticketType}")
+    public List<TicketResponse> findTicketsByType(@PathVariable Long iterationId, @PathVariable String ticketType){
+        return ticketService.findTicketsByType(iterationId, ticketType);
     }
 }

@@ -185,4 +185,8 @@ public class UserService {
         User user = data.get();
         return user.getAvatar();
     }
+    @Transactional(readOnly = true)
+    public List<User> findUsersForInvitation(Long userId){
+       return userRepository.findUsersForInvitation(userId);
+    }
 }
