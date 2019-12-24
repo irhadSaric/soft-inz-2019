@@ -62,6 +62,7 @@ public class IterationService {
         return entityToDto(iteration);
     }
 
+    @Transactional
     public IterationResponse getIteration(Long id) throws NotFoundException {
         Optional<Iteration> iteration = iterationRepository.findById(id);
         if(iteration.isEmpty()){

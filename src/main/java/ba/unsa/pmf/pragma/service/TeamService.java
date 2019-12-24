@@ -113,6 +113,7 @@ public class TeamService {
         }
     }
 
+    @Transactional
     public byte[] getLogo(Long id) throws NotFoundException {
         Optional<Team> data = teamRepository.findById(id);
 
@@ -124,6 +125,7 @@ public class TeamService {
         return team.getLogo();
     }
 
+    @Transactional
     public TeamWithoutLogo getTeamDetails(Long id) throws  NotFoundException {
         Optional<Team> data = teamRepository.findById(id);
         if (data.isEmpty()){
@@ -133,6 +135,7 @@ public class TeamService {
          return  new TeamWithoutLogo(team.getId(),team.getName(),team.getDescription(),team.getCreationDate(),team.getLastUpdated());
     }
 
+    @Transactional
     public  void editTeamDetails(Long id, TeamWithoutLogo teamDetails) throws  NotFoundException  {
         Optional<Team> data = teamRepository.findById(id);
         if (data.isEmpty()){

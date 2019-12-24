@@ -175,6 +175,7 @@ public class UserService {
         return user;
     }
 
+    @Transactional
     public byte[] getAvatar(Long id) throws NotFoundException {
         Optional<User> data = userRepository.findById(id);
 
