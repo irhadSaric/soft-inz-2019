@@ -132,10 +132,11 @@ public class TicketService {
 
     @Transactional
     public List<TicketResponse> findTicketsByType(Long iterationId, String ticketType){
-        List<Ticket> tickets = ticketRepository.getTicketByTicketType(iterationId, ticketType);
+        return ticketRepository.getTicketByTicketType(iterationId, ticketType);
+        /*List<Ticket> tickets = ticketRepository.getTicketByTicketType(iterationId, ticketType);
         List<TicketResponse> response = new ArrayList<>();
         tickets.forEach(ticket -> response.add(entityToDtoFull(ticket)));
-        return response;
+        return response;*/
     }
 
     private TicketResponse entityToDto(Ticket ticket)
