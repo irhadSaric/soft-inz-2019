@@ -18,6 +18,7 @@ export interface ITeamService {
   getAllTeams(): Promise<ITeam[]>;
   getTeamInvitesForUser(userId: number): Promise<ITeamInvite[]>;
   getTeamDetails(teamId: number): Promise<ITeamDetails>;
+  updateTeamDetails(team: ITeam): Promise<any>;
   respondToPendingInvite(
     userId: number,
     teamId: number,
@@ -34,6 +35,7 @@ const TeamService = ({ httpService }): ITeamService => {
   const _pending: string = "/pending";
   const _respond: string = "/respond";
   const _details: string = "/details";
+  const _edit: string = "/edit";
 
   const buildTeamList = (data: any): ITeam[] => {
     return data.map(item => Team(item));
@@ -96,7 +98,19 @@ const TeamService = ({ httpService }): ITeamService => {
       const path = _http.buildPath(_basePath, teamId.toString(), _details);
       const response = await _http.get(path);
       const responseJSON = await _http.toJSON(response);
-      return TeamDetails(responseJSON[0]);
+      return TeamDetails(responseJSON);
+    },
+    async updateTeamDetails(team: ITeam) {
+      const path = _http.buildPath(_basePath, team.id.toString());
+      const response = await _http.put(path, {
+        params: {
+          name: team.name,
+          description: team.description,
+          id: team.id
+        }
+      });
+      const responseJSON = await _http.toJSON(response);
+      return Team(responseJSON);
     },
     async respondToPendingInvite(
       userId: number,
