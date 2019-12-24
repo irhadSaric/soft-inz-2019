@@ -133,10 +133,6 @@ public class TicketService {
     @Transactional
     public List<TicketResponse> findTicketsByType(Long iterationId, String ticketType){
         return ticketRepository.getTicketByTicketType(iterationId, ticketType);
-        /*List<Ticket> tickets = ticketRepository.getTicketByTicketType(iterationId, ticketType);
-        List<TicketResponse> response = new ArrayList<>();
-        tickets.forEach(ticket -> response.add(entityToDtoFull(ticket)));
-        return response;*/
     }
 
     private TicketResponse entityToDto(Ticket ticket)
@@ -151,5 +147,9 @@ public class TicketService {
        return new TicketResponse(ticket.getName(),ticket.getDescription(),
                 ticket.getStartDate(),ticket.getEndDate(),ticket.getAssignee().getId(),ticket.getStatus(),
                 ticket.getIteration().getId(),ticket.getTicketType().getId(),ticket.getProject().getId());
+    }
+
+    public List<Ticket> all() {
+        return ticketRepository.findAll();
     }
 }

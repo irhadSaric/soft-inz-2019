@@ -1,5 +1,6 @@
 package ba.unsa.pmf.pragma.controller;
 
+import ba.unsa.pmf.pragma.db.entity.Ticket;
 import ba.unsa.pmf.pragma.service.TicketService;
 import ba.unsa.pmf.pragma.service.dtos.CreateTicketRequest;
 import ba.unsa.pmf.pragma.service.dtos.TicketResponse;
@@ -55,5 +56,10 @@ public class TicketController {
     @GetMapping("{iterationId}/{ticketType}")
     public List<TicketResponse> findTicketsByType(@PathVariable Long iterationId, @PathVariable String ticketType){
         return ticketService.findTicketsByType(iterationId, ticketType);
+    }
+
+    @GetMapping
+    public List<Ticket> all(){
+        return ticketService.all();
     }
 }
