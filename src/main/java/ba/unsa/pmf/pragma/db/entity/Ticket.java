@@ -34,6 +34,10 @@ public class Ticket extends BaseEntity{
     @JoinColumn(name = "ticket_type_id")
     private TicketType ticketType;
 
+    @ManyToOne
+    @JoinColumn(name = "project_id", nullable = false)
+    private Project project;
+
     public String getName() {
         return name;
     }
@@ -97,4 +101,9 @@ public class Ticket extends BaseEntity{
     public void setTicketType(TicketType ticketType) {
         this.ticketType = ticketType;
     }
+
+    public Project getProject() { return project; }
+
+    public void setProject(Project project) { this.project = project; }
+
 }
