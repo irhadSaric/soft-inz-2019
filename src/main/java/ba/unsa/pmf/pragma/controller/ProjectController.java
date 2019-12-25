@@ -29,7 +29,7 @@ public class ProjectController {
         return projectService.getProject(id);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/edit/{id}")
     public Project editProject(@PathVariable("id") Long id, @RequestBody CreateProjectRequest request) throws NotFoundException {
         return projectService.editProject(id, request);
     }

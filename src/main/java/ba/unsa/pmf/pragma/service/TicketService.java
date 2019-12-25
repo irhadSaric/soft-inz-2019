@@ -57,6 +57,7 @@ public class TicketService {
         return entityToDto(ticket);
     }
 
+    @Transactional
     public void changeTypeOfTicket(Long ticketId, Short ticketTypeId) throws  NotFoundException {
         Optional<TicketType> ticketType = ticketTypeRepository.findById(ticketTypeId);
         if(ticketType.isEmpty())
@@ -68,6 +69,7 @@ public class TicketService {
         ticketRepository.save(ticket);
     }
 
+    @Transactional
     public void changeStatusOfTicket(Long ticketId, Short statusId) throws NotFoundException{
         Optional<Status> ticketStatus = statusRepository.findById(statusId);
         if(ticketStatus.isEmpty())
@@ -88,6 +90,7 @@ public class TicketService {
         return  ticket.get();
     }
 
+    @Transactional
     public void editNameAndDescription(Long ticketId, NameAndDescription request) throws NotFoundException {
         Ticket ticket = getTicketById(ticketId);
 
@@ -96,6 +99,7 @@ public class TicketService {
         ticketRepository.save(ticket);
     }
 
+    @Transactional
     public void assignUserToTask(Long ticketId, Long userId) throws NotFoundException {
         Optional<User> user = userRepository.findById(userId);
         if(user.isEmpty())
@@ -108,6 +112,7 @@ public class TicketService {
         ticketRepository.save(ticket);
     }
 
+    @Transactional
     public TicketResponse getTicket(Long ticketId) throws  NotFoundException {
         Ticket ticket = getTicketById(ticketId);
 
@@ -132,10 +137,7 @@ public class TicketService {
 
     @Transactional
     public List<TicketResponse> findTicketsByType(Long iterationId, String ticketType){
-        List<Ticket> tickets = ticketRepository.getTicketByTicketType(iterationId, ticketType);
-        List<TicketResponse> response = new ArrayList<>();
-        tickets.forEach(ticket -> response.add(entityToDtoFull(ticket)));
-        return response;
+        return ticketRepository.getTicketByTicketType(iterationId, ticketType);
     }
 
     private TicketResponse entityToDto(Ticket ticket)
@@ -150,5 +152,9 @@ public class TicketService {
        return new TicketResponse(ticket.getName(),ticket.getDescription(),
                 ticket.getStartDate(),ticket.getEndDate(),ticket.getAssignee().getId(),ticket.getStatus(),
                 ticket.getIteration().getId(),ticket.getTicketType().getId(),ticket.getProject().getId());
+    }
+
+    public List<Ticket> all() {
+        return ticketRepository.findAll();
     }
 }

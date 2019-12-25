@@ -18,8 +18,11 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
     @Query(value = "select t from Ticket t where t.iteration.id = :iterationId")
     List<Ticket> getTicketsForIteration(Long iterationId);
 
-    @Query(value = "select t from Ticket t where t.ticketType.name = :ticketType and t.iteration.id = :iterationId")
-    List<Ticket> getTicketByTicketType(Long iterationId, String ticketType);
+    @Query(value = "select new ba.unsa.pmf.pragma.service.dtos.TicketResponse("+
+                    "t.name, t.description, t.startDate, t.endDate, t.assignee.id, t.status, t.iteration.id," +
+                    "t.ticketType.id, t.project.id) from Ticket t "+
+                    "where t.ticketType.name = :ticketType and t.iteration.id = :iterationId")
+    List<TicketResponse> getTicketByTicketType(Long iterationId, String ticketType);
 
     @Modifying
     @Query(value = "update Ticket t set t.status.id = :statusId, t.iteration.id = null  where t.iteration.id = :iterationId" )

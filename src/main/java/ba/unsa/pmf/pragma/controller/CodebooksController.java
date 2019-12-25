@@ -47,9 +47,4 @@ public class CodebooksController {
 
     @GetMapping("/ticket-types/all")
     public List<TicketType> getAllTicketTypes() {return  ticketTypeService.getAllTicketTypes();}
-
-    @GetMapping("/user-team/all")
-    public List<UserTeam> getAllUserTeam(){
-        return userTeamService.getAll();
-    }
 }

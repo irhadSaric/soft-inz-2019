@@ -16,5 +16,11 @@ public interface IterationRepository extends JpaRepository<Iteration, Long> {
     @Query(value = "select i from Iteration i where i.project.id = :projectId")
     List<Iteration> getAllByProjectId(@Param("projectId") Long projectId);
 
+    @Query(value = "select count (i) from Iteration i "+
+                    "inner join Project p on p.id = i.project.id "+
+                    "inner join Status s on s.id = i.status.id "+
+                    "where p.id=:projectId and s.key='active-iteration'")
+    Short getNumberOfActiveIterations(@Param("projectId") Long projectId);
+
 
 }
