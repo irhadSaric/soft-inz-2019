@@ -7,7 +7,6 @@ export interface TTeamPresenter extends TLoadingAwarePresenter {
   isEditableForm: boolean;
   editValidationErrors?: any;
   editButtonDisabled: boolean;
-  projectDescription: string;
 }
 export interface ITeamPresenter extends TTeamPresenter, TPresentable {
   loadTeamDetails(teamDetails: ITeamDetails): void;
@@ -21,8 +20,7 @@ const defaultState: TTeamPresenter = {
   teamDetails: {} as ITeamDetails,
   isEditableForm: false,
   editValidationErrors: undefined,
-  editButtonDisabled: false,
-  projectDescription: "test"
+  editButtonDisabled: false
 };
 
 const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
@@ -73,7 +71,6 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
 
     const onChangeTeamData = (key: string, value: any) => {
       let teamDetails = _store.getState<TTeamPresenter>().teamDetails;
-      //teamDetails[key] = value;
       _store.update({ teamDetails });
       const editValidationErrors = _store.getState<TTeamPresenter>()
         .editValidationErrors;
