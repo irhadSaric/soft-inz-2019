@@ -8,6 +8,7 @@ import { IUser } from "../../model/user/User";
 import { ICredentialsService } from "../../service/authentication/CredentialsService";
 import { ITeamService } from "../../service/team/TeamService";
 import { IActiveTeamList } from "../../model/team/ActiveTeamList";
+import { ITeamInvite } from "../../model/team/TeamInvite";
 
 export default class ShowHomeInteractor {
   private application: Application;
@@ -39,6 +40,7 @@ export default class ShowHomeInteractor {
         userList: [],
         teamList: [],
         selectedUsers: [],
+        teamInvitesForUser: [],
         teamName: "",
         projectDescription: "",
         activeTeamList: []
@@ -46,13 +48,21 @@ export default class ShowHomeInteractor {
     });
 
     this.credentialsService.getEmailFromStorage().then(email => {
-      email &&
-        this.userService
-          .getUserByEmail(email)
-          .then(this.output && this.output.loadUserProfile);
+      if (email) {
+        this.userService.getUserByEmail(email).then((user: IUser) => {
+          this.teamService
+            .getTeamInvitesForUser(user.id)
+            .then((teamInvitesForUser: ITeamInvite[]) => {
+              this.output &&
+                this.output.loadTeamInvitesForUser(teamInvitesForUser);
+            });
+          this.output && this.output.loadUserProfile(user);
+        });
+      }
     });
 
     this.userService.getUsers().then(this.output && this.output.loadUserList);
+
 
     this.credentialsService
       .getUserIdFromStorage()
@@ -63,6 +73,7 @@ export default class ShowHomeInteractor {
               .then(this.output && this.output.loadActiveTeamList)
           : undefined
       );
+
 
     return this.output;
   }

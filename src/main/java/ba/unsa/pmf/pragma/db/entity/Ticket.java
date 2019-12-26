@@ -19,20 +19,24 @@ public class Ticket extends BaseEntity{
     private Date endDate;
 
     @ManyToOne
-    @JoinColumn(name = "assignee_id", nullable = false)
+    @JoinColumn(name = "assignee_id")
     private User assignee;
 
     @ManyToOne
-    @JoinColumn(name = "status_id", nullable = false)
+    @JoinColumn(name = "status_id")
     private Status status;
 
     @ManyToOne
-    @JoinColumn(name = "iteration_id", nullable = false)
+    @JoinColumn(name = "iteration_id")
     private Iteration iteration;
 
     @ManyToOne
-    @JoinColumn(name = "ticket_type_id", nullable = false)
+    @JoinColumn(name = "ticket_type_id")
     private TicketType ticketType;
+
+    @ManyToOne
+    @JoinColumn(name = "project_id", nullable = false)
+    private Project project;
 
     public String getName() {
         return name;
@@ -97,4 +101,9 @@ public class Ticket extends BaseEntity{
     public void setTicketType(TicketType ticketType) {
         this.ticketType = ticketType;
     }
+
+    public Project getProject() { return project; }
+
+    public void setProject(Project project) { this.project = project; }
+
 }

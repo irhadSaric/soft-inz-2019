@@ -3,8 +3,16 @@ import Application from "../../Application";
 import { IUser } from "../../model/user/User";
 import CreateTeamInteractor from "../../interactor/team/CreateTeamInteractor";
 import InviteUserToTeamInteractor from "../../interactor/team/InviteUserToTeamInteractor";
+import RespondToPendingInviteInteractor from "../../interactor/team/RespondToPendingInviteInteractor";
 import { ITeam } from "../../model/team/Team";
 import { IActiveTeamList } from "../../model/team/ActiveTeamList";
+import {
+  TTeamInvite,
+  ITeamInvite
+} from "../../model/team/TeamInvite";
+import GetTeamInvitesForUserInteractor from "../../interactor/team/GetTeamInvitesForUserInteractor";
+import ShowSuccessMessageInteractor from "../../interactor/notifications/ShowSuccessMessageInteractor";
+import ShowErrorMessageInteractor from "../../interactor/notifications/ShowErrorMessageInteractor";
 
 export interface TCreateTeamPresentationModel {
   description: string;
@@ -22,6 +30,7 @@ export interface THomePresenter extends TLoadingAwarePresenter {
   userList: IUser[];
   teamList: ITeam[];
   selectedUsers: TSelectValuePresentationModel[];
+  teamInvitesForUser: ITeamInvite[];
   teamName: string;
   projectDescription: string;
   activeTeamList: IActiveTeamList[];
@@ -39,6 +48,8 @@ export interface IHomePresenter extends THomePresenter, TPresentable {
   inviteUserToTeam(invitedUserId: number, teamId: number, userId: number): void;
   loadTeamList(teamList: ITeam[]): void;
   loadActiveTeamList(activeTeamList: IActiveTeamList[]): void;
+  loadTeamInvitesForUser(teamInvitesForUser: ITeamInvite[]): void;
+  respondToPendingInvite(userId: number, teamId: number, accept: boolean): void;
 }
 
 export interface TSelectValuePresentationModel {
@@ -54,9 +65,10 @@ const defaultState: THomePresenter = {
   userList: [],
   teamList: [],
   selectedUsers: [],
+  teamInvitesForUser: [],
   teamName: "",
   projectDescription: "",
-  activeTeamList: [] //-------------
+  activeTeamList: [] 
 };
 
 const HomePresenter = withStore<IHomePresenter, THomePresenter>(
@@ -120,6 +132,14 @@ const HomePresenter = withStore<IHomePresenter, THomePresenter>(
       });
     };
 
+    const loadTeamInvitesForUser = (
+      teamInvitesForUser: ITeamInvite[]
+    ) => {
+      return _store.update({
+        teamInvitesForUser
+      });
+    };
+
     const validateCreateTeamForm = () => {
       const teamName = _store.getState<THomePresenter>().teamName;
       const projectDescription = _store.getState<THomePresenter>()
@@ -165,6 +185,10 @@ const HomePresenter = withStore<IHomePresenter, THomePresenter>(
           const response = await _application.container
             .resolve<CreateTeamInteractor>("createTeam")
             .execute(projectDescription, teamName, userProfile.id);
+          loader.stop("createTeamLoader");
+          _application.container
+            .resolve<ShowSuccessMessageInteractor>("showSuccessMessage")
+            .execute("Uspješno ste kreirali tim");
           selectedUsers.forEach(element => {
             inviteUserToTeam(
               parseInt(element.key, 10),
@@ -176,10 +200,12 @@ const HomePresenter = withStore<IHomePresenter, THomePresenter>(
             isCreateTeamModalVisible: false
           });
         } catch (error) {
-          console.log("error");
+          loader.stop("createTeamLoader");
+          _application.container
+            .resolve<ShowErrorMessageInteractor>("showErrorMessage")
+            .execute(error.message);
         }
     };
-
     const inviteUserToTeam = async (
       invitedUserId: number,
       teamId: number,
@@ -190,9 +216,26 @@ const HomePresenter = withStore<IHomePresenter, THomePresenter>(
         .execute(invitedUserId, teamId, userId);
     };
 
+
     const loadActiveTeamList = (activeTeamList: IActiveTeamList[]) => {
       _store.update({
         activeTeamList
+    });
+      
+    const respondToPendingInvite = async (
+      userId: number,
+      teamId: number,
+      accept: boolean
+    ) => {
+      await _application.container
+        .resolve<RespondToPendingInviteInteractor>("respondToPendingInvite")
+        .execute(userId, teamId, accept);
+      const invites = await _application.container
+        .resolve<GetTeamInvitesForUserInteractor>("getTeamInvitesForUser")
+        .execute(userId);
+      _store.update({
+        teamInvitesForUser: invites
+
       });
     };
 
@@ -211,9 +254,11 @@ const HomePresenter = withStore<IHomePresenter, THomePresenter>(
       onChangeTeamNameValue,
       createTeam,
       inviteUserToTeam,
+      loadTeamInvitesForUser,
       loadUserProfile,
       loadTeamList,
       loadActiveTeamList
+      respondToPendingInvite
     };
   },
   defaultState

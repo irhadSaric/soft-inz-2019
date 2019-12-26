@@ -3,6 +3,9 @@ import Team, { ITeam } from "../../model/team/Team";
 import ActiveTeamList, {
   IActiveTeamList
 } from "../../model/team/ActiveTeamList";
+import TeamInvite, {
+  ITeamInvite
+} from "../../model/team/TeamInvite";
 
 export interface ITeamService {
   createTeam(
@@ -18,6 +21,12 @@ export interface ITeamService {
   getAllTeamsForUser(userId: number): Promise<ITeam[]>;
   getAllTeams(): Promise<ITeam[]>;
   getActiveTeamList(userId: number): Promise<IActiveTeamList[]>;
+  getTeamInvitesForUser(userId: number): Promise<ITeamInvite[]>;
+  respondToPendingInvite(
+    userId: number,
+    teamId: number,
+    accept: boolean
+  ): Promise<any>;
 }
 
 const TeamService = ({ httpService }): ITeamService => {
@@ -27,13 +36,19 @@ const TeamService = ({ httpService }): ITeamService => {
   const _invite: string = "/invite";
   const _all: string = "/all";
   const _active: string = "/active";
+  const _pending: string = "/pending";
+  const _respond: string = "/respond";
 
   const buildTeamList = (data: any): ITeam[] => {
     return data.map(item => Team(item));
   };
 
+
   const buildActiveTeamList = (data: any): IActiveTeamList[] => {
     return data.map(item => ActiveTeamList(item));
+
+  const buildTeamInvitesList = (data: any): ITeamInvite[] => {
+    return data.map(item => TeamInvite(item));
   };
 
   return {
@@ -75,11 +90,36 @@ const TeamService = ({ httpService }): ITeamService => {
       const responseJSON = await _http.toJSON(response);
       return buildTeamList(responseJSON);
     },
+  
     async getActiveTeamList(userId: number) {
       const path = _http.buildPath(_basePath, _active, userId.toString());
       const response = await _http.get(path);
       const responseJSON = await _http.toJSON(response);
       return buildActiveTeamList(responseJSON);
+
+    async getTeamInvitesForUser(userId: number) {
+      const path = _http.buildPath(_basePath, _pending, userId.toString());
+      const response = await _http.get(path);
+      const responseJSON = await _http.toJSON(response);
+      return buildTeamInvitesList(responseJSON);
+    },
+    async respondToPendingInvite(
+      userId: number,
+      teamId: number,
+      accept: boolean
+    ) {
+      let query: string = "?accept=";
+      accept ? (query += "true") : (query += "false");
+      const path = _http.buildPath(
+        _basePath,
+        _pending,
+        userId.toString(),
+        _respond,
+        teamId.toString(),
+        query
+      );
+      const response = await _http.post(path);
+      return _http.toText(response);
     }
   };
 };

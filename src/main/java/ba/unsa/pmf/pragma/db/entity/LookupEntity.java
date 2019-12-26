@@ -11,6 +11,7 @@ public abstract class LookupEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(columnDefinition = "serial")
     private Short id;
 
     @Column(name = "name", nullable = false)

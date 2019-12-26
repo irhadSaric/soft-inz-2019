@@ -57,15 +57,9 @@ public class UserController extends BaseController {
         return userService.updateUser(id, userProfileData);
     }
 
-    @PutMapping("/api/user/profile/{id}/upload")
-    public UserProfileData
-    changeAvatar(@RequestParam("file") MultipartFile file, @PathVariable Long id)
-    throws NotFoundException, IOException {
-        return userService.uploadAvatar(id, file);
-    }
-
     @PostMapping("/api/user/profile/{id}/upload")
-    public UserProfileData uploadAvatar(@RequestParam("file") MultipartFile file, @PathVariable Long id)
+    public UserProfileData
+    uploadAvatar(@PathVariable Long id, @RequestBody MultipartFile file)
     throws NotFoundException, IOException {
         return userService.uploadAvatar(id, file);
     }
@@ -74,5 +68,10 @@ public class UserController extends BaseController {
     public byte[] getAvatar(@PathVariable Long id)
     throws NotFoundException {
         return userService.getAvatar(id);
+    }
+
+    @GetMapping("/api/get-users-for-invitation/{userId}")
+    public List<User> getUsersForInvitation(@PathVariable Long userId) {
+        return userService.findUsersForInvitation(userId);
     }
 }
