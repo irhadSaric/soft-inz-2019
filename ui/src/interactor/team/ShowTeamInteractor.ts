@@ -26,9 +26,9 @@ export default class ShowTeamInteractor {
       }
     });
 
-    /*this.teamService
+    this.teamService
       .getTeamDetails(4)
-      .then(this.output && this.output.loadTeamDetails);*/
+      .then(this.output && this.output.loadTeamDetails);
 
     return this.output;
   }

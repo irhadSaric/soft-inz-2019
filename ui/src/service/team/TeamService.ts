@@ -106,7 +106,8 @@ const TeamService = ({ httpService }): ITeamService => {
         params: {
           name: team.name,
           description: team.description,
-          id: team.id
+          id: team.id,
+          lastUpdate: team.lastUpdate
         }
       });
       const responseJSON = await _http.toJSON(response);

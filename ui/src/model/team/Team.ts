@@ -5,6 +5,8 @@ export interface TTeam {
   description: string;
   id: number;
   name: string;
+  lastUpdate: Date;
+  creationDate: Date;
 }
 
 export interface ITeam extends TTeam {}
@@ -27,6 +29,12 @@ const Team = Model(
       },
       get description() {
         return _team.description;
+      },
+      get lastUpdate() {
+        return _team.lastUpdate;
+      },
+      get creationDate() {
+        return _team.creationDate;
       }
     };
 
