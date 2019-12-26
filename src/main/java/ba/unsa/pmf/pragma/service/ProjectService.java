@@ -64,14 +64,17 @@ public class ProjectService {
         return createProjectResponse;
     }
 
+    @Transactional
     public List<Project> getAll() {
         return projectRepository.findAll();
     }
 
+    @Transactional
     public List<Iteration> getAllIterationsForProject(Long id) {
         return projectRepository.getAllIterationsForProject(id);
     }
 
+    @Transactional
     public Project editProject(Long id, CreateProjectRequest request) throws NotFoundException {
         Optional<Project> data = projectRepository.findById(id);
         if (data.isEmpty()){
