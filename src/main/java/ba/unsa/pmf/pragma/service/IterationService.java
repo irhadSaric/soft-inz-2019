@@ -35,13 +35,19 @@ public class IterationService {
     @Autowired
     private TicketRepository ticketRepository;
 
+    @Transactional
     public IterationResponse createIteration(CreateIterationRequest createIterationRequest) throws NotFoundException {
+        Short activeIterations = iterationRepository.getNumberOfActiveIterations(createIterationRequest.getProjectId());
+
+        if (activeIterations >= 1){
+            throw new IllegalStateException("This project already has active iteration");
+        }
+
         Iteration iteration = new Iteration();
         iteration.setDescription(createIterationRequest.getDescription());
         iteration.setEndDate(createIterationRequest.getEndDate());
         iteration.setStartDate(new Date(System.currentTimeMillis()));
         iteration.setName(createIterationRequest.getName());
-
 
         Optional<Project> project = projectRepository.findById(createIterationRequest.getProjectId());
         if(project.isEmpty()){
@@ -56,6 +62,7 @@ public class IterationService {
         return entityToDto(iteration);
     }
 
+    @Transactional
     public IterationResponse getIteration(Long id) throws NotFoundException {
         Optional<Iteration> iteration = iterationRepository.findById(id);
         if(iteration.isEmpty()){
@@ -64,6 +71,7 @@ public class IterationService {
 
         return entityToDto(iteration.get());
     }
+
     @Transactional(readOnly = true)
     public List<IterationResponse> findAll() {
 
@@ -75,19 +83,14 @@ public class IterationService {
 
     @Transactional(readOnly = true)
     public List<TicketResponse> getAllIterationTickets(Long iterationId) {
-        List<Ticket> tickets =  ticketRepository.getTicketsForIteration(iterationId);
-        List<TicketResponse> response = new ArrayList<>();
-        tickets.forEach(ticket -> response.add(new TicketResponse(ticket.getName(),ticket.getDescription(),
-                ticket.getStartDate(),ticket.getEndDate(),ticket.getAssignee().getId(),ticket.getStatus(),
-                ticket.getIteration().getId(),ticket.getTicketType().getId())));
-        return response;
+        return ticketRepository.getTicketsForIteration2(iterationId);
     }
 
     @Transactional
     public void finishIteration(Long iterationId) throws NotFoundException {
         Optional<Iteration> iterationOpt = iterationRepository.findById(iterationId);
 
-        if(iterationOpt.isEmpty()){
+        if (iterationOpt.isEmpty()) {
             throw new NotFoundException("Iteration not found");
         }
 
@@ -97,6 +100,7 @@ public class IterationService {
         iterationRepository.save(iteration);
         Status ticketStatus = statusRepository.getStatusByKey("backlog");
         ticketRepository.setTicketsToBacklog(ticketStatus.getId(),iterationId);
+
 
     }
 

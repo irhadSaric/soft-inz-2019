@@ -80,7 +80,7 @@ public class TeamController {
     }
 
     @PostMapping("/{id}/upload")
-    public void changeLogo(@RequestParam("file") MultipartFile file, @PathVariable Long id) throws NotFoundException, IOException {
+    public void changeLogo(@RequestBody MultipartFile file, @PathVariable Long id) throws NotFoundException, IOException {
         teamService.uploadLogo(id, file);
     }
 
@@ -97,5 +97,15 @@ public class TeamController {
     @PutMapping("/{teamId}/edit")
     public void editTeamDetails(@RequestBody TeamWithoutLogo teamDetails, @PathVariable Long teamId) throws NotFoundException {
         teamService.editTeamDetails(teamId,teamDetails);
+    }
+
+    @DeleteMapping("/delete/{teamId}")
+    public void deleteTeam(@PathVariable Long teamId) throws NotFoundException {
+        teamService.deleteTeam(teamId);
+    }
+
+    @DeleteMapping("/leave/{teamId}/{userId}")
+    public void leaveTeam(@PathVariable Long teamId, @PathVariable Long userId) throws NotFoundException {
+        teamService.leaveTeam(teamId, userId);
     }
 }

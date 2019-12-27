@@ -48,4 +48,11 @@ public interface UserTeamRepository extends JpaRepository<UserTeam, Long> {
         "and ut.status.key = :key"
     )
     List<UserTeam> getByUserIdAndTeamIdAndKey(@Param("userId") Long userId, @Param("teamId") Long teamId, @Param("key") String key);
+
+    @Query(value = "select ut from UserTeam ut where ut.team.id = :teamId")
+    List<UserTeam> getByTeamId(@Param("teamId") Long teamId);
+
+    @Query(value = "select ut from UserTeam ut where ut.team.id = :teamId and ut.user.id = :userId")
+    UserTeam getByTeamIdAndUserId(@Param("teamId") Long teamId, @Param("userId") Long userId);
+
 }

@@ -50,6 +50,8 @@ import RegisterInteractor from "../interactor/authentication/RegisterInteractor"
 import ShowUserProfileInteractor from "../interactor/user/ShowUserProfileInteractor";
 import UpdateUserProfileInteractor from "../interactor/user/UpdateUserProfileInteractor";
 import GetUserProfileInteractor from "../interactor/user/GetUserProfileInteractor";
+import TeamArea from "../areas/TeamArea";
+import ShowTeamInteractor from "../interactor/team/ShowTeamInteractor";
 import CreateTeamInteractor from "../interactor/team/CreateTeamInteractor";
 import TeamService from "../service/team/TeamService";
 import InviteUserToTeamInteractor from "../interactor/team/InviteUserToTeamInteractor";
@@ -133,6 +135,7 @@ const ModuleContainer = (application: Application): IModuleContainer => {
   _container.register({
     homeArea: asClass(HomeArea).singleton(),
     userArea: asClass(UserArea).singleton(),
+    teamArea: asClass(TeamArea).singleton(),
     authenticationArea: asClass(AuthenticationArea)
   });
 
@@ -154,6 +157,7 @@ const ModuleContainer = (application: Application): IModuleContainer => {
     showUserProfile: asInteractor(ShowUserProfileInteractor),
     updateUserProfile: asInteractor(UpdateUserProfileInteractor),
     getUserProfile: asInteractor(GetUserProfileInteractor),
+    showTeam: asInteractor(ShowTeamInteractor),
     createTeam: asInteractor(CreateTeamInteractor),
     inviteUserToTeam: asInteractor(InviteUserToTeamInteractor),
     respondToPendingInvite: asInteractor(RespondToPendingInviteInteractor),

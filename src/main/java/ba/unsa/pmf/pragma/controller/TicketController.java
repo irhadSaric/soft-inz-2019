@@ -1,5 +1,6 @@
 package ba.unsa.pmf.pragma.controller;
 
+import ba.unsa.pmf.pragma.db.entity.Ticket;
 import ba.unsa.pmf.pragma.service.TicketService;
 import ba.unsa.pmf.pragma.service.dtos.CreateTicketRequest;
 import ba.unsa.pmf.pragma.service.dtos.TicketResponse;
@@ -47,13 +48,18 @@ public class TicketController {
         ticketService.assignUserToTask(ticketId,userId);
     }
 
-    @PutMapping("{ticketId}/assign-iteration/{iterationId}")
-    public  void assignIterationToTicket(@PathVariable Long ticketId, @PathVariable Long iterationId) throws  NotFoundException{
-        ticketService.assignIterationToTicket(ticketId,iterationId);
+    @PutMapping("/assign-iteration/{iterationId}/tickets")
+    public  void assignIterationToTicket(@PathVariable Long iterationId,@RequestBody List<Long> tickets) throws  NotFoundException{
+        ticketService.assignIterationToTickets(tickets,iterationId);
     }
 
     @GetMapping("{iterationId}/{ticketType}")
     public List<TicketResponse> findTicketsByType(@PathVariable Long iterationId, @PathVariable String ticketType){
         return ticketService.findTicketsByType(iterationId, ticketType);
+    }
+
+    @GetMapping
+    public List<Ticket> all(){
+        return ticketService.all();
     }
 }
