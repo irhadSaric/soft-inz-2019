@@ -1,10 +1,8 @@
 import { IHttpService } from "../HttpService";
 import Team, { ITeam } from "../../model/team/Team";
-import ActiveTeamList, {
-  IActiveTeamList
-} from "../../model/team/ActiveTeamList";
 import TeamInvite, { ITeamInvite } from "../../model/team/TeamInvite";
 import TeamDetails, { ITeamDetails } from "../../model/team/TeamDetails";
+import ActiveTeam, { IActiveTeam } from "../../model/team/ActiveTeam";
 
 export interface ITeamService {
   createTeam(
@@ -19,7 +17,7 @@ export interface ITeamService {
   ): Promise<any>;
   getAllTeamsForUser(userId: number): Promise<ITeam[]>;
   getAllTeams(): Promise<ITeam[]>;
-  getActiveTeamList(userId: number): Promise<IActiveTeamList[]>;
+  getActiveTeamList(userId: number): Promise<IActiveTeam[]>;
   getTeamInvitesForUser(userId: number): Promise<ITeamInvite[]>;
   getTeamDetails(teamId: number): Promise<ITeamDetails>;
   updateTeamDetails(team: ITeam): Promise<any>;
@@ -46,8 +44,8 @@ const TeamService = ({ httpService }): ITeamService => {
     return data.map(item => Team(item));
   };
 
-  const buildActiveTeamList = (data: any): IActiveTeamList[] => {
-    return data.map(item => ActiveTeamList(item));
+  const buildActiveTeamList = (data: any): IActiveTeam[] => {
+    return data.map(item => ActiveTeam(item));
   };
 
   const buildTeamInvitesList = (data: any): ITeamInvite[] => {

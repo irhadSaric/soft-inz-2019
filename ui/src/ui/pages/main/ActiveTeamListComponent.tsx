@@ -1,34 +1,26 @@
 import * as React from "react";
-import { Menu, Dropdown, Icon } from "antd";
-import { IActiveTeamList } from "../../../model/team/ActiveTeamList";
+import { Select } from "antd";
+import { IActiveTeam } from "../../../model/team/ActiveTeam";
 
-const renderActiveTeamList = (activeTeamList: IActiveTeamList[]) => {
-  return (
-    <Menu>
-      {activeTeamList.map(activeTeam => (
-        <Menu.Item key={activeTeam.teamId}>{activeTeam.teamName}
-        <a href = "/team/{{teamId}}"/></Menu.Item>
-      ))}
-    </Menu>
-  );
-};
+const { Option } = Select;
 
 const ActiveTeamListComponent = ({
   translate,
-  activeTeamList
+  activeTeamList,
+  showTeamPage
 }: {
   translate: any;
-  activeTeamList: IActiveTeamList[];
+  activeTeamList: IActiveTeam[];
+  showTeamPage: any;
 }) => {
   return (
-    <Dropdown
-      overlay={renderActiveTeamList(activeTeamList)}
-      trigger={["click"]}
-    >
-      <a className="ant-dropdown-link" href="#">
-        Active team list <Icon type="down" />
-      </a>
-    </Dropdown>
+    <div style={{ display: "flex", flexDirection: "column" }}>
+      <h3>Active team list</h3>
+      <Select style={{ width: 150 }} onChange={showTeamPage} placeholder={"Choose active team"}>
+        {activeTeamList.map(activeTeam => <Option value={activeTeam.teamId}>{activeTeam.teamName}</Option>)}
+      </Select>
+    </div>
+
   );
 };
 

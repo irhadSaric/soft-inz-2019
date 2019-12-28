@@ -1,13 +1,13 @@
 import React from "react";
 import ActiveTeamListComponent from "./ActiveTeamListComponent";
-import { Button, Icon, Modal, Avatar, Divider } from "antd";
+import { Button, Modal, Avatar, Divider } from "antd";
 import Page, { PageProps } from "../Page";
 import { IHomePresenter } from "../../../presenter/main/HomePresenter";
 import CreateTeamForm from "../team/CreateTeamForm";
 import ShowTeamInvitesList from "../team/ShowTeamInvitesList";
 
-export interface Props extends PageProps {}
-export interface State extends IHomePresenter {}
+export interface Props extends PageProps { }
+export interface State extends IHomePresenter { }
 
 export default class HomePage extends React.Component<Props, State> {
   private subscriptionId: number = 0;
@@ -44,7 +44,8 @@ export default class HomePage extends React.Component<Props, State> {
       createTeamValidationErrors,
       teamInvitesForUser,
       respondToPendingInvite,
-      activeTeamList
+      activeTeamList,
+      showTeamPage
     } = this.state;
     return (
       <Page {...this.props} style={{ display: "flex" }}>
@@ -84,11 +85,16 @@ export default class HomePage extends React.Component<Props, State> {
           teamInvitesForUser={teamInvitesForUser}
           respondToPendingInvite={respondToPendingInvite}
         />
-            
+        <Divider
+          style={{ height: "auto", background: "#cccccc" }}
+          type={"vertical"}
+        />
         <ActiveTeamListComponent
           translate={translate}
           activeTeamList={activeTeamList}
+          showTeamPage={showTeamPage}
         />
+
       </Page>
     );
   }

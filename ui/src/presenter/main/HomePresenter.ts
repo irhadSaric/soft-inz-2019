@@ -5,11 +5,11 @@ import CreateTeamInteractor from "../../interactor/team/CreateTeamInteractor";
 import InviteUserToTeamInteractor from "../../interactor/team/InviteUserToTeamInteractor";
 import RespondToPendingInviteInteractor from "../../interactor/team/RespondToPendingInviteInteractor";
 import { ITeam } from "../../model/team/Team";
-import { IActiveTeamList } from "../../model/team/ActiveTeamList";
 import { TTeamInvite, ITeamInvite } from "../../model/team/TeamInvite";
 import GetTeamInvitesForUserInteractor from "../../interactor/team/GetTeamInvitesForUserInteractor";
 import ShowSuccessMessageInteractor from "../../interactor/notifications/ShowSuccessMessageInteractor";
 import ShowErrorMessageInteractor from "../../interactor/notifications/ShowErrorMessageInteractor";
+import { IActiveTeam } from "../../model/team/ActiveTeam";
 
 export interface TCreateTeamPresentationModel {
   description: string;
@@ -30,7 +30,7 @@ export interface THomePresenter extends TLoadingAwarePresenter {
   teamInvitesForUser: ITeamInvite[];
   teamName: string;
   projectDescription: string;
-  activeTeamList: IActiveTeamList[];
+  activeTeamList: IActiveTeam[];
 }
 
 export interface IHomePresenter extends THomePresenter, TPresentable {
@@ -46,7 +46,8 @@ export interface IHomePresenter extends THomePresenter, TPresentable {
   loadTeamList(teamList: ITeam[]): void;
   loadTeamInvitesForUser(teamInvitesForUser: ITeamInvite[]): void;
   respondToPendingInvite(userId: number, teamId: number, accept: boolean): void;
-  loadActiveTeamList(activeTeamList: IActiveTeamList[]): void;
+  loadActiveTeamList(activeTeamList: IActiveTeam[]): void;
+  showTeamPage(teamId: number): void;
 }
 
 export interface TSelectValuePresentationModel {
@@ -227,10 +228,14 @@ const HomePresenter = withStore<IHomePresenter, THomePresenter>(
       });
     };
 
-    const loadActiveTeamList = (activeTeamList: IActiveTeamList[]) => {
+    const loadActiveTeamList = (activeTeamList: IActiveTeam[]) => {
       _store.update({
         activeTeamList
       });
+    };
+
+    const showTeamPage = (teamId: number) => {
+      application.navigator.push({ pathname: `team/${teamId}/details` });
     };
 
     return {
@@ -252,7 +257,8 @@ const HomePresenter = withStore<IHomePresenter, THomePresenter>(
       loadUserProfile,
       loadTeamList,
       loadActiveTeamList,
-      respondToPendingInvite
+      respondToPendingInvite,
+      showTeamPage
     };
   },
   defaultState

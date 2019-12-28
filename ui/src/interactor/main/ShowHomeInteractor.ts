@@ -7,7 +7,6 @@ import { IUserService } from "../../service/user/UserService";
 import { IUser } from "../../model/user/User";
 import { ICredentialsService } from "../../service/authentication/CredentialsService";
 import { ITeamService } from "../../service/team/TeamService";
-import { IActiveTeamList } from "../../model/team/ActiveTeamList";
 import { ITeamInvite } from "../../model/team/TeamInvite";
 
 export default class ShowHomeInteractor {
@@ -63,7 +62,6 @@ export default class ShowHomeInteractor {
 
     this.userService.getUsers().then(this.output && this.output.loadUserList);
 
-
     this.credentialsService
       .getUserIdFromStorage()
       .then(userId =>
@@ -73,7 +71,6 @@ export default class ShowHomeInteractor {
               .then(this.output && this.output.loadActiveTeamList)
           : undefined
       );
-
 
     return this.output;
   }

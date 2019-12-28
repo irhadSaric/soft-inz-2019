@@ -1,5 +1,4 @@
 import Application from "../../Application";
-import { IUserService } from "../../service/user/UserService";
 import TeamPresenter, {
   ITeamPresenter
 } from "../../presenter/team/TeamPresenter";
@@ -16,7 +15,7 @@ export default class ShowTeamInteractor {
     this.teamService = teamService;
   }
 
-  execute() {
+  execute(teamId: number) {
     this.output = TeamPresenter({
       application: this.application,
       initialState: {
@@ -26,9 +25,9 @@ export default class ShowTeamInteractor {
       }
     });
 
-    /*this.teamService
-      .getTeamDetails(4)
-      .then(this.output && this.output.loadTeamDetails);*/
+    this.teamService
+      .getTeamDetails(teamId)
+      .then(this.output && this.output.loadTeamDetails);
 
     return this.output;
   }
