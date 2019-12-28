@@ -4,6 +4,7 @@ import ActiveTeamList, {
   IActiveTeamList
 } from "../../model/team/ActiveTeamList";
 import TeamInvite, { ITeamInvite } from "../../model/team/TeamInvite";
+import TeamDetails, { ITeamDetails } from "../../model/team/TeamDetails";
 
 export interface ITeamService {
   createTeam(
@@ -20,6 +21,8 @@ export interface ITeamService {
   getAllTeams(): Promise<ITeam[]>;
   getActiveTeamList(userId: number): Promise<IActiveTeamList[]>;
   getTeamInvitesForUser(userId: number): Promise<ITeamInvite[]>;
+  getTeamDetails(teamId: number): Promise<ITeamDetails>;
+  updateTeamDetails(team: ITeam): Promise<any>;
   respondToPendingInvite(
     userId: number,
     teamId: number,
@@ -36,6 +39,8 @@ const TeamService = ({ httpService }): ITeamService => {
   const _active: string = "/active";
   const _pending: string = "/pending";
   const _respond: string = "/respond";
+  const _details: string = "/details";
+  const _edit: string = "/edit";
 
   const buildTeamList = (data: any): ITeam[] => {
     return data.map(item => Team(item));
@@ -47,6 +52,10 @@ const TeamService = ({ httpService }): ITeamService => {
 
   const buildTeamInvitesList = (data: any): ITeamInvite[] => {
     return data.map(item => TeamInvite(item));
+  };
+
+  const buildTeamDetailsList = (data: any): ITeamDetails[] => {
+    return data.map(item => TeamDetails(item));
   };
 
   return {
@@ -101,6 +110,24 @@ const TeamService = ({ httpService }): ITeamService => {
       const response = await _http.get(path);
       const responseJSON = await _http.toJSON(response);
       return buildTeamInvitesList(responseJSON);
+    },
+    async getTeamDetails(teamId: number) {
+      const path = _http.buildPath(_basePath, teamId.toString(), _details);
+      const response = await _http.get(path);
+      const responseJSON = await _http.toJSON(response);
+      return TeamDetails(responseJSON);
+    },
+    async updateTeamDetails(team: ITeam) {
+      const path = _http.buildPath(_basePath, team.id.toString());
+      const response = await _http.put(path, {
+        params: {
+          name: team.name,
+          description: team.description,
+          id: team.id
+        }
+      });
+      const responseJSON = await _http.toJSON(response);
+      return Team(responseJSON);
     },
     async respondToPendingInvite(
       userId: number,
