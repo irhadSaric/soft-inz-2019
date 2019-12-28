@@ -6,7 +6,8 @@ const renderActiveTeamList = (activeTeamList: IActiveTeamList[]) => {
   return (
     <Menu>
       {activeTeamList.map(activeTeam => (
-        <Menu.Item key={activeTeam.teamId}>{activeTeam.teamName}</Menu.Item>
+        <Menu.Item key={activeTeam.teamId}>{activeTeam.teamName}
+        <a href = "/team/{{teamId}}"/></Menu.Item>
       ))}
     </Menu>
   );

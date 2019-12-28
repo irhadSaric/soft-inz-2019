@@ -6,10 +6,7 @@ import InviteUserToTeamInteractor from "../../interactor/team/InviteUserToTeamIn
 import RespondToPendingInviteInteractor from "../../interactor/team/RespondToPendingInviteInteractor";
 import { ITeam } from "../../model/team/Team";
 import { IActiveTeamList } from "../../model/team/ActiveTeamList";
-import {
-  TTeamInvite,
-  ITeamInvite
-} from "../../model/team/TeamInvite";
+import { TTeamInvite, ITeamInvite } from "../../model/team/TeamInvite";
 import GetTeamInvitesForUserInteractor from "../../interactor/team/GetTeamInvitesForUserInteractor";
 import ShowSuccessMessageInteractor from "../../interactor/notifications/ShowSuccessMessageInteractor";
 import ShowErrorMessageInteractor from "../../interactor/notifications/ShowErrorMessageInteractor";
@@ -47,9 +44,9 @@ export interface IHomePresenter extends THomePresenter, TPresentable {
   loadUserProfile(userProfile: IUser): void; // proba
   inviteUserToTeam(invitedUserId: number, teamId: number, userId: number): void;
   loadTeamList(teamList: ITeam[]): void;
-  loadActiveTeamList(activeTeamList: IActiveTeamList[]): void;
   loadTeamInvitesForUser(teamInvitesForUser: ITeamInvite[]): void;
   respondToPendingInvite(userId: number, teamId: number, accept: boolean): void;
+  loadActiveTeamList(activeTeamList: IActiveTeamList[]): void;
 }
 
 export interface TSelectValuePresentationModel {
@@ -68,7 +65,7 @@ const defaultState: THomePresenter = {
   teamInvitesForUser: [],
   teamName: "",
   projectDescription: "",
-  activeTeamList: [] 
+  activeTeamList: []
 };
 
 const HomePresenter = withStore<IHomePresenter, THomePresenter>(
@@ -132,9 +129,7 @@ const HomePresenter = withStore<IHomePresenter, THomePresenter>(
       });
     };
 
-    const loadTeamInvitesForUser = (
-      teamInvitesForUser: ITeamInvite[]
-    ) => {
+    const loadTeamInvitesForUser = (teamInvitesForUser: ITeamInvite[]) => {
       return _store.update({
         teamInvitesForUser
       });
@@ -216,12 +211,6 @@ const HomePresenter = withStore<IHomePresenter, THomePresenter>(
         .execute(invitedUserId, teamId, userId);
     };
 
-
-    const loadActiveTeamList = (activeTeamList: IActiveTeamList[]) => {
-      _store.update({
-        activeTeamList
-    });
-      
     const respondToPendingInvite = async (
       userId: number,
       teamId: number,
@@ -235,7 +224,12 @@ const HomePresenter = withStore<IHomePresenter, THomePresenter>(
         .execute(userId);
       _store.update({
         teamInvitesForUser: invites
+      });
+    };
 
+    const loadActiveTeamList = (activeTeamList: IActiveTeamList[]) => {
+      _store.update({
+        activeTeamList
       });
     };
 
@@ -257,11 +251,13 @@ const HomePresenter = withStore<IHomePresenter, THomePresenter>(
       loadTeamInvitesForUser,
       loadUserProfile,
       loadTeamList,
-      loadActiveTeamList
+      loadActiveTeamList,
       respondToPendingInvite
     };
   },
   defaultState
 );
+
+//};
 
 export default HomePresenter;

@@ -42,9 +42,9 @@ export default class HomePage extends React.Component<Props, State> {
       projectDescription,
       createTeam,
       createTeamValidationErrors,
-      activeTeamList,
       teamInvitesForUser,
-      respondToPendingInvite
+      respondToPendingInvite,
+      activeTeamList
     } = this.state;
     return (
       <Page {...this.props} style={{ display: "flex" }}>
@@ -58,7 +58,7 @@ export default class HomePage extends React.Component<Props, State> {
             onOk={createTeam}
             onCancel={onCancelTeamModalButtonClick}
             maskClosable={false}
-          />
+          >
             <Avatar style={{ marginLeft: 50 }} size={150} icon="team" />
             <Button style={{ marginLeft: 30 }} type={"link"}>
               Upload photo

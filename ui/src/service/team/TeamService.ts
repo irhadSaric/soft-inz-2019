@@ -3,9 +3,7 @@ import Team, { ITeam } from "../../model/team/Team";
 import ActiveTeamList, {
   IActiveTeamList
 } from "../../model/team/ActiveTeamList";
-import TeamInvite, {
-  ITeamInvite
-} from "../../model/team/TeamInvite";
+import TeamInvite, { ITeamInvite } from "../../model/team/TeamInvite";
 
 export interface ITeamService {
   createTeam(
@@ -43,9 +41,9 @@ const TeamService = ({ httpService }): ITeamService => {
     return data.map(item => Team(item));
   };
 
-
   const buildActiveTeamList = (data: any): IActiveTeamList[] => {
     return data.map(item => ActiveTeamList(item));
+  };
 
   const buildTeamInvitesList = (data: any): ITeamInvite[] => {
     return data.map(item => TeamInvite(item));
@@ -90,12 +88,13 @@ const TeamService = ({ httpService }): ITeamService => {
       const responseJSON = await _http.toJSON(response);
       return buildTeamList(responseJSON);
     },
-  
+
     async getActiveTeamList(userId: number) {
       const path = _http.buildPath(_basePath, _active, userId.toString());
       const response = await _http.get(path);
       const responseJSON = await _http.toJSON(response);
       return buildActiveTeamList(responseJSON);
+    },
 
     async getTeamInvitesForUser(userId: number) {
       const path = _http.buildPath(_basePath, _pending, userId.toString());
