@@ -16,7 +16,6 @@ export interface ITeamPresenter extends TTeamPresenter, TPresentable {
   onEditBtnClick(): void;
   onCancelBtnClick(): void;
   onChangeTeamData(key: string, value: any): void;
-  onChangeTeamDescriptionValue(value: string): void;
   updateTeamDetails(): void;
 }
 
@@ -82,15 +81,6 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
       editValidationErrors && validateEditTeamForm();
     };
 
-    const onChangeTeamDescriptionValue = (value: string) => {
-      _store.update({
-        description: value
-      });
-      const editValidationErrors = _store.getState<TTeamPresenter>()
-        .editValidationErrors;
-      editValidationErrors && validateEditTeamForm();
-    };
-
     const updateTeamDetails = async () => {
       validateEditTeamForm();
       const editValidationErrors = _store.getState<TTeamPresenter>()
@@ -98,8 +88,7 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
       if (
         !(
           editValidationErrors.name.length ||
-          editValidationErrors.description.length ||
-          editValidationErrors.lastUpdate.length
+          editValidationErrors.description.length
         )
       ) {
         try {
@@ -136,7 +125,6 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
       onEditBtnClick,
       onCancelBtnClick,
       onChangeTeamData,
-      onChangeTeamDescriptionValue,
       updateTeamDetails
     };
   },

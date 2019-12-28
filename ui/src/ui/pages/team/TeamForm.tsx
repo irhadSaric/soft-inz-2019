@@ -12,7 +12,6 @@ const TeamForm = ({
   editButtonDisabled,
   validationErrors,
   onChangeTeamData,
-  onChangeTeamDescription,
   updateTeamDetails,
 }: {
   translate: any,
@@ -24,7 +23,6 @@ const TeamForm = ({
   validationErrors: any;
   updateTeamDetails: any
   onChangeTeamData(key: string, value: any): void;
-  onChangeTeamDescription(value: string): void;
 }) => {
   const checkValidationErrors = (fieldName: string) => {
     return validationErrors && validationErrors[fieldName].length > 0;
@@ -89,7 +87,7 @@ const TeamForm = ({
             <Input.TextArea
               placeholder={"Description"}
               value={teamDetails.description}
-              onChange={e => onChangeTeamDescription(e.target.value)}
+              onChange={e => onChangeTeamData("description", e.target.value)}
               autosize={{ minRows: 4 }}
               style={{ marginTop: 20 }}
               readOnly={!isEditable}

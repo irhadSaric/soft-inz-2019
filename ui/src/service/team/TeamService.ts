@@ -101,7 +101,7 @@ const TeamService = ({ httpService }): ITeamService => {
       return TeamDetails(responseJSON);
     },
     async updateTeamDetails(team: ITeam) {
-      const path = _http.buildPath(_basePath, team.id.toString());
+      const path = _http.buildPath(_basePath, team.id.toString(), _edit);
       const response = await _http.put(path, {
         params: {
           name: team.name,
