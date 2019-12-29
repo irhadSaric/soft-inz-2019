@@ -57,6 +57,7 @@ import TeamService from "../service/team/TeamService";
 import InviteUserToTeamInteractor from "../interactor/team/InviteUserToTeamInteractor";
 import RespondToPendingInviteInteractor from "../interactor/team/RespondToPendingInviteInteractor";
 import GetTeamInvitesForUserInteractor from "../interactor/team/GetTeamInvitesForUserInteractor";
+import ProjectService from "../service/project/ProjectService";
 
 //const DEFAULT_CACHE_TIMEOUT_MS = 15000;
 const ModuleContainer = (application: Application): IModuleContainer => {
@@ -128,7 +129,8 @@ const ModuleContainer = (application: Application): IModuleContainer => {
     authenticationService: asFunction(AuthenticationService),
     credentialsService: asFunction(CredentialsService),
     codebookService: asFunction(CodebookService),
-    teamService: asFunction(TeamService)
+    teamService: asFunction(TeamService),
+    projectService: asFunction(ProjectService)
   });
 
   //areas
@@ -136,6 +138,7 @@ const ModuleContainer = (application: Application): IModuleContainer => {
     homeArea: asClass(HomeArea).singleton(),
     userArea: asClass(UserArea).singleton(),
     teamArea: asClass(TeamArea).singleton(),
+    //projectArea: asClass(ProjectArea).singleton(),
     authenticationArea: asClass(AuthenticationArea)
   });
 
@@ -162,6 +165,7 @@ const ModuleContainer = (application: Application): IModuleContainer => {
     inviteUserToTeam: asInteractor(InviteUserToTeamInteractor),
     respondToPendingInvite: asInteractor(RespondToPendingInviteInteractor),
     getTeamInvitesForUser: asInteractor(GetTeamInvitesForUserInteractor)
+    //showProject: asInteractor(ShowProjectInteractor)
   });
 
   return {

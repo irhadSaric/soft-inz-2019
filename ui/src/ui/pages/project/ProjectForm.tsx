@@ -108,7 +108,7 @@ const ProjectForm = ({
             <Input
               addonBefore={<Text>Deadline</Text>}
               placeholder={"Deadline"}
-              value={project.endDate}
+              //value={project.endDate}
               //onChange={e => onChangeUserData("email", e.target.value)}
               allowClear={true}
               style={{ marginTop: 20, width: 400 }}

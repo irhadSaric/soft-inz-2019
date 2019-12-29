@@ -6,10 +6,10 @@ import CreateTeamInteractor from "../../interactor/team/CreateTeamInteractor";
 
 export interface TProject {
   description: string;
-  endDate: number;
+  endDate: Date;
   id: number;
   name: string;
-  startDate: number;
+  startDate: Date;
   status: IStatus;
   team: ITeam;
 }
