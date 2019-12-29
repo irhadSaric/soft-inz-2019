@@ -2,6 +2,7 @@ import * as React from "react";
 import { Avatar, Button, Divider, Input, Form, List } from "antd";
 import Text from "antd/lib/typography/Text";
 import { ITeamDetails } from "../../../model/team/TeamDetails";
+import { IStatus } from "../../../model/status/Status";
 
 const TeamForm = ({
   teamDetails,
@@ -12,6 +13,16 @@ const TeamForm = ({
   validationErrors,
   onChangeTeamData,
   onChangeTeamDescription,
+  createProject,
+  isCreateProjectModalVisible,
+  projectStatus,
+  projectName,
+  projectDescription,
+  projectEndDate,
+  onChangeProjectNameValue,
+  onChangeProjectDescriptionValue,
+  onChangeProjectEndDateValue,
+  onChangeProjectStatusValue
 }: {
   teamDetails: ITeamDetails;
   isEditable: boolean;
@@ -19,22 +30,25 @@ const TeamForm = ({
   onCancelBtnClick: any;
   editButtonDisabled: boolean;
   validationErrors: any;
+  projectStatus: IStatus;
+  projectEndDate: Date;
+  projectDescription: string;
+  projectName: string;
+  isCreateProjectModalVisible: boolean;
   onChangeTeamData(key: string, value: any): void;
   onChangeTeamDescription(value: string): void;
+  createProject(): void;
+  onChangeProjectNameValue(value: string): void;
+  onChangeProjectDescriptionValue(value: string): void;
+  onChangeProjectStatusValue(value: IStatus): void;
+  onChangeProjectEndDateValue(value: Date): void;
 }) => {
   const checkValidationErrors = (fieldName: string) => {
     return validationErrors && validationErrors[fieldName].length > 0;
   };
   console.log(teamDetails);
-  const data = [
-    'Project 1.',
-    'Project 2.',
-  ];
-  const data2 = [
-    'User 1.',
-    'User 2.',
-    'User 3.',
-  ];
+  const data = ["Project 1.", "Project 2."];
+  const data2 = ["User 1.", "User 2.", "User 3."];
   return (
     <div
       style={{
@@ -56,9 +70,7 @@ const TeamForm = ({
       <div style={{ display: "flex", flexDirection: "column" }}>
         <Form>
           <Form.Item
-            validateStatus={
-              checkValidationErrors("name") ? "error" : undefined
-            }
+            validateStatus={checkValidationErrors("name") ? "error" : undefined}
           >
             <div className={"form-item"}>
               <Input
@@ -83,19 +95,19 @@ const TeamForm = ({
             }
           >
             <div className={"form-item"}>
-            <Input.TextArea
-              placeholder={"Description"}
-              value={teamDetails.description}
-              onChange={e => onChangeTeamDescription(e.target.value)}
-              autosize={{ minRows: 4 }}
-              style={{ marginTop: 20 }}
-              readOnly={!isEditable}
-            />
+              <Input.TextArea
+                placeholder={"Description"}
+                value={teamDetails.description}
+                onChange={e => onChangeTeamDescription(e.target.value)}
+                autosize={{ minRows: 4 }}
+                style={{ marginTop: 20 }}
+                readOnly={!isEditable}
+              />
             </div>
           </Form.Item>
           <Form.Item>
             <div className={"form-item"}>
-              <h3 style={{ margin: '16px 0' }}>Projects</h3>
+              <h3 style={{ margin: "16px 0" }}>Projects</h3>
               <List
                 size="small"
                 bordered
@@ -106,7 +118,7 @@ const TeamForm = ({
           </Form.Item>
           <Form.Item>
             <div className={"form-item"}>
-              <h3 style={{ margin: '16px 0' }}>Users</h3>
+              <h3 style={{ margin: "16px 0" }}>Users</h3>
               <List
                 size="small"
                 bordered
@@ -129,10 +141,7 @@ const TeamForm = ({
             <Button type={"link"} onClick={onCancelBtnClick}>
               Cancel
             </Button>
-            <Button
-              type={"primary"}
-              disabled={editButtonDisabled}
-            >
+            <Button type={"primary"} disabled={editButtonDisabled}>
               Save
             </Button>
           </div>

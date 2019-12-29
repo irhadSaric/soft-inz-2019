@@ -33,7 +33,17 @@ export default class TeamPage extends React.Component<Props, State> {
       editButtonDisabled,
       editValidationErrors,
       onChangeTeamData,
-      onChangeTeamDescriptionValue
+      onChangeTeamDescriptionValue,
+      isCreateProjectModalVisible,
+      createProject,
+      projectDescription,
+      projectEndDate,
+      projectName,
+      projectStatus,
+      onChangeProjectNameValue,
+      onChangeProjectDescriptionValue,
+      onChangeProjectEndDateValue,
+      onChangeProjectStatusValue
     } = this.state;
     return (
       <Page
@@ -49,6 +59,16 @@ export default class TeamPage extends React.Component<Props, State> {
           validationErrors={editValidationErrors}
           onChangeTeamData={onChangeTeamData}
           onChangeTeamDescription={onChangeTeamDescriptionValue}
+          isCreateProjectModalVisible={isCreateProjectModalVisible}
+          createProject={createProject}
+          projectDescription={projectDescription}
+          projectEndDate={projectEndDate}
+          projectName={projectName}
+          projectStatus={projectStatus}
+          onChangeProjectNameValue={onChangeProjectNameValue}
+          onChangeProjectDescriptionValue={onChangeProjectDescriptionValue}
+          onChangeProjectEndDateValue={onChangeProjectEndDateValue}
+          onChangeProjectStatusValue={onChangeProjectStatusValue}
         />
       </Page>
     );

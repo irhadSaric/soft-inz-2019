@@ -1,12 +1,21 @@
 import withStore, { TLoadingAwarePresenter, TPresentable } from "../withStore";
 import Application from "../../Application";
 import { ITeamDetails } from "../../model/team/TeamDetails";
+import { IStatus } from "../../model/status/Status";
+import CreateProjectInteractor from "../../interactor/project/CreateProjectInteractor";
+import ShowSuccessMessageInteractor from "../../interactor/notifications/ShowSuccessMessageInteractor";
+import ShowErrorMessageInteractor from "../../interactor/notifications/ShowErrorMessageInteractor";
 
 export interface TTeamPresenter extends TLoadingAwarePresenter {
   teamDetails: ITeamDetails;
   isEditableForm: boolean;
   editValidationErrors?: any;
   editButtonDisabled: boolean;
+  isCreateProjectModalVisible: boolean;
+  projectName: string;
+  projectDescription: string;
+  projectStatus: IStatus;
+  projectEndDate: Date;
 }
 export interface ITeamPresenter extends TTeamPresenter, TPresentable {
   loadTeamDetails(teamDetails: ITeamDetails): void;
@@ -14,13 +23,25 @@ export interface ITeamPresenter extends TTeamPresenter, TPresentable {
   onCancelBtnClick(): void;
   onChangeTeamData(key: string, value: any): void;
   onChangeTeamDescriptionValue(value: string): void;
+  createProject(): void;
+  onCreateProjectBtnClick(): void;
+  onCancelProjectModalButtonClick(): void;
+  onChangeProjectNameValue(value: string): void;
+  onChangeProjectDescriptionValue(value: string): void;
+  onChangeProjectStatusValue(value: IStatus): void;
+  onChangeProjectEndDateValue(value: Date): void;
 }
 
 const defaultState: TTeamPresenter = {
   teamDetails: {} as ITeamDetails,
   isEditableForm: false,
   editValidationErrors: undefined,
-  editButtonDisabled: false
+  editButtonDisabled: false,
+  isCreateProjectModalVisible: false,
+  projectName: "",
+  projectDescription: "",
+  projectStatus: {} as IStatus,
+  projectEndDate: {} as Date
 };
 
 const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
@@ -32,6 +53,44 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
     const loadTeamDetails = (teamDetails: ITeamDetails) => {
       return _store.update({
         teamDetails
+      });
+    };
+
+    const onCreateProjectBtnClick = () => {
+      _store.update({
+        isCreateProjectModalVisible: true
+      });
+    };
+
+    const onChangeProjectDescriptionValue = (value: string) => {
+      _store.update({
+        projectDescription: value
+      });
+    };
+
+    const onChangeProjectNameValue = (value: string) => {
+      _store.update({
+        projectName: value
+      });
+    };
+
+    const onChangeProjectStatusValue = (value: IStatus) => {
+      _store.update({
+        projectStatus: value
+      });
+    };
+
+    const onChangeProjectEndDateValue = (value: Date) => {
+      _store.update({
+        projectEndDate: value
+      });
+    };
+
+    const onCancelProjectModalButtonClick = () => {
+      _store.update({
+        isCreateTeamModalVisible: false,
+        projectName: "",
+        projectDescription: ""
       });
     };
 
@@ -86,6 +145,38 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
       editValidationErrors && validateEditTeamForm();
     };
 
+    const createProject = async () => {
+      try {
+        loader.start("createProjectLoader");
+        const projectDescription = _store.getState<TTeamPresenter>()
+          .projectDescription;
+        const projectName = _store.getState<TTeamPresenter>().projectName;
+        const projectEndDate = _store.getState<TTeamPresenter>().projectEndDate;
+        const projectStatus = _store.getState<TTeamPresenter>().projectStatus;
+        const response = await _application.container
+          .resolve<CreateProjectInteractor>("createProject")
+          .execute(
+            projectDescription,
+            projectEndDate,
+            projectName,
+            projectStatus,
+            15
+          );
+        loader.stop("createProjectLoader");
+        _application.container
+          .resolve<ShowSuccessMessageInteractor>("showSuccessMessage")
+          .execute("Uspješno ste kreirali projekt");
+        _store.update({
+          isCreateProjectModalVisible: false
+        });
+      } catch (error) {
+        loader.stop("createProjectLoader");
+        _application.container
+          .resolve<ShowErrorMessageInteractor>("showErrorMessage")
+          .execute(error.message);
+      }
+    };
+
     return {
       ...state,
       store: _store,
@@ -96,7 +187,14 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
       onEditBtnClick,
       onCancelBtnClick,
       onChangeTeamData,
-      onChangeTeamDescriptionValue
+      onChangeTeamDescriptionValue,
+      createProject,
+      onCancelProjectModalButtonClick,
+      onCreateProjectBtnClick,
+      onChangeProjectDescriptionValue,
+      onChangeProjectEndDateValue,
+      onChangeProjectNameValue,
+      onChangeProjectStatusValue
     };
   },
   defaultState
