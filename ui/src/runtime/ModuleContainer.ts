@@ -59,6 +59,8 @@ import RespondToPendingInviteInteractor from "../interactor/team/RespondToPendin
 import GetTeamInvitesForUserInteractor from "../interactor/team/GetTeamInvitesForUserInteractor";
 import ProjectService from "../service/project/ProjectService";
 import ProjectArea from "../areas/ProjectArea";
+import UpdateTeamDetailsInteractor from "../interactor/team/UpdateTeamDetailsInteractor";
+import ShowProjectInteractor from "../interactor/project/ShowProjectInteractor";
 
 //const DEFAULT_CACHE_TIMEOUT_MS = 15000;
 const ModuleContainer = (application: Application): IModuleContainer => {
@@ -165,8 +167,9 @@ const ModuleContainer = (application: Application): IModuleContainer => {
     createTeam: asInteractor(CreateTeamInteractor),
     inviteUserToTeam: asInteractor(InviteUserToTeamInteractor),
     respondToPendingInvite: asInteractor(RespondToPendingInviteInteractor),
-    getTeamInvitesForUser: asInteractor(GetTeamInvitesForUserInteractor)
-    //showProject: asInteractor(ShowProjectInteractor)
+    getTeamInvitesForUser: asInteractor(GetTeamInvitesForUserInteractor),
+    showProject: asInteractor(ShowProjectInteractor),
+    updateTeamDetails: asInteractor(UpdateTeamDetailsInteractor)
   });
 
   return {

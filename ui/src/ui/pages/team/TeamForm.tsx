@@ -5,14 +5,15 @@ import { ITeamDetails } from "../../../model/team/TeamDetails";
 import { IStatus } from "../../../model/status/Status";
 
 const TeamForm = ({
+  translate,
   teamDetails,
   isEditable,
   onEditBtnClick,
   onCancelBtnClick,
   editButtonDisabled,
   validationErrors,
+  isLoading,
   onChangeTeamData,
-  onChangeTeamDescription,
   createProject,
   isCreateProjectModalVisible,
   projectStatus,
@@ -22,8 +23,10 @@ const TeamForm = ({
   onChangeProjectNameValue,
   onChangeProjectDescriptionValue,
   onChangeProjectEndDateValue,
-  onChangeProjectStatusValue
+  onChangeProjectStatusValue,
+  updateTeamDetails
 }: {
+  translate: any;
   teamDetails: ITeamDetails;
   isEditable: boolean;
   onEditBtnClick: any;
@@ -36,17 +39,18 @@ const TeamForm = ({
   projectName: string;
   isCreateProjectModalVisible: boolean;
   onChangeTeamData(key: string, value: any): void;
-  onChangeTeamDescription(value: string): void;
   createProject(): void;
   onChangeProjectNameValue(value: string): void;
   onChangeProjectDescriptionValue(value: string): void;
   onChangeProjectStatusValue(value: IStatus): void;
   onChangeProjectEndDateValue(value: Date): void;
+  isLoading: boolean;
+  updateTeamDetails: any;
+  onChangeTeamData(key: string, value: any): void;
 }) => {
   const checkValidationErrors = (fieldName: string) => {
     return validationErrors && validationErrors[fieldName].length > 0;
   };
-  console.log(teamDetails);
   const data = ["Project 1.", "Project 2."];
   const data2 = ["User 1.", "User 2.", "User 3."];
   return (
@@ -98,7 +102,7 @@ const TeamForm = ({
               <Input.TextArea
                 placeholder={"Description"}
                 value={teamDetails.description}
-                onChange={e => onChangeTeamDescription(e.target.value)}
+                onChange={e => onChangeTeamData("description", e.target.value)}
                 autosize={{ minRows: 4 }}
                 style={{ marginTop: 20 }}
                 readOnly={!isEditable}
@@ -141,7 +145,12 @@ const TeamForm = ({
             <Button type={"link"} onClick={onCancelBtnClick}>
               Cancel
             </Button>
-            <Button type={"primary"} disabled={editButtonDisabled}>
+            <Button
+              type={"primary"}
+              loading={isLoading}
+              disabled={editButtonDisabled}
+              onClick={updateTeamDetails}
+            >
               Save
             </Button>
           </div>

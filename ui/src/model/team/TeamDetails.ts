@@ -6,7 +6,7 @@ export interface TTeamDetails {
   name: string;
   description: string;
   creationDate: Date;
-  lastUpdate: Date;
+  lastUpdated: Date;
 }
 
 export interface ITeamDetails extends TTeamDetails {}
@@ -24,17 +24,32 @@ const TeamDetails = Model(
       get id() {
         return _team.id;
       },
+      set id(value) {
+        _team.id = value;
+      },
       get name() {
         return _team.name;
+      },
+      set name(value) {
+        _team.name = value;
       },
       get description() {
         return _team.description;
       },
+      set description(value) {
+        _team.description = value;
+      },
       get creationDate() {
         return _team.creationDate;
       },
-      get lastUpdate() {
-        return _team.lastUpdate;
+      set creationDate(value) {
+        _team.creationDate = value;
+      },
+      get lastUpdated() {
+        return _team.lastUpdated;
+      },
+      set lastUpdated(value) {
+        _team.lastUpdated = value;
       }
     };
 

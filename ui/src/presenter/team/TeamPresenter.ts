@@ -3,6 +3,7 @@ import Application from "../../Application";
 import { ITeamDetails } from "../../model/team/TeamDetails";
 import { IStatus } from "../../model/status/Status";
 import CreateProjectInteractor from "../../interactor/project/CreateProjectInteractor";
+import UpdateTeamDetailsInteractor from "../../interactor/team/UpdateTeamDetailsInteractor";
 import ShowSuccessMessageInteractor from "../../interactor/notifications/ShowSuccessMessageInteractor";
 import ShowErrorMessageInteractor from "../../interactor/notifications/ShowErrorMessageInteractor";
 
@@ -22,7 +23,6 @@ export interface ITeamPresenter extends TTeamPresenter, TPresentable {
   onEditBtnClick(): void;
   onCancelBtnClick(): void;
   onChangeTeamData(key: string, value: any): void;
-  onChangeTeamDescriptionValue(value: string): void;
   createProject(): void;
   onCreateProjectBtnClick(): void;
   onCancelProjectModalButtonClick(): void;
@@ -30,6 +30,7 @@ export interface ITeamPresenter extends TTeamPresenter, TPresentable {
   onChangeProjectDescriptionValue(value: string): void;
   onChangeProjectStatusValue(value: IStatus): void;
   onChangeProjectEndDateValue(value: Date): void;
+  updateTeamDetails(): void;
 }
 
 const defaultState: TTeamPresenter = {
@@ -130,19 +131,48 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
 
     const onChangeTeamData = (key: string, value: any) => {
       let teamDetails = _store.getState<TTeamPresenter>().teamDetails;
+      teamDetails[key] = value;
       _store.update({ teamDetails });
       const editValidationErrors = _store.getState<TTeamPresenter>()
         .editValidationErrors;
       editValidationErrors && validateEditTeamForm();
     };
 
-    const onChangeTeamDescriptionValue = (value: string) => {
-      _store.update({
-        description: value
-      });
+    const updateTeamDetails = async () => {
+      validateEditTeamForm();
       const editValidationErrors = _store.getState<TTeamPresenter>()
         .editValidationErrors;
-      editValidationErrors && validateEditTeamForm();
+      if (
+        !(
+          editValidationErrors.name.length ||
+          editValidationErrors.description.length
+        )
+      ) {
+        try {
+          loader.start("editTeamLoader");
+          const teamDetails = _store.getState<TTeamPresenter>().teamDetails;
+          _application.container
+            .resolve<UpdateTeamDetailsInteractor>("updateTeamDetails")
+            .execute(teamDetails);
+          loader.stop("editTeamLoader");
+          _application.container
+            .resolve<ShowSuccessMessageInteractor>("showSuccessMessage")
+            .execute("Changes successfully saved");
+          _store.update({
+            teamDetails,
+            isEditableForm: false
+          });
+        } catch (error) {
+          loader.stop("editTeamLoader");
+          _application.container
+            .resolve<ShowErrorMessageInteractor>("showErrorMessage")
+            .execute(error.message);
+        }
+      } else {
+        _store.update({
+          editButtonDisabled: true
+        });
+      }
     };
 
     const createProject = async () => {
@@ -187,14 +217,14 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
       onEditBtnClick,
       onCancelBtnClick,
       onChangeTeamData,
-      onChangeTeamDescriptionValue,
       createProject,
       onCancelProjectModalButtonClick,
       onCreateProjectBtnClick,
       onChangeProjectDescriptionValue,
       onChangeProjectEndDateValue,
       onChangeProjectNameValue,
-      onChangeProjectStatusValue
+      onChangeProjectStatusValue,
+      updateTeamDetails
     };
   },
   defaultState
