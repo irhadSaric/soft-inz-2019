@@ -1,7 +1,6 @@
 import * as React from "react";
 import { ITeamInvite } from "../../../model/team/TeamInvite";
-import { Input, Divider, Popover, Button } from "antd";
-import { IUser } from "../../../model/user/User";
+import { Popover, Button } from "antd";
 
 const ShowTeamInvitesList = ({
   teamInvitesForUser,
@@ -33,15 +32,15 @@ const ShowTeamInvitesList = ({
       }
       title="Do you want to join this team?"
     >
-      <Button type="danger" style={{ marginTop: 20 }}>
+      <Button type="danger">
         {team.teamName}
       </Button>
     </Popover>
   ));
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: 336 }}>
-      <h2>TEAM INVITES</h2>
+    <div style={{ display: "flex", flexDirection: "column" }}>
+      <h3>Team invites</h3>
       {listItems}
     </div>
   );

@@ -22,7 +22,7 @@ export default class TeamArea extends Area implements IArea {
 
   register(params: any) {
     this.router.registerRoutes({
-      path: "/team",
+      path: "/team/:teamId/details",
       page: this.createPage({
         Page: TeamPage,
         action: this.showTeamPage.bind(this)
@@ -31,9 +31,9 @@ export default class TeamArea extends Area implements IArea {
     });
   }
 
-  public showTeamPage() {
+  public showTeamPage(params: any) {
     return this.application.container
       .resolve<ShowTeamInteractor>("showTeam")
-      .execute();
+      .execute(params.teamId);
   }
 }

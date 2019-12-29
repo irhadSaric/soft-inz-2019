@@ -61,7 +61,8 @@ const DateFormats = {
 const StorageKeys = {
   USERNAME: "username",
   PASSWORD: "password",
-  EMAIL: "email"
+  EMAIL: "email",
+  USER_ID: "userId"
 };
 
 export { Topics };

@@ -41,7 +41,8 @@ export default class ShowHomeInteractor {
         selectedUsers: [],
         teamInvitesForUser: [],
         teamName: "",
-        projectDescription: ""
+        projectDescription: "",
+        activeTeamList: []
       }
     });
 
@@ -60,6 +61,16 @@ export default class ShowHomeInteractor {
     });
 
     this.userService.getUsers().then(this.output && this.output.loadUserList);
+
+    this.credentialsService
+      .getUserIdFromStorage()
+      .then(userId =>
+        userId
+          ? this.teamService
+              .getActiveTeamList(userId)
+              .then(this.output && this.output.loadActiveTeamList)
+          : undefined
+      );
 
     return this.output;
   }

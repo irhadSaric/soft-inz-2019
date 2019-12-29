@@ -2,6 +2,7 @@ import { IHttpService } from "../HttpService";
 import Team, { ITeam } from "../../model/team/Team";
 import TeamInvite, { ITeamInvite } from "../../model/team/TeamInvite";
 import TeamDetails, { ITeamDetails } from "../../model/team/TeamDetails";
+import ActiveTeam, { IActiveTeam } from "../../model/team/ActiveTeam";
 
 export interface ITeamService {
   createTeam(
@@ -16,6 +17,7 @@ export interface ITeamService {
   ): Promise<any>;
   getAllTeamsForUser(userId: number): Promise<ITeam[]>;
   getAllTeams(): Promise<ITeam[]>;
+  getActiveTeamList(userId: number): Promise<IActiveTeam[]>;
   getTeamInvitesForUser(userId: number): Promise<ITeamInvite[]>;
   getTeamDetails(teamId: number): Promise<ITeamDetails>;
   updateTeamDetails(team: ITeam): Promise<any>;
@@ -32,6 +34,7 @@ const TeamService = ({ httpService }): ITeamService => {
   const _createTeam: string = "/create-team";
   const _invite: string = "/invite";
   const _all: string = "/all";
+  const _active: string = "/active";
   const _pending: string = "/pending";
   const _respond: string = "/respond";
   const _details: string = "/details";
@@ -39,6 +42,10 @@ const TeamService = ({ httpService }): ITeamService => {
 
   const buildTeamList = (data: any): ITeam[] => {
     return data.map(item => Team(item));
+  };
+
+  const buildActiveTeamList = (data: any): IActiveTeam[] => {
+    return data.map(item => ActiveTeam(item));
   };
 
   const buildTeamInvitesList = (data: any): ITeamInvite[] => {
@@ -88,6 +95,14 @@ const TeamService = ({ httpService }): ITeamService => {
       const responseJSON = await _http.toJSON(response);
       return buildTeamList(responseJSON);
     },
+
+    async getActiveTeamList(userId: number) {
+      const path = _http.buildPath(_basePath, _active, userId.toString());
+      const response = await _http.get(path);
+      const responseJSON = await _http.toJSON(response);
+      return buildActiveTeamList(responseJSON);
+    },
+
     async getTeamInvitesForUser(userId: number) {
       const path = _http.buildPath(_basePath, _pending, userId.toString());
       const response = await _http.get(path);
