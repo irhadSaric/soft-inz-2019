@@ -32,7 +32,7 @@ const ShowTeamInvitesList = ({
       }
       title="Do you want to join this team?"
     >
-      <Button type="danger">
+      <Button type="danger" style={{ marginTop: 20 }}>
         {team.teamName}
       </Button>
     </Popover>

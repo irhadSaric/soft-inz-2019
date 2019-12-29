@@ -58,6 +58,7 @@ import InviteUserToTeamInteractor from "../interactor/team/InviteUserToTeamInter
 import RespondToPendingInviteInteractor from "../interactor/team/RespondToPendingInviteInteractor";
 import GetTeamInvitesForUserInteractor from "../interactor/team/GetTeamInvitesForUserInteractor";
 import ProjectService from "../service/project/ProjectService";
+import ProjectArea from "../areas/ProjectArea";
 
 //const DEFAULT_CACHE_TIMEOUT_MS = 15000;
 const ModuleContainer = (application: Application): IModuleContainer => {
@@ -138,7 +139,7 @@ const ModuleContainer = (application: Application): IModuleContainer => {
     homeArea: asClass(HomeArea).singleton(),
     userArea: asClass(UserArea).singleton(),
     teamArea: asClass(TeamArea).singleton(),
-    //projectArea: asClass(ProjectArea).singleton(),
+    projectArea: asClass(ProjectArea).singleton(),
     authenticationArea: asClass(AuthenticationArea)
   });
 

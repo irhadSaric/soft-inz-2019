@@ -1,11 +1,12 @@
 import React from "react";
-/* import Page, { PageProps } from "../Page";
+import Page, { PageProps } from "../Page";
 import ProjectForm from "./ProjectForm";
+import { IProjectPresenter } from "../../../presenter/project/ProjectPresenter";
 
 export interface Props extends PageProps {}
-//export interface State extends IUserProfilePresenter {}
+export interface State extends IProjectPresenter {}
 
-export default class UserProfilePage extends React.Component<Props, State> {
+export default class ProjectPage extends React.Component<Props, State> {
   private subscriptionId: number = 0;
 
   constructor(props: any) {
@@ -25,16 +26,15 @@ export default class UserProfilePage extends React.Component<Props, State> {
 
   render() {
     const {
-        translate,
-        project,
-        isEditableForm,
-        onEditBtnClick,
-        onCancelBtnClick,
-        editButtonDisabled,
-        //onChangeUserData,
-        isLoading,
-       // updateUserProfile,
-        //validationErrors
+      translate,
+      project,
+      isEditableForm,
+      onEditBtnClick,
+      onCancelBtnClick,
+      editButtonDisabled,
+      editValidationErrors,
+      onChangeProjectData,
+      onChangeProjectDescriptionValue
     } = this.state;
     return (
       <Page
@@ -48,11 +48,11 @@ export default class UserProfilePage extends React.Component<Props, State> {
           onEditBtnClick={onEditBtnClick}
           onCancelBtnClick={onCancelBtnClick}
           editButtonDisabled={editButtonDisabled}
-          isLoading={this.state.loaders.editUserLoader}
+          validationErrors={editValidationErrors}
+          onChangeProjectData={onChangeProjectData}
+          onChangeProjectDescription={onChangeProjectDescriptionValue}
         />
       </Page>
     );
   }
 }
-
- */

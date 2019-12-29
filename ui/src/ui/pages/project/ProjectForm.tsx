@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ICountry } from "../../../model/country/Country";
-import { Avatar, Button, Divider, Input, Select, Form } from "antd";
+import { Avatar, Button, Divider, Input, Select, Form, List } from "antd";
 import { IUser } from "../../../model/user/User";
 import Text from "antd/lib/typography/Text";
 import Project, { IProject } from "../../../model/project/Project";
@@ -12,25 +12,26 @@ const ProjectForm = ({
   onEditBtnClick,
   onCancelBtnClick,
   editButtonDisabled,
-  //onChangeUserData,
-  isLoading
-}: // updateUserProfile,
-//validationErrors
-{
+  validationErrors,
+  onChangeProjectData,
+  onChangeProjectDescription
+}: {
   translate: any;
   project: IProject;
   isEditable: boolean;
   onEditBtnClick: any;
   onCancelBtnClick: any;
   editButtonDisabled: boolean;
-  // onChangeUserData(key: string, value: any): void;
-  isLoading: boolean;
-  //updateUserProfile: any;
-  //validationErrors: any;
+  onChangeProjectData(key: string, value: any): void;
+  onChangeProjectDescription(value: string): void;
+  validationErrors: any;
 }) => {
-  /* const checkValidationErrors = (fieldName: string) => {
+  const checkValidationErrors = (fieldName: string) => {
     return validationErrors && validationErrors[fieldName].length > 0;
-  };*/
+  };
+  console.log(project);
+  const data = ["Iteration 1.", "Iteration 2."];
+  const data2 = ["Backlog 1.", "Backlog 2.", "Backlog 3."];
   return (
     <div
       style={{
@@ -44,9 +45,9 @@ const ProjectForm = ({
     >
       <div style={{ width: 200, display: "flex", flexDirection: "column" }}>
         <Avatar style={{ marginLeft: 20 }} size={150} icon="project" />
-        <Button style={{ marginTop: 10 }} type={"link"}>
+        {/* <Button style={{ marginTop: 10 }} type={"link"}>
           Upload photo
-        </Button>
+        </Button> */}
       </div>
       <Divider
         style={{ height: "auto", background: "#cccccc" }}
@@ -54,50 +55,42 @@ const ProjectForm = ({
       />
       <div style={{ display: "flex", flexDirection: "column" }}>
         <Form>
-          {/* <Form.Item
-            validateStatus={
-              checkValidationErrors("firstName") ? "error" : undefined
-            }
-          > */}
-          <div className={"form-item"}>
-            <Input
-              addonBefore={<Text>Name</Text>}
-              placeholder={"Project Name"}
-              value={project.name}
-              //onChange={e => onChangeUserData("firstName", e.target.value)}
-              allowClear={true}
-              style={{ marginTop: 20, width: 400 }}
-              readOnly={!isEditable}
-            />
-            {/* {checkValidationErrors("firstName") && (
+          <Form.Item
+            validateStatus={checkValidationErrors("name") ? "error" : undefined}
+          >
+            <div className={"form-item"}>
+              <Input
+                addonBefore={<Text>Project Name</Text>}
+                placeholder={"Project Name"}
+                value={project.name}
+                onChange={e => onChangeProjectData("name", e.target.value)}
+                allowClear={true}
+                style={{ marginTop: 20, width: 400 }}
+                readOnly={!isEditable}
+              />
+              {checkValidationErrors("name") && (
                 <Text className={"error-text"}>
-                  {validationErrors["firstName"][0]}
+                  {validationErrors["name"][0]}
                 </Text>
-              )} */}
-          </div>
-          {/* </Form.Item> */}
-          {/* <Form.Item
+              )}
+            </div>
+          </Form.Item>
+          <Form.Item
             validateStatus={
-              checkValidationErrors("lastName") ? "error" : undefined
+              checkValidationErrors("description") ? "error" : undefined
             }
-          > */}
-          <div className={"form-item"}>
-            <Input
-              addonBefore={<Text>Description</Text>}
-              placeholder={"Description"}
-              value={project.description}
-              //onChange={e => onChangeUserData("lastName", e.target.value)}
-              allowClear={true}
-              style={{ marginTop: 20, width: 400 }}
-              readOnly={!isEditable}
-            />
-            {/* {  {checkValidationErrors("lastName") && (
-                <Text className={"error-text"}>
-                  {validationErrors["lastName"][0]}
-                </Text>
-              )} */}
-          </div>
-          {/*  </Form.Item> */}
+          >
+            <div className={"form-item"}>
+              <Input.TextArea
+                placeholder={"Description"}
+                value={project.description}
+                onChange={e => onChangeProjectDescription(e.target.value)}
+                autosize={{ minRows: 4 }}
+                style={{ marginTop: 20 }}
+                readOnly={!isEditable}
+              />
+            </div>
+          </Form.Item>
 
           {/* <Form.Item
             validateStatus={
@@ -121,8 +114,28 @@ const ProjectForm = ({
               )} */}
           </div>
           {/* </Form.Item> */}
-          {/* iteracije
-          backlog */}
+          <Form.Item>
+            <div className={"form-item"}>
+              <h3 style={{ margin: "16px 0" }}>Iterations</h3>
+              <List
+                size="small"
+                bordered
+                dataSource={data}
+                renderItem={item => <List.Item>{item}</List.Item>}
+              />
+            </div>
+          </Form.Item>
+          <Form.Item>
+            <div className={"form-item"}>
+              <h3 style={{ margin: "16px 0" }}>Backlog</h3>
+              <List
+                size="small"
+                bordered
+                dataSource={data2}
+                renderItem={item => <List.Item>{item}</List.Item>}
+              />
+            </div>
+          </Form.Item>
         </Form>
 
         {isEditable && (
@@ -139,7 +152,6 @@ const ProjectForm = ({
             </Button>
             <Button
               type={"primary"}
-              loading={isLoading}
               disabled={editButtonDisabled}
               //onClick={updateUserProfile}
             >
