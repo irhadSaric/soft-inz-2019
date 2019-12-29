@@ -95,4 +95,9 @@ public class ProjectService {
         projectRepository.save(project);
         return project;
     }
+
+    @Transactional
+    public List<Project> getAllProjectsForTeam(Long id) {
+        return projectRepository.getAllByTeamId(id);
+    }
 }
