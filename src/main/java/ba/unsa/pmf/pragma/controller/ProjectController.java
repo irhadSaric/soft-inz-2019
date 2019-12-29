@@ -44,5 +44,10 @@ public class ProjectController {
         return projectService.getAllIterationsForProject(id);
     }
 
+    @GetMapping("/team/{id}")
+    public List<Project> getAllProjectsForTeam(@PathVariable("id") Long id){
+        return projectService.getAllProjectsForTeam(id);
+    }
+
 
 }
