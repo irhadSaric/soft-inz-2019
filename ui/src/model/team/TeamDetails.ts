@@ -6,7 +6,7 @@ export interface TTeamDetails {
   name: string;
   description: string;
   creationDate: Date;
-  lastUpdate: Date;
+  lastUpdated: Date;
 }
 
 export interface ITeamDetails extends TTeamDetails {}
@@ -45,11 +45,11 @@ const TeamDetails = Model(
       set creationDate(value) {
         _team.creationDate = value;
       },
-      get lastUpdate() {
-        return _team.lastUpdate;
+      get lastUpdated() {
+        return _team.lastUpdated;
       },
-      set lastUpdate(value) {
-        _team.lastUpdate = value;
+      set lastUpdated(value) {
+        _team.lastUpdated = value;
       }
     };
 

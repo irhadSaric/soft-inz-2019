@@ -102,16 +102,15 @@ const TeamService = ({ httpService }): ITeamService => {
     },
     async updateTeamDetails(team: ITeam) {
       const path = _http.buildPath(_basePath, team.id.toString(), _edit);
-      const response = await _http.put(path, {
+      _http.put(path, {
         params: {
+          id: team.id,
           name: team.name,
           description: team.description,
-          id: team.id,
-          lastUpdate: team.lastUpdate
+          creationDate: team.creationDate,
+          lastUpdated: team.lastUpdated
         }
       });
-      const responseJSON = await _http.toJSON(response);
-      return Team(responseJSON);
     },
     async respondToPendingInvite(
       userId: number,

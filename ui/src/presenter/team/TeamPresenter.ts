@@ -92,18 +92,21 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
         )
       ) {
         try {
+          loader.start("editTeamLoader");
           const teamDetails = _store.getState<TTeamPresenter>().teamDetails;
-          let result = await _application.container
+          _application.container
             .resolve<UpdateTeamDetailsInteractor>("updateTeamDetails")
             .execute(teamDetails);
-          result.id = teamDetails.id;
+          loader.stop("editTeamLoader");
           _application.container
             .resolve<ShowSuccessMessageInteractor>("showSuccessMessage")
             .execute("Changes successfully saved");
           _store.update({
-            teamDetails: result
+            teamDetails,
+            isEditableForm: false
           });
         } catch (error) {
+          loader.stop("editTeamLoader");
           _application.container
             .resolve<ShowErrorMessageInteractor>("showErrorMessage")
             .execute(error.message);

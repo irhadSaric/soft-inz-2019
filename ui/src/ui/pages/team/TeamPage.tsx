@@ -49,6 +49,7 @@ export default class TeamPage extends React.Component<Props, State> {
           onCancelBtnClick={onCancelBtnClick}
           editButtonDisabled={editButtonDisabled}
           validationErrors={editValidationErrors}
+          isLoading={this.state.loaders.editTeamLoader}
           updateTeamDetails={updateTeamDetails}
           onChangeTeamData={onChangeTeamData}
         />

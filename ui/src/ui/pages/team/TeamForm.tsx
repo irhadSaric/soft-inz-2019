@@ -11,6 +11,7 @@ const TeamForm = ({
   onCancelBtnClick,
   editButtonDisabled,
   validationErrors,
+  isLoading,
   onChangeTeamData,
   updateTeamDetails,
 }: {
@@ -21,6 +22,7 @@ const TeamForm = ({
   onCancelBtnClick: any;
   editButtonDisabled: boolean;
   validationErrors: any;
+  isLoading: boolean;
   updateTeamDetails: any
   onChangeTeamData(key: string, value: any): void;
 }) => {
@@ -132,6 +134,7 @@ const TeamForm = ({
             </Button>
             <Button
               type={"primary"}
+              loading={isLoading}
               disabled={editButtonDisabled}
               onClick={updateTeamDetails}
             >
