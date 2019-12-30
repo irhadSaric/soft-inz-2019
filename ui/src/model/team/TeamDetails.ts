@@ -1,21 +1,21 @@
 import Model from "../Model";
 import ValidatableObject from "../validation/ValidatableObject";
 
-export interface TTeam {
-  description: string;
+export interface TTeamDetails {
   id: number;
   name: string;
-  lastUpdated: Date;
+  description: string;
   creationDate: Date;
+  lastUpdated: Date;
 }
 
-export interface ITeam extends TTeam {}
+export interface ITeamDetails extends TTeamDetails {}
 
-const Team = Model(
-  (model: TTeam): ITeam => {
-    const _team: TTeam = Object.assign({}, model);
+const TeamDetails = Model(
+  (model: TTeamDetails): ITeamDetails => {
+    const _team: TTeamDetails = Object.assign({}, model);
 
-    let create = (team: ITeam): ITeam => {
+    let create = (team: ITeamDetails): ITeamDetails => {
       let obj = ValidatableObject(team);
       return obj;
     };
@@ -39,17 +39,17 @@ const Team = Model(
       set description(value) {
         _team.description = value;
       },
-      get lastUpdated() {
-        return _team.lastUpdated;
-      },
-      set lastUpdated(value) {
-        _team.lastUpdated = value;
-      },
       get creationDate() {
         return _team.creationDate;
       },
       set creationDate(value) {
         _team.creationDate = value;
+      },
+      get lastUpdated() {
+        return _team.lastUpdated;
+      },
+      set lastUpdated(value) {
+        _team.lastUpdated = value;
       }
     };
 
@@ -57,4 +57,4 @@ const Team = Model(
   }
 );
 
-export default Team;
+export default TeamDetails;
