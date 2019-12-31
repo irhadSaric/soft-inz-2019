@@ -1,6 +1,9 @@
 import withStore, { TLoadingAwarePresenter, TPresentable } from "../withStore";
 import Application from "../../Application";
 import { ITeamDetails } from "../../model/team/TeamDetails";
+import UpdateTeamDetailsInteractor from "../../interactor/team/UpdateTeamDetailsInteractor";
+import ShowSuccessMessageInteractor from "../../interactor/notifications/ShowSuccessMessageInteractor";
+import ShowErrorMessageInteractor from "../../interactor/notifications/ShowErrorMessageInteractor";
 
 export interface TTeamPresenter extends TLoadingAwarePresenter {
   teamDetails: ITeamDetails;
@@ -13,7 +16,7 @@ export interface ITeamPresenter extends TTeamPresenter, TPresentable {
   onEditBtnClick(): void;
   onCancelBtnClick(): void;
   onChangeTeamData(key: string, value: any): void;
-  onChangeTeamDescriptionValue(value: string): void;
+  updateTeamDetails(): void;
 }
 
 const defaultState: TTeamPresenter = {
@@ -71,19 +74,48 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
 
     const onChangeTeamData = (key: string, value: any) => {
       let teamDetails = _store.getState<TTeamPresenter>().teamDetails;
+      teamDetails[key] = value;
       _store.update({ teamDetails });
       const editValidationErrors = _store.getState<TTeamPresenter>()
         .editValidationErrors;
       editValidationErrors && validateEditTeamForm();
     };
 
-    const onChangeTeamDescriptionValue = (value: string) => {
-      _store.update({
-        description: value
-      });
+    const updateTeamDetails = async () => {
+      validateEditTeamForm();
       const editValidationErrors = _store.getState<TTeamPresenter>()
         .editValidationErrors;
-      editValidationErrors && validateEditTeamForm();
+      if (
+        !(
+          editValidationErrors.name.length ||
+          editValidationErrors.description.length
+        )
+      ) {
+        try {
+          loader.start("editTeamLoader");
+          const teamDetails = _store.getState<TTeamPresenter>().teamDetails;
+          _application.container
+            .resolve<UpdateTeamDetailsInteractor>("updateTeamDetails")
+            .execute(teamDetails);
+          loader.stop("editTeamLoader");
+          _application.container
+            .resolve<ShowSuccessMessageInteractor>("showSuccessMessage")
+            .execute("Changes successfully saved");
+          _store.update({
+            teamDetails,
+            isEditableForm: false
+          });
+        } catch (error) {
+          loader.stop("editTeamLoader");
+          _application.container
+            .resolve<ShowErrorMessageInteractor>("showErrorMessage")
+            .execute(error.message);
+        }
+      } else {
+        _store.update({
+          editButtonDisabled: true
+        });
+      }
     };
 
     return {
@@ -96,7 +128,7 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
       onEditBtnClick,
       onCancelBtnClick,
       onChangeTeamData,
-      onChangeTeamDescriptionValue
+      updateTeamDetails
     };
   },
   defaultState

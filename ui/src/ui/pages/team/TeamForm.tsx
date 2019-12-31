@@ -4,28 +4,31 @@ import Text from "antd/lib/typography/Text";
 import { ITeamDetails } from "../../../model/team/TeamDetails";
 
 const TeamForm = ({
+  translate,
   teamDetails,
   isEditable,
   onEditBtnClick,
   onCancelBtnClick,
   editButtonDisabled,
   validationErrors,
+  isLoading,
   onChangeTeamData,
-  onChangeTeamDescription,
+  updateTeamDetails,
 }: {
+  translate: any,
   teamDetails: ITeamDetails;
   isEditable: boolean;
   onEditBtnClick: any;
   onCancelBtnClick: any;
   editButtonDisabled: boolean;
   validationErrors: any;
+  isLoading: boolean;
+  updateTeamDetails: any
   onChangeTeamData(key: string, value: any): void;
-  onChangeTeamDescription(value: string): void;
 }) => {
   const checkValidationErrors = (fieldName: string) => {
     return validationErrors && validationErrors[fieldName].length > 0;
   };
-  console.log(teamDetails);
   const data = [
     'Project 1.',
     'Project 2.',
@@ -86,7 +89,7 @@ const TeamForm = ({
             <Input.TextArea
               placeholder={"Description"}
               value={teamDetails.description}
-              onChange={e => onChangeTeamDescription(e.target.value)}
+              onChange={e => onChangeTeamData("description", e.target.value)}
               autosize={{ minRows: 4 }}
               style={{ marginTop: 20 }}
               readOnly={!isEditable}
@@ -131,7 +134,9 @@ const TeamForm = ({
             </Button>
             <Button
               type={"primary"}
+              loading={isLoading}
               disabled={editButtonDisabled}
+              onClick={updateTeamDetails}
             >
               Save
             </Button>

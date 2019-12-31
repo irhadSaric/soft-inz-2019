@@ -27,13 +27,14 @@ export default class TeamPage extends React.Component<Props, State> {
   render() {
     const {
       teamDetails,
+      translate,
       isEditableForm,
       onEditBtnClick,
       onCancelBtnClick,
       editButtonDisabled,
       editValidationErrors,
-      onChangeTeamData,
-      onChangeTeamDescriptionValue
+      updateTeamDetails,
+      onChangeTeamData
     } = this.state;
     return (
       <Page
@@ -42,13 +43,15 @@ export default class TeamPage extends React.Component<Props, State> {
       >
         <TeamForm
           teamDetails={teamDetails}
+          translate={translate}
           isEditable={isEditableForm}
           onEditBtnClick={onEditBtnClick}
           onCancelBtnClick={onCancelBtnClick}
           editButtonDisabled={editButtonDisabled}
           validationErrors={editValidationErrors}
+          isLoading={this.state.loaders.editTeamLoader}
+          updateTeamDetails={updateTeamDetails}
           onChangeTeamData={onChangeTeamData}
-          onChangeTeamDescription={onChangeTeamDescriptionValue}
         />
       </Page>
     );
