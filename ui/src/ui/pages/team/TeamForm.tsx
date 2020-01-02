@@ -1,8 +1,9 @@
 import * as React from "react";
-import { Avatar, Button, Divider, Input, Form, List } from "antd";
+import { Avatar, Button, Divider, Input, Form, List, Modal } from "antd";
 import Text from "antd/lib/typography/Text";
 import { ITeamDetails } from "../../../model/team/TeamDetails";
 import { IStatus } from "../../../model/status/Status";
+import CreateProjectForm from "../project/CreateProjectForm";
 
 const TeamForm = ({
   translate,
@@ -24,6 +25,8 @@ const TeamForm = ({
   onChangeProjectDescriptionValue,
   onChangeProjectEndDateValue,
   onChangeProjectStatusValue,
+  onCreateProjectBtnClick,
+  onCancelProjectModalButtonClick,
   updateTeamDetails
 }: {
   translate: any;
@@ -47,6 +50,8 @@ const TeamForm = ({
   isLoading: boolean;
   updateTeamDetails: any;
   onChangeTeamData(key: string, value: any): void;
+  onCreateProjectBtnClick(): void;
+  onCancelProjectModalButtonClick(): void;
 }) => {
   const checkValidationErrors = (fieldName: string) => {
     return validationErrors && validationErrors[fieldName].length > 0;
@@ -111,7 +116,36 @@ const TeamForm = ({
           </Form.Item>
           <Form.Item>
             <div className={"form-item"}>
-              <h3 style={{ margin: "16px 0" }}>Projects</h3>
+              <h3 style={{ margin: "16px 0" }}>
+                Projects
+                <Button
+                  type="primary"
+                  style={{ float: "right" }}
+                  onClick={onCreateProjectBtnClick}
+                >
+                  +
+                </Button>
+                <Modal
+                  title="Create project"
+                  visible={isCreateProjectModalVisible}
+                  onOk={createProject}
+                  onCancel={onCancelProjectModalButtonClick}
+                  maskClosable={false}
+                >
+                  <CreateProjectForm
+                    projectStatus={projectStatus}
+                    projectName={projectName}
+                    projectDescription={projectDescription}
+                    projectEndDate={projectEndDate}
+                    onChangeProjectNameValue={onChangeProjectNameValue}
+                    onChangeProjectDescriptionValue={
+                      onChangeProjectDescriptionValue
+                    }
+                    onChangeProjectEndDateValue={onChangeProjectEndDateValue}
+                    onChangeProjectStatusValue={onChangeProjectStatusValue}
+                  />
+                </Modal>
+              </h3>
               <List
                 size="small"
                 bordered

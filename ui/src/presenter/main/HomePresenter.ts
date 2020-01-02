@@ -264,6 +264,4 @@ const HomePresenter = withStore<IHomePresenter, THomePresenter>(
   defaultState
 );
 
-//};
-
 export default HomePresenter;

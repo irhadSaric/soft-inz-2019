@@ -6,6 +6,7 @@ import CreateProjectInteractor from "../../interactor/project/CreateProjectInter
 import UpdateTeamDetailsInteractor from "../../interactor/team/UpdateTeamDetailsInteractor";
 import ShowSuccessMessageInteractor from "../../interactor/notifications/ShowSuccessMessageInteractor";
 import ShowErrorMessageInteractor from "../../interactor/notifications/ShowErrorMessageInteractor";
+import { IStatusType } from "../../model/status/StatusType";
 
 export interface TTeamPresenter extends TLoadingAwarePresenter {
   teamDetails: ITeamDetails;
@@ -89,7 +90,7 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
 
     const onCancelProjectModalButtonClick = () => {
       _store.update({
-        isCreateTeamModalVisible: false,
+        isCreateProjectModalVisible: false,
         projectName: "",
         projectDescription: ""
       });
@@ -183,15 +184,21 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
         const projectName = _store.getState<TTeamPresenter>().projectName;
         const projectEndDate = _store.getState<TTeamPresenter>().projectEndDate;
         const projectStatus = _store.getState<TTeamPresenter>().projectStatus;
+        const date1 = new Date("December 17, 2020 03:24:00");
+        let status = {} as IStatus;
+        status.id = 1;
+        status.key = "active-team-member";
+        status.name = "Active team member";
+        let statusT = {} as IStatusType;
+        statusT.id = 3;
+        statusT.key = "user-team-related";
+        statusT.name = "User-Team-related";
+        status.statusType = statusT;
+        console.log(projectDescription, projectName, date1, status);
         const response = await _application.container
           .resolve<CreateProjectInteractor>("createProject")
-          .execute(
-            projectDescription,
-            projectEndDate,
-            projectName,
-            projectStatus,
-            15
-          );
+          .execute(projectDescription, date1, projectName, status, 17);
+        console.log("hehe2");
         loader.stop("createProjectLoader");
         _application.container
           .resolve<ShowSuccessMessageInteractor>("showSuccessMessage")
@@ -200,6 +207,7 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
           isCreateProjectModalVisible: false
         });
       } catch (error) {
+        console.log("ufatio sam ga");
         loader.stop("createProjectLoader");
         _application.container
           .resolve<ShowErrorMessageInteractor>("showErrorMessage")
