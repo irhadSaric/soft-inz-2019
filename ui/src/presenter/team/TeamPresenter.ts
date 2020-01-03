@@ -4,12 +4,17 @@ import { ITeamDetails } from "../../model/team/TeamDetails";
 import UpdateTeamDetailsInteractor from "../../interactor/team/UpdateTeamDetailsInteractor";
 import ShowSuccessMessageInteractor from "../../interactor/notifications/ShowSuccessMessageInteractor";
 import ShowErrorMessageInteractor from "../../interactor/notifications/ShowErrorMessageInteractor";
+import { IActiveTeam } from "../../model/team/ActiveTeam";
+import ActiveTeamMembers, {
+  IActiveTeamMembers
+} from "../../model/team/ActiveTeamMembers";
 
 export interface TTeamPresenter extends TLoadingAwarePresenter {
   teamDetails: ITeamDetails;
   isEditableForm: boolean;
   editValidationErrors?: any;
   editButtonDisabled: boolean;
+  activeTeamMembers: IActiveTeamMembers[];
 }
 export interface ITeamPresenter extends TTeamPresenter, TPresentable {
   loadTeamDetails(teamDetails: ITeamDetails): void;
@@ -17,13 +22,15 @@ export interface ITeamPresenter extends TTeamPresenter, TPresentable {
   onCancelBtnClick(): void;
   onChangeTeamData(key: string, value: any): void;
   updateTeamDetails(): void;
+  loadActiveTeamMembersList(activeTeamMembers: IActiveTeamMembers[]): void;
 }
 
 const defaultState: TTeamPresenter = {
   teamDetails: {} as ITeamDetails,
   isEditableForm: false,
   editValidationErrors: undefined,
-  editButtonDisabled: false
+  editButtonDisabled: false,
+  activeTeamMembers: []
 };
 
 const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
@@ -117,6 +124,13 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
         });
       }
     };
+    const loadActiveTeamMembersList = (
+      activeTeamMembers: IActiveTeamMembers[]
+    ) => {
+      return _store.update({
+        activeTeamMembers
+      });
+    };
 
     return {
       ...state,
@@ -128,7 +142,8 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
       onEditBtnClick,
       onCancelBtnClick,
       onChangeTeamData,
-      updateTeamDetails
+      updateTeamDetails,
+      loadActiveTeamMembersList
     };
   },
   defaultState

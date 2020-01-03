@@ -3,6 +3,9 @@ import Team, { ITeam } from "../../model/team/Team";
 import TeamInvite, { ITeamInvite } from "../../model/team/TeamInvite";
 import TeamDetails, { ITeamDetails } from "../../model/team/TeamDetails";
 import ActiveTeam, { IActiveTeam } from "../../model/team/ActiveTeam";
+import ActiveTeamMembers, {
+  IActiveTeamMembers
+} from "../../model/team/ActiveTeamMembers";
 
 export interface ITeamService {
   createTeam(
@@ -26,6 +29,7 @@ export interface ITeamService {
     teamId: number,
     accept: boolean
   ): Promise<any>;
+  getActiveTeamMembersList(teamId: number): Promise<IActiveTeamMembers[]>;
 }
 
 const TeamService = ({ httpService }): ITeamService => {
@@ -39,6 +43,7 @@ const TeamService = ({ httpService }): ITeamService => {
   const _respond: string = "/respond";
   const _details: string = "/details";
   const _edit: string = "/edit";
+  const _members: string = "/members";
 
   const buildTeamList = (data: any): ITeam[] => {
     return data.map(item => Team(item));
@@ -54,6 +59,10 @@ const TeamService = ({ httpService }): ITeamService => {
 
   const buildTeamDetailsList = (data: any): ITeamDetails[] => {
     return data.map(item => TeamDetails(item));
+  };
+
+  const buildActiveTeamMembersList = (data: any): IActiveTeamMembers[] => {
+    return data.map(item => ActiveTeamMembers(item));
   };
 
   return {
@@ -144,6 +153,17 @@ const TeamService = ({ httpService }): ITeamService => {
       );
       const response = await _http.post(path);
       return _http.toText(response);
+    },
+    async getActiveTeamMembersList(teamId: number) {
+      const path = _http.buildPath(
+        _basePath,
+        teamId.toString(),
+        _members,
+        _active
+      );
+      const response = await _http.get(path);
+      const responseJSON = await _http.toJSON(response);
+      return buildActiveTeamMembersList(responseJSON);
     }
   };
 };

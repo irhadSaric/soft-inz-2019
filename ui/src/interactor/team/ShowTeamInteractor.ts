@@ -4,6 +4,7 @@ import TeamPresenter, {
 } from "../../presenter/team/TeamPresenter";
 import { ITeamDetails } from "../../model/team/TeamDetails";
 import { ITeamService } from "../../service/team/TeamService";
+import { IActiveTeamMembers } from "../../model/team/ActiveTeamMembers";
 
 export default class ShowTeamInteractor {
   private application: Application;
@@ -21,13 +22,18 @@ export default class ShowTeamInteractor {
       initialState: {
         teamDetails: {} as ITeamDetails,
         isEditableForm: false,
-        editButtonDisabled: false
+        editButtonDisabled: false,
+        activeTeamMembers: []
       }
     });
 
     this.teamService
       .getTeamDetails(teamId)
       .then(this.output && this.output.loadTeamDetails);
+
+    this.teamService
+      .getActiveTeamMembersList(teamId)
+      .then(this.output && this.output.loadActiveTeamMembersList);
 
     return this.output;
   }
