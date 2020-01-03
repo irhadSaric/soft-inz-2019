@@ -2,8 +2,7 @@ import * as React from "react";
 import { Avatar, Button, Divider, Input, Form, List } from "antd";
 import Text from "antd/lib/typography/Text";
 import { ITeamDetails } from "../../../model/team/TeamDetails";
-import { IActiveTeam } from "../../../model/team/ActiveTeam";
-import { IActiveTeamMembers } from "../../../model/team/ActiveTeamMembers";
+import { IActiveTeamMember } from "../../../model/team/ActiveTeamMember";
 
 const TeamForm = ({
   translate,
@@ -20,7 +19,7 @@ const TeamForm = ({
 }: {
   translate: any,
   teamDetails: ITeamDetails;
-  activeTeamMembers: IActiveTeamMembers[];
+  activeTeamMembers: IActiveTeamMember[];
   isEditable: boolean;
   onEditBtnClick: any;
   onCancelBtnClick: any;
@@ -37,11 +36,6 @@ const TeamForm = ({
     'Project 1.',
     'Project 2.',
   ];
-  // const data2 = [
-  //   'User 1.',
-  //   'User 2.',
-  //   'User 3.',
-  // ];
   return (
     <div
       style={{

@@ -3,9 +3,10 @@ import Team, { ITeam } from "../../model/team/Team";
 import TeamInvite, { ITeamInvite } from "../../model/team/TeamInvite";
 import TeamDetails, { ITeamDetails } from "../../model/team/TeamDetails";
 import ActiveTeam, { IActiveTeam } from "../../model/team/ActiveTeam";
-import ActiveTeamMembers, {
-  IActiveTeamMembers
-} from "../../model/team/ActiveTeamMembers";
+import ActiveTeamMember, {
+  IActiveTeamMember
+} from "../../model/team/ActiveTeamMember";
+import Country from "../../model/country/Country";
 
 export interface ITeamService {
   createTeam(
@@ -29,7 +30,7 @@ export interface ITeamService {
     teamId: number,
     accept: boolean
   ): Promise<any>;
-  getActiveTeamMembersList(teamId: number): Promise<IActiveTeamMembers[]>;
+  getActiveTeamMembersList(teamId: number): Promise<IActiveTeamMember[]>;
 }
 
 const TeamService = ({ httpService }): ITeamService => {
@@ -61,9 +62,13 @@ const TeamService = ({ httpService }): ITeamService => {
     return data.map(item => TeamDetails(item));
   };
 
-  const buildActiveTeamMembersList = (data: any): IActiveTeamMembers[] => {
-    return data.map(item => ActiveTeamMembers(item));
-  };
+  const buildActiveTeamMembersList = (data: any) =>
+    data.map(item => {
+      let activeTeamMember = ActiveTeamMember(item);
+      activeTeamMember.country = Country(item.country);
+      return activeTeamMember;
+    });
+  //return data.map(item => ActiveTeamMember(item));
 
   return {
     async createTeam(description: string, teamName: string, userId: number) {
