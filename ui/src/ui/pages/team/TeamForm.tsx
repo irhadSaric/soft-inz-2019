@@ -2,10 +2,12 @@ import * as React from "react";
 import { Avatar, Button, Divider, Input, Form, List } from "antd";
 import Text from "antd/lib/typography/Text";
 import { ITeamDetails } from "../../../model/team/TeamDetails";
+import { ITeamProject } from "../../../model/team/TeamProject";
 
 const TeamForm = ({
   translate,
   teamDetails,
+  teamProjects,
   isEditable,
   onEditBtnClick,
   onCancelBtnClick,
@@ -17,6 +19,7 @@ const TeamForm = ({
 }: {
   translate: any,
   teamDetails: ITeamDetails;
+  teamProjects: ITeamProject[];
   isEditable: boolean;
   onEditBtnClick: any;
   onCancelBtnClick: any;
@@ -29,10 +32,6 @@ const TeamForm = ({
   const checkValidationErrors = (fieldName: string) => {
     return validationErrors && validationErrors[fieldName].length > 0;
   };
-  const data = [
-    'Project 1.',
-    'Project 2.',
-  ];
   const data2 = [
     'User 1.',
     'User 2.',
@@ -102,8 +101,8 @@ const TeamForm = ({
               <List
                 size="small"
                 bordered
-                dataSource={data}
-                renderItem={item => <List.Item>{item}</List.Item>}
+                dataSource={teamProjects}
+                renderItem={item => <List.Item>{item.description}</List.Item>}
               />
             </div>
           </Form.Item>
