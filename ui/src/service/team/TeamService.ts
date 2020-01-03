@@ -62,13 +62,13 @@ const TeamService = ({ httpService }): ITeamService => {
     return data.map(item => TeamDetails(item));
   };
 
-  const buildActiveTeamMembersList = (data: any) =>
-    data.map(item => {
+  const buildActiveTeamMembersList = (data: any) => {
+    return data.map(item => {
       let activeTeamMember = ActiveTeamMember(item);
       activeTeamMember.country = Country(item.country);
       return activeTeamMember;
     });
-  //return data.map(item => ActiveTeamMember(item));
+  };
 
   return {
     async createTeam(description: string, teamName: string, userId: number) {
