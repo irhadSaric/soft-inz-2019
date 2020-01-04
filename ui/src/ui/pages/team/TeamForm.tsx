@@ -4,6 +4,7 @@ import Text from "antd/lib/typography/Text";
 import { ITeamDetails } from "../../../model/team/TeamDetails";
 import { IStatus } from "../../../model/status/Status";
 import CreateProjectForm from "../project/CreateProjectForm";
+import { Moment } from "moment";
 
 const TeamForm = ({
   translate,
@@ -37,7 +38,7 @@ const TeamForm = ({
   editButtonDisabled: boolean;
   validationErrors: any;
   projectStatus: IStatus;
-  projectEndDate: Date;
+  projectEndDate: Moment;
   projectDescription: string;
   projectName: string;
   isCreateProjectModalVisible: boolean;
@@ -46,7 +47,8 @@ const TeamForm = ({
   onChangeProjectNameValue(value: string): void;
   onChangeProjectDescriptionValue(value: string): void;
   onChangeProjectStatusValue(value: IStatus): void;
-  onChangeProjectEndDateValue(value: Date): void;
+  // onChangeProjectEndDateValue(value: Moment): void;
+  onChangeProjectEndDateValue: any;
   isLoading: boolean;
   updateTeamDetails: any;
   onChangeTeamData(key: string, value: any): void;

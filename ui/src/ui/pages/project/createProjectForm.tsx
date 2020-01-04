@@ -4,8 +4,14 @@ import Text from "antd/lib/typography/Text";
 import { IUser } from "../../../model/user/User";
 import { TSelectValuePresentationModel } from "../../../presenter/main/HomePresenter";
 import { IStatus } from "../../../model/status/Status";
+import moment, { Moment } from "moment";
 
 const { Option } = Select;
+
+function disabledDate(current) {
+  // Can not select days before today and today
+  return current && current < moment().endOf("day");
+}
 
 const CreateProjectForm = ({
   projectStatus,
@@ -18,13 +24,14 @@ const CreateProjectForm = ({
   onChangeProjectStatusValue
 }: {
   projectStatus: IStatus;
-  projectEndDate: Date;
+  projectEndDate: Moment;
   projectDescription: string;
   projectName: string;
   onChangeProjectNameValue(value: string): void;
   onChangeProjectDescriptionValue(value: string): void;
   onChangeProjectStatusValue(value: IStatus): void;
-  onChangeProjectEndDateValue(value: Date): void;
+  // onChangeProjectEndDateValue(value: Moment): void;
+  onChangeProjectEndDateValue: any;
 }) => {
   return (
     <div>
@@ -55,7 +62,15 @@ const CreateProjectForm = ({
           {validationErrors["projectDescription"][0]}
         </Text>
       )} */}
-      {/* <DatePicker value={projectEndDate} onChange={e => onChangeProjectDescriptionValue(e)} /> */}
+      <DatePicker
+        placeholder={"End Date"}
+        format={"DD-MM-YYYY"}
+        showToday={false}
+        disabledDate={disabledDate}
+        //value={projectEndDate}
+        onChange={e => onChangeProjectEndDateValue(e)}
+        style={{ marginTop: 20 }}
+      />
     </div>
   );
 };

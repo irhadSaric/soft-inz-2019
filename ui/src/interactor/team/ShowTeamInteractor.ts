@@ -5,6 +5,7 @@ import TeamPresenter, {
 import { ITeamDetails } from "../../model/team/TeamDetails";
 import { ITeamService } from "../../service/team/TeamService";
 import { IStatus } from "../../model/status/Status";
+import { Moment } from "moment";
 
 export default class ShowTeamInteractor {
   private application: Application;
@@ -27,7 +28,7 @@ export default class ShowTeamInteractor {
         isCreateProjectModalVisible: false,
         projectName: "",
         projectDescription: "",
-        projectEndDate: {} as Date,
+        projectEndDate: {} as Moment,
         projectStatus: {} as IStatus
       }
     });

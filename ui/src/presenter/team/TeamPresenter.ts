@@ -7,6 +7,7 @@ import UpdateTeamDetailsInteractor from "../../interactor/team/UpdateTeamDetails
 import ShowSuccessMessageInteractor from "../../interactor/notifications/ShowSuccessMessageInteractor";
 import ShowErrorMessageInteractor from "../../interactor/notifications/ShowErrorMessageInteractor";
 import { IStatusType } from "../../model/status/StatusType";
+import { Moment } from "moment";
 
 export interface TTeamPresenter extends TLoadingAwarePresenter {
   teamDetails: ITeamDetails;
@@ -18,7 +19,7 @@ export interface TTeamPresenter extends TLoadingAwarePresenter {
   projectName: string;
   projectDescription: string;
   projectStatus: IStatus;
-  projectEndDate: Date;
+  projectEndDate: Moment;
 }
 export interface ITeamPresenter extends TTeamPresenter, TPresentable {
   loadTeamDetails(teamDetails: ITeamDetails): void;
@@ -31,7 +32,7 @@ export interface ITeamPresenter extends TTeamPresenter, TPresentable {
   onChangeProjectNameValue(value: string): void;
   onChangeProjectDescriptionValue(value: string): void;
   onChangeProjectStatusValue(value: IStatus): void;
-  onChangeProjectEndDateValue(value: Date): void;
+  onChangeProjectEndDateValue(value: Moment): void;
   updateTeamDetails(): void;
 }
 
@@ -45,7 +46,7 @@ const defaultState: TTeamPresenter = {
   projectName: "",
   projectDescription: "",
   projectStatus: {} as IStatus,
-  projectEndDate: {} as Date
+  projectEndDate: {} as Moment
 };
 
 const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
@@ -84,7 +85,7 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
       });
     };
 
-    const onChangeProjectEndDateValue = (value: Date) => {
+    const onChangeProjectEndDateValue = (value: Moment) => {
       _store.update({
         projectEndDate: value
       });
@@ -197,14 +198,18 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
         statusT.key = "user-team-related";
         statusT.name = "User-Team-related";
         status.statusType = statusT;
-        console.log(projectDescription, projectName, date1, status);
-        let a = application.navigator.showCurrentRoute();
-        console.log(teamId);
+        console.log(projectEndDate);
         const response =
           teamId &&
           (await _application.container
             .resolve<CreateProjectInteractor>("createProject")
-            .execute(projectDescription, date1, projectName, status, teamId));
+            .execute(
+              projectDescription,
+              projectEndDate.toDate(),
+              projectName,
+              status,
+              teamId
+            ));
         console.log("hehe2");
         loader.stop("createProjectLoader");
         _application.container
