@@ -8,6 +8,8 @@ import ShowSuccessMessageInteractor from "../../interactor/notifications/ShowSuc
 import ShowErrorMessageInteractor from "../../interactor/notifications/ShowErrorMessageInteractor";
 import { IStatusType } from "../../model/status/StatusType";
 import { Moment } from "moment";
+import { IActiveTeam } from "../../model/team/ActiveTeam";
+import { IActiveTeamMember } from "../../model/team/ActiveTeamMember";
 
 export interface TTeamPresenter extends TLoadingAwarePresenter {
   teamDetails: ITeamDetails;
@@ -20,6 +22,7 @@ export interface TTeamPresenter extends TLoadingAwarePresenter {
   projectDescription: string;
   projectStatus: IStatus;
   projectEndDate: Moment;
+  activeTeamMembers: IActiveTeamMember[];
 }
 export interface ITeamPresenter extends TTeamPresenter, TPresentable {
   loadTeamDetails(teamDetails: ITeamDetails): void;
@@ -34,6 +37,7 @@ export interface ITeamPresenter extends TTeamPresenter, TPresentable {
   onChangeProjectStatusValue(value: IStatus): void;
   onChangeProjectEndDateValue(value: Moment): void;
   updateTeamDetails(): void;
+  loadActiveTeamMembersList(activeTeamMembers: IActiveTeamMember[]): void;
 }
 
 const defaultState: TTeamPresenter = {
@@ -46,7 +50,8 @@ const defaultState: TTeamPresenter = {
   projectName: "",
   projectDescription: "",
   projectStatus: {} as IStatus,
-  projectEndDate: {} as Moment
+  projectEndDate: {} as Moment,
+  activeTeamMembers: []
 };
 
 const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
@@ -178,6 +183,13 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
         });
       }
     };
+    const loadActiveTeamMembersList = (
+      activeTeamMembers: IActiveTeamMember[]
+    ) => {
+      return _store.update({
+        activeTeamMembers
+      });
+    };
 
     const createProject = async () => {
       try {
@@ -244,7 +256,8 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
       onChangeProjectEndDateValue,
       onChangeProjectNameValue,
       onChangeProjectStatusValue,
-      updateTeamDetails
+      updateTeamDetails,
+      loadActiveTeamMembersList
     };
   },
   defaultState

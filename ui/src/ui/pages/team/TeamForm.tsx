@@ -5,6 +5,7 @@ import { ITeamDetails } from "../../../model/team/TeamDetails";
 import { IStatus } from "../../../model/status/Status";
 import CreateProjectForm from "../project/CreateProjectForm";
 import { Moment } from "moment";
+import { IActiveTeamMember } from "../../../model/team/ActiveTeamMember";
 
 const TeamForm = ({
   translate,
@@ -28,10 +29,12 @@ const TeamForm = ({
   onChangeProjectStatusValue,
   onCreateProjectBtnClick,
   onCancelProjectModalButtonClick,
-  updateTeamDetails
+  updateTeamDetails,
+  activeTeamMembers
 }: {
   translate: any;
   teamDetails: ITeamDetails;
+  activeTeamMembers: IActiveTeamMember[];
   isEditable: boolean;
   onEditBtnClick: any;
   onCancelBtnClick: any;
@@ -59,7 +62,6 @@ const TeamForm = ({
     return validationErrors && validationErrors[fieldName].length > 0;
   };
   const data = ["Project 1.", "Project 2."];
-  const data2 = ["User 1.", "User 2.", "User 3."];
   return (
     <div
       style={{
@@ -162,8 +164,8 @@ const TeamForm = ({
               <List
                 size="small"
                 bordered
-                dataSource={data2}
-                renderItem={item => <List.Item>{item}</List.Item>}
+                dataSource={activeTeamMembers}
+                renderItem={item => <List.Item>{item.firstName}</List.Item>}
               />
             </div>
           </Form.Item>

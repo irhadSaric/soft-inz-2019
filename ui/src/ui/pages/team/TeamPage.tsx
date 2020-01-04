@@ -46,7 +46,8 @@ export default class TeamPage extends React.Component<Props, State> {
       onChangeProjectStatusValue,
       updateTeamDetails,
       onCreateProjectBtnClick,
-      onCancelProjectModalButtonClick
+      onCancelProjectModalButtonClick,
+      activeTeamMembers
     } = this.state;
     return (
       <Page
@@ -76,6 +77,7 @@ export default class TeamPage extends React.Component<Props, State> {
           onChangeProjectStatusValue={onChangeProjectStatusValue}
           onCreateProjectBtnClick={onCreateProjectBtnClick}
           onCancelProjectModalButtonClick={onCancelProjectModalButtonClick}
+          activeTeamMembers={activeTeamMembers}
         />
       </Page>
     );

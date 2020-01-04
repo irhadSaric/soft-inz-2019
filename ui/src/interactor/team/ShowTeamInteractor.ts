@@ -29,13 +29,18 @@ export default class ShowTeamInteractor {
         projectName: "",
         projectDescription: "",
         projectEndDate: {} as Moment,
-        projectStatus: {} as IStatus
+        projectStatus: {} as IStatus,
+        activeTeamMembers: []
       }
     });
 
     this.teamService
       .getTeamDetails(teamId)
       .then(this.output && this.output.loadTeamDetails);
+
+    this.teamService
+      .getActiveTeamMembersList(teamId)
+      .then(this.output && this.output.loadActiveTeamMembersList);
 
     return this.output;
   }
