@@ -21,13 +21,18 @@ export default class ShowTeamInteractor {
       initialState: {
         teamDetails: {} as ITeamDetails,
         isEditableForm: false,
-        editButtonDisabled: false
+        editButtonDisabled: false,
+        activeTeamMembers: []
       }
     });
 
     this.teamService
       .getTeamDetails(teamId)
       .then(this.output && this.output.loadTeamDetails);
+
+    this.teamService
+      .getActiveTeamMembersList(teamId)
+      .then(this.output && this.output.loadActiveTeamMembersList);
 
     return this.output;
   }
