@@ -102,7 +102,7 @@ const TeamForm = ({
                 size="small"
                 bordered
                 dataSource={teamProjects}
-                renderItem={item => <List.Item>{item.description}</List.Item>}
+                renderItem={item => <List.Item>{item.name}</List.Item>}
               />
             </div>
           </Form.Item>

@@ -43,8 +43,14 @@ const TeamService = ({ httpService }): ITeamService => {
   const _edit: string = "/edit";
   const _teamProject: string = "/api/project/team";
 
-  let ProjectListMapper = (json = []) => {
-    return json.map((item: any) => TeamProject(item));
+  let ProjectListMapper = (json: any) => {
+    return json.map((item: any) => {
+      let teamProject = TeamProject(item);
+      teamProject.startDate = new Date(item.startDate);
+      teamProject.endDate = new Date(item.endDate);
+      teamProject.teamDetails = item.teamDetails;
+      teamProject.status = item.status;
+    });
   };
 
   const buildTeamList = (data: any): ITeam[] => {

@@ -9,8 +9,8 @@ export interface TTeamProject {
   description: string;
   startDate: Date;
   endDate: Date;
-  team: ITeamDetails;
-  statusId: IStatus;
+  teamDetails: ITeamDetails;
+  status: IStatus;
 }
 
 export interface ITeamProject extends TTeamProject {}
@@ -55,17 +55,17 @@ const TeamProject = Model(
       set endDate(value) {
         _teamProject.endDate = value;
       },
-      get team() {
-        return _teamProject.team;
+      get teamDetails() {
+        return _teamProject.teamDetails;
       },
-      set team(value) {
-        _teamProject.team = value;
+      set teamDetails(value) {
+        _teamProject.teamDetails = value;
       },
-      get statusId() {
-        return _teamProject.statusId;
+      get status() {
+        return _teamProject.status;
       },
-      set statusId(value) {
-        _teamProject.statusId = value;
+      set status(value) {
+        _teamProject.status = value;
       }
     };
 
