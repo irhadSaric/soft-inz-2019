@@ -13,6 +13,7 @@ export interface TTeamPresenter extends TLoadingAwarePresenter {
   isEditableForm: boolean;
   editValidationErrors?: any;
   editButtonDisabled: boolean;
+  teamId?: number;
   isCreateProjectModalVisible: boolean;
   projectName: string;
   projectDescription: string;
@@ -39,6 +40,7 @@ const defaultState: TTeamPresenter = {
   isEditableForm: false,
   editValidationErrors: undefined,
   editButtonDisabled: false,
+
   isCreateProjectModalVisible: false,
   projectName: "",
   projectDescription: "",
@@ -182,6 +184,7 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
         const projectDescription = _store.getState<TTeamPresenter>()
           .projectDescription;
         const projectName = _store.getState<TTeamPresenter>().projectName;
+        const teamId = _store.getState<TTeamPresenter>().teamId;
         const projectEndDate = _store.getState<TTeamPresenter>().projectEndDate;
         const projectStatus = _store.getState<TTeamPresenter>().projectStatus;
         const date1 = new Date("December 17, 2020 03:24:00");
@@ -195,9 +198,13 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
         statusT.name = "User-Team-related";
         status.statusType = statusT;
         console.log(projectDescription, projectName, date1, status);
-        const response = await _application.container
-          .resolve<CreateProjectInteractor>("createProject")
-          .execute(projectDescription, date1, projectName, status, 17);
+        let a = application.navigator.showCurrentRoute();
+        console.log(teamId);
+        const response =
+          teamId &&
+          (await _application.container
+            .resolve<CreateProjectInteractor>("createProject")
+            .execute(projectDescription, date1, projectName, status, teamId));
         console.log("hehe2");
         loader.stop("createProjectLoader");
         _application.container

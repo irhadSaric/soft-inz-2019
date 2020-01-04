@@ -23,6 +23,7 @@ export default class ShowTeamInteractor {
         teamDetails: {} as ITeamDetails,
         isEditableForm: false,
         editButtonDisabled: false,
+        teamId,
         isCreateProjectModalVisible: false,
         projectName: "",
         projectDescription: "",
