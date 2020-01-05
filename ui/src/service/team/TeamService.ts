@@ -49,7 +49,7 @@ const TeamService = ({ httpService }): ITeamService => {
   const _teamProject: string = "/api/project/team";
   const _members: string = "/members";
 
-  let ProjectListMapper = (json: any) => {
+  let buildProjectList = (json: any) => {
     return json.map((item: any) => {
       let teamProject = TeamProject(item);
       teamProject.startDate = new Date(item.startDate);
@@ -146,7 +146,7 @@ const TeamService = ({ httpService }): ITeamService => {
       const path = _http.buildPath(_teamProject, teamId.toString());
       const response = await _http.get(path);
       const responseJSON = await _http.toJSON(response);
-      return ProjectListMapper(responseJSON);
+      return buildProjectList(responseJSON);
     },
     async updateTeamDetails(team: ITeam) {
       const path = _http.buildPath(_basePath, team.id.toString(), _edit);
