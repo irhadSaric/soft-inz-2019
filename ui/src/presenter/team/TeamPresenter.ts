@@ -8,11 +8,13 @@ import ShowSuccessMessageInteractor from "../../interactor/notifications/ShowSuc
 import ShowErrorMessageInteractor from "../../interactor/notifications/ShowErrorMessageInteractor";
 import { IStatusType } from "../../model/status/StatusType";
 import { Moment } from "moment";
+import { ITeamProject } from "../../model/team/TeamProject";
 import { IActiveTeam } from "../../model/team/ActiveTeam";
 import { IActiveTeamMember } from "../../model/team/ActiveTeamMember";
 
 export interface TTeamPresenter extends TLoadingAwarePresenter {
   teamDetails: ITeamDetails;
+  teamProjects: ITeamProject[];
   isEditableForm: boolean;
   editValidationErrors?: any;
   editButtonDisabled: boolean;
@@ -27,6 +29,7 @@ export interface TTeamPresenter extends TLoadingAwarePresenter {
 }
 export interface ITeamPresenter extends TTeamPresenter, TPresentable {
   loadTeamDetails(teamDetails: ITeamDetails): void;
+  loadTeamProjects(teamProjects: ITeamProject[]): void;
   onEditBtnClick(): void;
   onCancelBtnClick(): void;
   onChangeTeamData(key: string, value: any): void;
@@ -43,6 +46,7 @@ export interface ITeamPresenter extends TTeamPresenter, TPresentable {
 
 const defaultState: TTeamPresenter = {
   teamDetails: {} as ITeamDetails,
+  teamProjects: [],
   isEditableForm: false,
   editValidationErrors: undefined,
   editButtonDisabled: false,
@@ -101,6 +105,11 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
         isCreateProjectModalVisible: false,
         projectName: "",
         projectDescription: ""
+      });
+    };
+    const loadTeamProjects = (teamProjects: ITeamProject[]) => {
+      return _store.update({
+        teamProjects
       });
     };
 
@@ -288,6 +297,7 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
       loader,
       application: _application,
       loadTeamDetails,
+      loadTeamProjects,
       translate,
       onEditBtnClick,
       onCancelBtnClick,

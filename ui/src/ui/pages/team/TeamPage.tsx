@@ -27,6 +27,7 @@ export default class TeamPage extends React.Component<Props, State> {
   render() {
     const {
       teamDetails,
+      teamProjects,
       translate,
       isEditableForm,
       onEditBtnClick,
@@ -57,6 +58,7 @@ export default class TeamPage extends React.Component<Props, State> {
       >
         <TeamForm
           teamDetails={teamDetails}
+          teamProjects={teamProjects}
           translate={translate}
           isEditable={isEditableForm}
           onEditBtnClick={onEditBtnClick}

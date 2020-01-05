@@ -22,6 +22,7 @@ export default class ShowTeamInteractor {
       application: this.application,
       initialState: {
         teamDetails: {} as ITeamDetails,
+        teamProjects: [],
         isEditableForm: false,
         editButtonDisabled: false,
         teamId,
@@ -37,6 +38,10 @@ export default class ShowTeamInteractor {
     this.teamService
       .getTeamDetails(teamId)
       .then(this.output && this.output.loadTeamDetails);
+
+    this.teamService
+      .getTeamProjects(teamId)
+      .then(this.output && this.output.loadTeamProjects);
 
     this.teamService
       .getActiveTeamMembersList(teamId)
