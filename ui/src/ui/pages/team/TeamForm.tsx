@@ -29,6 +29,7 @@ const TeamForm = ({
   onChangeProjectStatusValue,
   onCreateProjectBtnClick,
   onCancelProjectModalButtonClick,
+  validationProjectErrors,
   updateTeamDetails,
   activeTeamMembers
 }: {
@@ -50,13 +51,13 @@ const TeamForm = ({
   onChangeProjectNameValue(value: string): void;
   onChangeProjectDescriptionValue(value: string): void;
   onChangeProjectStatusValue(value: IStatus): void;
-  // onChangeProjectEndDateValue(value: Moment): void;
   onChangeProjectEndDateValue: any;
   isLoading: boolean;
   updateTeamDetails: any;
   onChangeTeamData(key: string, value: any): void;
   onCreateProjectBtnClick(): void;
   onCancelProjectModalButtonClick(): void;
+  validationProjectErrors: any;
 }) => {
   const checkValidationErrors = (fieldName: string) => {
     return validationErrors && validationErrors[fieldName].length > 0;
@@ -147,6 +148,7 @@ const TeamForm = ({
                     }
                     onChangeProjectEndDateValue={onChangeProjectEndDateValue}
                     onChangeProjectStatusValue={onChangeProjectStatusValue}
+                    validationProjectErrors={validationProjectErrors}
                   />
                 </Modal>
               </h3>

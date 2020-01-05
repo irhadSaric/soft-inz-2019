@@ -23,6 +23,7 @@ export interface TTeamPresenter extends TLoadingAwarePresenter {
   projectStatus: IStatus;
   projectEndDate: Moment;
   activeTeamMembers: IActiveTeamMember[];
+  createProjectValidationErrors?: any;
 }
 export interface ITeamPresenter extends TTeamPresenter, TPresentable {
   loadTeamDetails(teamDetails: ITeamDetails): void;
@@ -45,7 +46,6 @@ const defaultState: TTeamPresenter = {
   isEditableForm: false,
   editValidationErrors: undefined,
   editButtonDisabled: false,
-
   isCreateProjectModalVisible: false,
   projectName: "",
   projectDescription: "",
@@ -191,52 +191,97 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
       });
     };
 
-    const createProject = async () => {
-      try {
-        loader.start("createProjectLoader");
-        const projectDescription = _store.getState<TTeamPresenter>()
-          .projectDescription;
-        const projectName = _store.getState<TTeamPresenter>().projectName;
-        const teamId = _store.getState<TTeamPresenter>().teamId;
-        const projectEndDate = _store.getState<TTeamPresenter>().projectEndDate;
-        const projectStatus = _store.getState<TTeamPresenter>().projectStatus;
-        const date1 = new Date("December 17, 2020 03:24:00");
-        let status = {} as IStatus;
-        status.id = 1;
-        status.key = "active-team-member";
-        status.name = "Active team member";
-        let statusT = {} as IStatusType;
-        statusT.id = 3;
-        statusT.key = "user-team-related";
-        statusT.name = "User-Team-related";
-        status.statusType = statusT;
-        console.log(projectEndDate);
-        const response =
-          teamId &&
-          (await _application.container
-            .resolve<CreateProjectInteractor>("createProject")
-            .execute(
-              projectDescription,
-              projectEndDate.toDate(),
-              projectName,
-              status,
-              teamId
-            ));
-        console.log("hehe2");
-        loader.stop("createProjectLoader");
-        _application.container
-          .resolve<ShowSuccessMessageInteractor>("showSuccessMessage")
-          .execute("Uspješno ste kreirali projekt");
-        _store.update({
-          isCreateProjectModalVisible: false
-        });
-      } catch (error) {
-        console.log("ufatio sam ga");
-        loader.stop("createProjectLoader");
-        _application.container
-          .resolve<ShowErrorMessageInteractor>("showErrorMessage")
-          .execute(error.message);
+    const validateCreateProjectForm = () => {
+      const projectName = _store.getState<TTeamPresenter>().projectName;
+      const projectDescription = _store.getState<TTeamPresenter>()
+        .projectDescription;
+      const projectEndDate = _store.getState<TTeamPresenter>().projectEndDate;
+
+      let createProjectValidationErrors = _store.getState<TTeamPresenter>()
+        .createProjectValidationErrors;
+      createProjectValidationErrors = {
+        projectName: [],
+        projectDescription: [],
+        projectEndDate: []
+      };
+      if (!projectName) {
+        console.log(projectName);
+        createProjectValidationErrors.projectName.push(
+          "The Project Name field is required."
+        );
       }
+      if (!projectDescription) {
+        createProjectValidationErrors.projectDescription.push(
+          "The Description field is required."
+        );
+      }
+      if (Object.entries(projectEndDate).length === 0) {
+        console.log(projectEndDate);
+        createProjectValidationErrors.projectEndDate.push(
+          "The End Date field is required."
+        );
+      }
+      _store.update({
+        createProjectValidationErrors
+      });
+    };
+
+    const createProject = async () => {
+      validateCreateProjectForm();
+      const createProjectValidationErrors = _store.getState<TTeamPresenter>()
+        .createProjectValidationErrors;
+      if (
+        !(
+          createProjectValidationErrors.projectName.length ||
+          createProjectValidationErrors.projectDescription.length ||
+          createProjectValidationErrors.projectEndDate.length
+        )
+      )
+        try {
+          loader.start("createProjectLoader");
+          const projectDescription = _store.getState<TTeamPresenter>()
+            .projectDescription;
+          const projectName = _store.getState<TTeamPresenter>().projectName;
+          const teamId = _store.getState<TTeamPresenter>().teamId;
+          const projectEndDate = _store.getState<TTeamPresenter>()
+            .projectEndDate;
+          const projectStatus = _store.getState<TTeamPresenter>().projectStatus;
+          let status = {} as IStatus;
+          status.id = 1;
+          status.key = "active-team-member";
+          status.name = "Active team member";
+          let statusT = {} as IStatusType;
+          statusT.id = 3;
+          statusT.key = "user-team-related";
+          statusT.name = "User-Team-related";
+          status.statusType = statusT;
+          console.log(projectEndDate);
+          const response =
+            teamId &&
+            (await _application.container
+              .resolve<CreateProjectInteractor>("createProject")
+              .execute(
+                projectDescription,
+                projectEndDate.toDate(),
+                projectName,
+                status,
+                teamId
+              ));
+          console.log("hehe2");
+          loader.stop("createProjectLoader");
+          _application.container
+            .resolve<ShowSuccessMessageInteractor>("showSuccessMessage")
+            .execute("Uspješno ste kreirali projekt");
+          _store.update({
+            isCreateProjectModalVisible: false
+          });
+        } catch (error) {
+          console.log("ufatio sam ga");
+          loader.stop("createProjectLoader");
+          _application.container
+            .resolve<ShowErrorMessageInteractor>("showErrorMessage")
+            .execute(error.message);
+        }
     };
 
     return {

@@ -21,7 +21,8 @@ const CreateProjectForm = ({
   onChangeProjectNameValue,
   onChangeProjectDescriptionValue,
   onChangeProjectEndDateValue,
-  onChangeProjectStatusValue
+  onChangeProjectStatusValue,
+  validationProjectErrors
 }: {
   projectStatus: IStatus;
   projectEndDate: Moment;
@@ -30,9 +31,14 @@ const CreateProjectForm = ({
   onChangeProjectNameValue(value: string): void;
   onChangeProjectDescriptionValue(value: string): void;
   onChangeProjectStatusValue(value: IStatus): void;
-  // onChangeProjectEndDateValue(value: Moment): void;
   onChangeProjectEndDateValue: any;
+  validationProjectErrors: any;
 }) => {
+  const checkValidationErrors = (fieldName: string) => {
+    return (
+      validationProjectErrors && validationProjectErrors[fieldName].length > 0
+    );
+  };
   return (
     <div>
       <div>
@@ -44,11 +50,11 @@ const CreateProjectForm = ({
           allowClear={true}
           style={{ marginTop: 20 }}
         />
-        {/* {checkValidationErrors("teamName") && (
+        {checkValidationErrors("projectName") && (
           <Text className={"error-text"}>
-            {validationErrors["teamName"][0]}
+            {validationProjectErrors["projectName"][0]}
           </Text>
-        )} */}
+        )}
       </div>
       <Input.TextArea
         placeholder={"Description"}
@@ -57,20 +63,26 @@ const CreateProjectForm = ({
         autosize={{ minRows: 4 }}
         style={{ marginTop: 20 }}
       />
-      {/* {checkValidationErrors("projectDescription") && (
+      {checkValidationErrors("projectDescription") && (
         <Text className={"error-text"}>
-          {validationErrors["projectDescription"][0]}
+          {validationProjectErrors["projectDescription"][0]}
         </Text>
-      )} */}
-      <DatePicker
-        placeholder={"End Date"}
-        format={"DD-MM-YYYY"}
-        showToday={false}
-        disabledDate={disabledDate}
-        //value={projectEndDate}
-        onChange={e => onChangeProjectEndDateValue(e)}
-        style={{ marginTop: 20 }}
-      />
+      )}
+      <div>
+        <DatePicker
+          placeholder={"End Date"}
+          format={"DD-MM-YYYY"}
+          showToday={false}
+          disabledDate={disabledDate}
+          onChange={e => onChangeProjectEndDateValue(e)}
+          style={{ marginTop: 20 }}
+        />
+      </div>
+      {checkValidationErrors("projectEndDate") && (
+        <Text className={"error-text"}>
+          {validationProjectErrors["projectEndDate"][0]}
+        </Text>
+      )}
     </div>
   );
 };
