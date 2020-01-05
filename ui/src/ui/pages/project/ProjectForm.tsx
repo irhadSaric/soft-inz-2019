@@ -29,8 +29,7 @@ const ProjectForm = ({
   editButtonDisabled,
   validationErrors,
   onChangeProjectData
-}: // onChangeProjectDescription
-{
+}: {
   translate: any;
   project: IProject;
   isEditable: boolean;
@@ -38,7 +37,6 @@ const ProjectForm = ({
   onCancelBtnClick: any;
   editButtonDisabled: boolean;
   onChangeProjectData(key: string, value: any): void;
-  // onChangeProjectDescription(value: string): void;
   validationErrors: any;
 }) => {
   const checkValidationErrors = (fieldName: string) => {
@@ -109,17 +107,11 @@ const ProjectForm = ({
             </div>
           </Form.Item>
 
-          {/* <Form.Item
-            validateStatus={
-              checkValidationErrors("email") ? "error" : undefined
-            }
-          >  */}
           <div className={"form-item"}>
             <Input
               addonBefore={<Text>Deadline</Text>}
               placeholder={"Deadline"}
               value={project.endDate.toDateString()}
-              //onChange={e => onChangeUserData("email", e.target.value)}
               allowClear={true}
               style={{ marginTop: 20, width: 400 }}
               readOnly={!isEditable}
@@ -134,13 +126,7 @@ const ProjectForm = ({
               disabled={true}
               style={{ marginTop: 20 }}
             />
-            {/* {checkValidationErrors("email") && (
-                <Text className={"error-text"}>
-                  {validationErrors["email"][0]}
-                </Text>
-              )} */}
           </div>
-          {/* </Form.Item> */}
           <Form.Item>
             <div className={"form-item"}>
               <h3 style={{ margin: "16px 0" }}>Iterations</h3>

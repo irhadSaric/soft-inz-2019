@@ -9,7 +9,6 @@ export interface IProjectService {
     description: string,
     endDate: Date,
     name: string,
-    status: IStatus,
     teamId: number
   ): Promise<any>;
 }
@@ -47,7 +46,6 @@ const ProjectService = ({ httpService }): IProjectService => {
       description: string,
       endDate: Date,
       name: string,
-      status: IStatus,
       teamId: number
     ) {
       const path = _http.buildPath(_basePath, _createPath);
@@ -56,7 +54,6 @@ const ProjectService = ({ httpService }): IProjectService => {
           description,
           endDate,
           name,
-          status,
           teamId
         }
       });

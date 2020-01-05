@@ -1,6 +1,4 @@
 import Application from "../../Application";
-import { ITeamService } from "../../service/team/TeamService";
-import { ITeamDetails } from "../../model/team/TeamDetails";
 import { IProject } from "../../model/project/Project";
 import { IProjectService } from "../../service/project/ProjectService";
 

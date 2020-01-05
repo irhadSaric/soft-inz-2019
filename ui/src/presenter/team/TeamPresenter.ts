@@ -254,16 +254,6 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
           const teamId = _store.getState<TTeamPresenter>().teamId;
           const projectEndDate = _store.getState<TTeamPresenter>()
             .projectEndDate;
-          const projectStatus = _store.getState<TTeamPresenter>().projectStatus;
-          let status = {} as IStatus;
-          status.id = 1;
-          status.key = "active-team-member";
-          status.name = "Active team member";
-          let statusT = {} as IStatusType;
-          statusT.id = 3;
-          statusT.key = "user-team-related";
-          statusT.name = "User-Team-related";
-          status.statusType = statusT;
           const response =
             teamId &&
             (await _application.container
@@ -272,7 +262,6 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
                 projectDescription,
                 projectEndDate.toDate(),
                 projectName,
-                status,
                 teamId
               ));
           loader.stop("createProjectLoader");

@@ -12,7 +12,6 @@ export default class CreateProjectInteractor {
     description: string,
     endDate: Date,
     name: string,
-    status: IStatus,
     teamId: number
   ) {
     try {
@@ -20,7 +19,6 @@ export default class CreateProjectInteractor {
         description,
         endDate,
         name,
-        status,
         teamId
       );
     } catch (error) {

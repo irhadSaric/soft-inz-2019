@@ -17,7 +17,6 @@ export interface IProjectPresenter extends TProjectPresenter, TPresentable {
   onEditBtnClick(): void;
   onCancelBtnClick(): void;
   onChangeProjectData(key: string, value: any): void;
-  /* onChangeProjectDescriptionValue(value: string): void; */
 }
 
 const defaultState: TProjectPresenter = {
@@ -125,15 +124,6 @@ const ProjectPresenter = withStore<IProjectPresenter, TProjectPresenter>(
       editValidationErrors && validateEditProjectForm();
     };
 
-    /* const onChangeProjectDescriptionValue = (value: string) => {
-      _store.update({
-        description: value
-      });
-      const editValidationErrors = _store.getState<TProjectPresenter>()
-        .editValidationErrors;
-      editValidationErrors && validateEditProjectForm();
-    }; */
-
     return {
       ...state,
       store: _store,
@@ -144,7 +134,6 @@ const ProjectPresenter = withStore<IProjectPresenter, TProjectPresenter>(
       onEditBtnClick,
       onCancelBtnClick,
       onChangeProjectData
-      // onChangeProjectDescriptionValue
     };
   },
   defaultState
