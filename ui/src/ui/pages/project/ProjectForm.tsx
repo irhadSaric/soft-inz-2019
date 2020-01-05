@@ -1,9 +1,24 @@
 import * as React from "react";
 import { ICountry } from "../../../model/country/Country";
-import { Avatar, Button, Divider, Input, Select, Form, List } from "antd";
+import {
+  Avatar,
+  Button,
+  Divider,
+  Input,
+  Select,
+  Form,
+  List,
+  DatePicker
+} from "antd";
 import { IUser } from "../../../model/user/User";
 import Text from "antd/lib/typography/Text";
 import Project, { IProject } from "../../../model/project/Project";
+import moment from "moment";
+
+function disabledDate(current) {
+  // Can not select days before today and today
+  return current && current < moment().endOf("day");
+}
 
 const ProjectForm = ({
   translate,
@@ -13,9 +28,9 @@ const ProjectForm = ({
   onCancelBtnClick,
   editButtonDisabled,
   validationErrors,
-  onChangeProjectData,
-  onChangeProjectDescription
-}: {
+  onChangeProjectData
+}: // onChangeProjectDescription
+{
   translate: any;
   project: IProject;
   isEditable: boolean;
@@ -23,7 +38,7 @@ const ProjectForm = ({
   onCancelBtnClick: any;
   editButtonDisabled: boolean;
   onChangeProjectData(key: string, value: any): void;
-  onChangeProjectDescription(value: string): void;
+  // onChangeProjectDescription(value: string): void;
   validationErrors: any;
 }) => {
   const checkValidationErrors = (fieldName: string) => {
@@ -84,7 +99,9 @@ const ProjectForm = ({
               <Input.TextArea
                 placeholder={"Description"}
                 value={project.description}
-                onChange={e => onChangeProjectDescription(e.target.value)}
+                onChange={e =>
+                  onChangeProjectData("description", e.target.value)
+                }
                 autosize={{ minRows: 4 }}
                 style={{ marginTop: 20 }}
                 readOnly={!isEditable}
@@ -101,11 +118,21 @@ const ProjectForm = ({
             <Input
               addonBefore={<Text>Deadline</Text>}
               placeholder={"Deadline"}
-              //value={project.endDate}
+              value={project.endDate.toDateString()}
               //onChange={e => onChangeUserData("email", e.target.value)}
               allowClear={true}
               style={{ marginTop: 20, width: 400 }}
               readOnly={!isEditable}
+            />
+            <DatePicker
+              placeholder={"End Date"}
+              format={"DD-MM-YYYY"}
+              showToday={false}
+              value={moment(project.endDate)}
+              disabledDate={disabledDate}
+              onChange={e => onChangeProjectData("endDate", e)}
+              disabled={true}
+              style={{ marginTop: 20 }}
             />
             {/* {checkValidationErrors("email") && (
                 <Text className={"error-text"}>

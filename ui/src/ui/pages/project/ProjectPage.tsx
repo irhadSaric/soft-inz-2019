@@ -33,8 +33,8 @@ export default class ProjectPage extends React.Component<Props, State> {
       onCancelBtnClick,
       editButtonDisabled,
       editValidationErrors,
-      onChangeProjectData,
-      onChangeProjectDescriptionValue
+      onChangeProjectData
+      // onChangeProjectDescriptionValue
     } = this.state;
     return (
       <Page
@@ -50,7 +50,7 @@ export default class ProjectPage extends React.Component<Props, State> {
           editButtonDisabled={editButtonDisabled}
           validationErrors={editValidationErrors}
           onChangeProjectData={onChangeProjectData}
-          onChangeProjectDescription={onChangeProjectDescriptionValue}
+          // onChangeProjectDescription={onChangeProjectDescriptionValue}
         />
       </Page>
     );

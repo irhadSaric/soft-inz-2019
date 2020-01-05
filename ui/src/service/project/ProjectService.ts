@@ -18,6 +18,7 @@ const ProjectService = ({ httpService }): IProjectService => {
   const _http: IHttpService = httpService;
   const _basePath: string = "/api/project";
   const _createPath: string = "/create";
+  const _editPath: string = "/edit";
 
   return {
     async getProject(id: number) {
@@ -28,7 +29,7 @@ const ProjectService = ({ httpService }): IProjectService => {
     },
 
     async updateProject(project: IProject) {
-      const path = _http.buildPath(_basePath, project.id.toString());
+      const path = _http.buildPath(_basePath, _editPath, project.id.toString());
       const response = await _http.put(path, {
         params: {
           name: project.name,

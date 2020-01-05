@@ -255,7 +255,6 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
           statusT.key = "user-team-related";
           statusT.name = "User-Team-related";
           status.statusType = statusT;
-          console.log(projectEndDate);
           const response =
             teamId &&
             (await _application.container
@@ -267,7 +266,6 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
                 status,
                 teamId
               ));
-          console.log("hehe2");
           loader.stop("createProjectLoader");
           _application.container
             .resolve<ShowSuccessMessageInteractor>("showSuccessMessage")

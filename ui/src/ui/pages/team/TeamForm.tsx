@@ -75,7 +75,7 @@ const TeamForm = ({
       }}
     >
       <div style={{ width: 200, display: "flex", flexDirection: "column" }}>
-        <Avatar style={{ marginLeft: 20 }} size={150} icon="user" />
+        <Avatar style={{ marginLeft: 20 }} size={150} icon="team" />
       </div>
       <Divider
         style={{ height: "auto", background: "#cccccc" }}
