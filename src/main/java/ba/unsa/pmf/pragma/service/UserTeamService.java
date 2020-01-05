@@ -60,7 +60,7 @@ public class UserTeamService {
     throws NotFoundException {
 
         if (
-            teamRepository.getTeamByUserAndRoleKeyAndStatusKey(request.getUserId(), "lead", "active-team-member").
+            teamRepository.getTeamByUserAndRoleKeyAndStatusKey(request.getUserId(), "team-lead", "active-team-member").
             stream().noneMatch(team -> team.getId().equals(request.getTeamId()))
         ) {
             // If the requested UserTeam combination with lead role does not exist
@@ -74,7 +74,7 @@ public class UserTeamService {
         // We know these exist because of the condition checks above
         Team team = teamRepository.findById(request.getTeamId()).get();
         User invitedUser = obj.get();
-        Role role = roleRepository.getRoleByKey("member");
+        Role role = roleRepository.getRoleByKey("team-member");
         Status status = statusRepository.getStatusByKey("pending-team-member");
 
         addUserToTeam(invitedUser, team, role, status, null);
