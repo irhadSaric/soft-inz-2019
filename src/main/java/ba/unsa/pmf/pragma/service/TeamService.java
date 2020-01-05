@@ -73,7 +73,7 @@ public class TeamService {
         UserTeam userTeam = userTeamService.addUserToTeam(
                 user,
                 team,
-                roleRepository.getRoleByKey("lead"),
+                roleRepository.getRoleByKey("team-lead"),
                 statusRepository.getStatusByKey("active-team-member"),
                 request.getNickname()
         );
