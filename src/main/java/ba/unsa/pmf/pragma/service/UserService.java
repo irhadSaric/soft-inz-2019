@@ -37,6 +37,9 @@ public class UserService {
     private PermissionRepository permissionRepository;
 
     @Autowired
+    private StatusRepository statusRepository;
+
+    @Autowired
     private CountryRepository countryRepository;
 
     @Autowired
@@ -161,6 +164,7 @@ public class UserService {
 
     private User saveUser(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setStatus(statusRepository.getStatusByKey("active-user"));
         userRepository.save(user);
 
         // FIXME: rewrite to fetch all roles with user permissions
@@ -175,7 +179,6 @@ public class UserService {
         return user;
     }
 
-    @Transactional
     public byte[] getAvatar(Long id) throws NotFoundException {
         Optional<User> data = userRepository.findById(id);
 
