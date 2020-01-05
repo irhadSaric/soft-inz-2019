@@ -3,6 +3,7 @@ import Team, { ITeam } from "../../model/team/Team";
 import TeamInvite, { ITeamInvite } from "../../model/team/TeamInvite";
 import TeamDetails, { ITeamDetails } from "../../model/team/TeamDetails";
 import ActiveTeam, { IActiveTeam } from "../../model/team/ActiveTeam";
+import TeamProject, { ITeamProject } from "../../model/team/TeamProject";
 import ActiveTeamMember, {
   IActiveTeamMember
 } from "../../model/team/ActiveTeamMember";
@@ -24,6 +25,7 @@ export interface ITeamService {
   getActiveTeamList(userId: number): Promise<IActiveTeam[]>;
   getTeamInvitesForUser(userId: number): Promise<ITeamInvite[]>;
   getTeamDetails(teamId: number): Promise<ITeamDetails>;
+  getTeamProjects(teamId: number): Promise<ITeamProject[]>;
   updateTeamDetails(team: ITeam): Promise<any>;
   respondToPendingInvite(
     userId: number,
@@ -44,7 +46,18 @@ const TeamService = ({ httpService }): ITeamService => {
   const _respond: string = "/respond";
   const _details: string = "/details";
   const _edit: string = "/edit";
+  const _teamProject: string = "/api/project/team";
   const _members: string = "/members";
+
+  let buildProjectList = (json: any) => {
+    return json.map((item: any) => {
+      let teamProject = TeamProject(item);
+      teamProject.startDate = new Date(item.startDate);
+      teamProject.endDate = new Date(item.endDate);
+      teamProject.teamDetails = item.teamDetails;
+      teamProject.status = item.status;
+    });
+  };
 
   const buildTeamList = (data: any): ITeam[] => {
     return data.map(item => Team(item));
@@ -128,6 +141,12 @@ const TeamService = ({ httpService }): ITeamService => {
       const response = await _http.get(path);
       const responseJSON = await _http.toJSON(response);
       return TeamDetails(responseJSON);
+    },
+    async getTeamProjects(teamId: number) {
+      const path = _http.buildPath(_teamProject, teamId.toString());
+      const response = await _http.get(path);
+      const responseJSON = await _http.toJSON(response);
+      return buildProjectList(responseJSON);
     },
     async updateTeamDetails(team: ITeam) {
       const path = _http.buildPath(_basePath, team.id.toString(), _edit);
