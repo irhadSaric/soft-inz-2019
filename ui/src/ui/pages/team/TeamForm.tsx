@@ -3,6 +3,7 @@ import { Avatar, Button, Divider, Input, Form, List } from "antd";
 import Text from "antd/lib/typography/Text";
 import { ITeamDetails } from "../../../model/team/TeamDetails";
 import { ITeamProject } from "../../../model/team/TeamProject";
+import { IActiveTeamMember } from "../../../model/team/ActiveTeamMember";
 
 const TeamForm = ({
   translate,
@@ -16,10 +17,12 @@ const TeamForm = ({
   isLoading,
   onChangeTeamData,
   updateTeamDetails,
+  activeTeamMembers
 }: {
   translate: any,
   teamDetails: ITeamDetails;
   teamProjects: ITeamProject[];
+  activeTeamMembers: IActiveTeamMember[];
   isEditable: boolean;
   onEditBtnClick: any;
   onCancelBtnClick: any;
@@ -32,11 +35,6 @@ const TeamForm = ({
   const checkValidationErrors = (fieldName: string) => {
     return validationErrors && validationErrors[fieldName].length > 0;
   };
-  const data2 = [
-    'User 1.',
-    'User 2.',
-    'User 3.',
-  ];
   return (
     <div
       style={{
@@ -112,8 +110,8 @@ const TeamForm = ({
               <List
                 size="small"
                 bordered
-                dataSource={data2}
-                renderItem={item => <List.Item>{item}</List.Item>}
+                dataSource={activeTeamMembers}
+                renderItem={item => <List.Item>{item.firstName}</List.Item>}
               />
             </div>
           </Form.Item>

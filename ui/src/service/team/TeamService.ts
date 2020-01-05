@@ -4,6 +4,10 @@ import TeamInvite, { ITeamInvite } from "../../model/team/TeamInvite";
 import TeamDetails, { ITeamDetails } from "../../model/team/TeamDetails";
 import ActiveTeam, { IActiveTeam } from "../../model/team/ActiveTeam";
 import TeamProject, { ITeamProject } from "../../model/team/TeamProject";
+import ActiveTeamMember, {
+  IActiveTeamMember
+} from "../../model/team/ActiveTeamMember";
+import Country from "../../model/country/Country";
 
 export interface ITeamService {
   createTeam(
@@ -28,6 +32,7 @@ export interface ITeamService {
     teamId: number,
     accept: boolean
   ): Promise<any>;
+  getActiveTeamMembersList(teamId: number): Promise<IActiveTeamMember[]>;
 }
 
 const TeamService = ({ httpService }): ITeamService => {
@@ -42,6 +47,7 @@ const TeamService = ({ httpService }): ITeamService => {
   const _details: string = "/details";
   const _edit: string = "/edit";
   const _teamProject: string = "/api/project/team";
+  const _members: string = "/members";
 
   let ProjectListMapper = (json: any) => {
     return json.map((item: any) => {
@@ -67,6 +73,14 @@ const TeamService = ({ httpService }): ITeamService => {
 
   const buildTeamDetailsList = (data: any): ITeamDetails[] => {
     return data.map(item => TeamDetails(item));
+  };
+
+  const buildActiveTeamMembersList = (data: any) => {
+    return data.map(item => {
+      let activeTeamMember = ActiveTeamMember(item);
+      activeTeamMember.country = Country(item.country);
+      return activeTeamMember;
+    });
   };
 
   return {
@@ -163,6 +177,17 @@ const TeamService = ({ httpService }): ITeamService => {
       );
       const response = await _http.post(path);
       return _http.toText(response);
+    },
+    async getActiveTeamMembersList(teamId: number) {
+      const path = _http.buildPath(
+        _basePath,
+        teamId.toString(),
+        _members,
+        _active
+      );
+      const response = await _http.get(path);
+      const responseJSON = await _http.toJSON(response);
+      return buildActiveTeamMembersList(responseJSON);
     }
   };
 };

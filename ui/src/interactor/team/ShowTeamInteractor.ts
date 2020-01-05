@@ -23,7 +23,8 @@ export default class ShowTeamInteractor {
         teamDetails: {} as ITeamDetails,
         teamProjects: [],
         isEditableForm: false,
-        editButtonDisabled: false
+        editButtonDisabled: false,
+        activeTeamMembers: []
       }
     });
 
@@ -34,6 +35,10 @@ export default class ShowTeamInteractor {
     this.teamService
       .getTeamProjects(teamId)
       .then(this.output && this.output.loadTeamProjects);
+
+    this.teamService
+      .getActiveTeamMembersList(teamId)
+      .then(this.output && this.output.loadActiveTeamMembersList);
 
     return this.output;
   }
