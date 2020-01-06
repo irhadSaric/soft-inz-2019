@@ -10,7 +10,7 @@ export interface TProject {
   id: number;
   name: string;
   startDate: Date;
-  status: IStatus;
+  statusId: IStatus;
   team: ITeam;
 }
 
@@ -29,8 +29,14 @@ const Project = Model(
       get description() {
         return _Project.description;
       },
+      set description(value) {
+        _Project.description = value;
+      },
       get endDate() {
         return _Project.endDate;
+      },
+      set endDate(value) {
+        _Project.endDate = value;
       },
       get id() {
         return _Project.id;
@@ -38,8 +44,11 @@ const Project = Model(
       get name() {
         return _Project.name;
       },
-      get status() {
-        return _Project.status;
+      set name(value) {
+        _Project.name = value;
+      },
+      get statusId() {
+        return _Project.statusId;
       },
       get team() {
         return _Project.team;

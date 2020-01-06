@@ -24,20 +24,25 @@ const ProjectService = ({ httpService }): IProjectService => {
       const path = _http.buildPath(_basePath, id.toString());
       const response = await _http.get(path);
       const responseJSON = await _http.toJSON(response);
+      let project = Project(responseJSON);
+      console.log(project);
+      //project.status = responseJSON.statusId;
       return Project(responseJSON);
     },
 
     async updateProject(project: IProject) {
       const path = _http.buildPath(_basePath, _editPath, project.id.toString());
+      console.log(project);
       const response = await _http.put(path, {
         params: {
           name: project.name,
           description: project.description,
-          id: project.team.id,
+          teamId: project.team.id,
           endDate: project.endDate,
-          status: project.status
+          status: project.statusId
         }
       });
+      console.log(project.statusId);
       const responseJSON = await _http.toJSON(response);
       return Project(responseJSON);
     },

@@ -62,6 +62,7 @@ import ProjectArea from "../areas/ProjectArea";
 import UpdateTeamDetailsInteractor from "../interactor/team/UpdateTeamDetailsInteractor";
 import ShowProjectInteractor from "../interactor/project/ShowProjectInteractor";
 import CreateProjectInteractor from "../interactor/project/CreateProjectInteractor";
+import UpdateProjectDetailsInteractor from "../interactor/project/UpdateProjectDetailsInteractor";
 
 //const DEFAULT_CACHE_TIMEOUT_MS = 15000;
 const ModuleContainer = (application: Application): IModuleContainer => {
@@ -171,7 +172,8 @@ const ModuleContainer = (application: Application): IModuleContainer => {
     getTeamInvitesForUser: asInteractor(GetTeamInvitesForUserInteractor),
     showProject: asInteractor(ShowProjectInteractor),
     updateTeamDetails: asInteractor(UpdateTeamDetailsInteractor),
-    createProject: asInteractor(CreateProjectInteractor)
+    createProject: asInteractor(CreateProjectInteractor),
+    updateProjectDetails: asInteractor(UpdateProjectDetailsInteractor)
   });
 
   return {

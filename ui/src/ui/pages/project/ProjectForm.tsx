@@ -28,7 +28,8 @@ const ProjectForm = ({
   onCancelBtnClick,
   editButtonDisabled,
   validationErrors,
-  onChangeProjectData
+  onChangeProjectData,
+  updateProjectDetails
 }: {
   translate: any;
   project: IProject;
@@ -38,11 +39,11 @@ const ProjectForm = ({
   editButtonDisabled: boolean;
   onChangeProjectData(key: string, value: any): void;
   validationErrors: any;
+  updateProjectDetails: any;
 }) => {
   const checkValidationErrors = (fieldName: string) => {
     return validationErrors && validationErrors[fieldName].length > 0;
   };
-  console.log(project);
   const data = ["Iteration 1.", "Iteration 2."];
   const data2 = ["Backlog 1.", "Backlog 2.", "Backlog 3."];
   return (
@@ -58,9 +59,6 @@ const ProjectForm = ({
     >
       <div style={{ width: 200, display: "flex", flexDirection: "column" }}>
         <Avatar style={{ marginLeft: 20 }} size={150} icon="project" />
-        {/* <Button style={{ marginTop: 10 }} type={"link"}>
-          Upload photo
-        </Button> */}
       </div>
       <Divider
         style={{ height: "auto", background: "#cccccc" }}
@@ -104,29 +102,44 @@ const ProjectForm = ({
                 style={{ marginTop: 20 }}
                 readOnly={!isEditable}
               />
+              {checkValidationErrors("description") && (
+                <Text className={"error-text"}>
+                  {validationErrors["description"][0]}
+                </Text>
+              )}
             </div>
           </Form.Item>
-
-          <div className={"form-item"}>
-            <Input
+          <Form.Item
+            validateStatus={
+              checkValidationErrors("endDate") ? "error" : undefined
+            }
+          >
+            <div className={"form-item"}>
+              {/* <Input
               addonBefore={<Text>Deadline</Text>}
               placeholder={"Deadline"}
               value={project.endDate.toDateString()}
               allowClear={true}
               style={{ marginTop: 20, width: 400 }}
               readOnly={!isEditable}
-            />
-            <DatePicker
-              placeholder={"End Date"}
-              format={"DD-MM-YYYY"}
-              showToday={false}
-              value={moment(project.endDate)}
-              disabledDate={disabledDate}
-              onChange={e => onChangeProjectData("endDate", e)}
-              disabled={true}
-              style={{ marginTop: 20 }}
-            />
-          </div>
+            /> */}
+              <DatePicker
+                placeholder={"End Date"}
+                format={"DD-MM-YYYY"}
+                showToday={false}
+                value={moment(project.endDate)}
+                disabledDate={disabledDate}
+                onChange={e => onChangeProjectData("endDate", e)}
+                disabled={!isEditable}
+                style={{ marginTop: 20 }}
+              />
+              {checkValidationErrors("endDate") && (
+                <Text className={"error-text"}>
+                  {validationErrors["endDate"][0]}
+                </Text>
+              )}
+            </div>
+          </Form.Item>
           <Form.Item>
             <div className={"form-item"}>
               <h3 style={{ margin: "16px 0" }}>Iterations</h3>
@@ -166,7 +179,7 @@ const ProjectForm = ({
             <Button
               type={"primary"}
               disabled={editButtonDisabled}
-              //onClick={updateUserProfile}
+              onClick={updateProjectDetails}
             >
               Save
             </Button>

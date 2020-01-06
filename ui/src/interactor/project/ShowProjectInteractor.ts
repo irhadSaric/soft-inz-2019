@@ -25,8 +25,12 @@ export default class ShowTeamInteractor {
       }
     });
 
-    this.projectService
+    /*  this.projectService
       .getProject(projectId)
+      .then(this.output && this.output.loadProject); */
+
+    this.projectService
+      .getProject(4)
       .then(this.output && this.output.loadProject);
 
     return this.output;

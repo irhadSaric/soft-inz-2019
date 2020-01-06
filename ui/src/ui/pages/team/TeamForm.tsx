@@ -154,12 +154,12 @@ const TeamForm = ({
                   />
                 </Modal>
               </h3>
-              <List
+              {/* <List
                 size="small"
                 bordered
                 dataSource={teamProjects}
                 renderItem={item => <List.Item>{item.name}</List.Item>}
-              />
+              /> */}
             </div>
           </Form.Item>
           <Form.Item>

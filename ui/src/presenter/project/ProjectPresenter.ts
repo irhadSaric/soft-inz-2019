@@ -17,6 +17,7 @@ export interface IProjectPresenter extends TProjectPresenter, TPresentable {
   onEditBtnClick(): void;
   onCancelBtnClick(): void;
   onChangeProjectData(key: string, value: any): void;
+  updateProjectDetails(): void;
 }
 
 const defaultState: TProjectPresenter = {
@@ -63,7 +64,10 @@ const ProjectPresenter = withStore<IProjectPresenter, TProjectPresenter>(
           "The Description field is required."
         );
       }
-      if (Object.entries(project.endDate).length === 0) {
+      if (
+        project.endDate === null ||
+        Object.entries(project.endDate).length === 0
+      ) {
         editValidationErrors.endDate.push("The End Date field is required.");
       }
       _store.update({
@@ -133,7 +137,8 @@ const ProjectPresenter = withStore<IProjectPresenter, TProjectPresenter>(
       translate,
       onEditBtnClick,
       onCancelBtnClick,
-      onChangeProjectData
+      onChangeProjectData,
+      updateProjectDetails
     };
   },
   defaultState
