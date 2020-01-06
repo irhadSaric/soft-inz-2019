@@ -4,7 +4,6 @@ import TeamPresenter, {
 } from "../../presenter/team/TeamPresenter";
 import { ITeamDetails } from "../../model/team/TeamDetails";
 import { ITeamService } from "../../service/team/TeamService";
-import { ITeamProject } from "../../model/team/TeamProject";
 
 export default class ShowTeamInteractor {
   private application: Application;
