@@ -1,9 +1,11 @@
 import * as React from "react";
 import { Avatar, Button, Divider, Input, Form, List } from "antd";
 import Text from "antd/lib/typography/Text";
+import { IIteration } from "../../../model/iteration/Iteration";
 
 const IterationForm = ({
   translate,
+  iteration,
   isEditable,
   onEditBtnClick,
   onCancelBtnClick,
@@ -11,7 +13,8 @@ const IterationForm = ({
   validationErrors,
   isLoading,
 }: {
-  translate: any,
+  translate: any;
+  iteration: IIteration;
   isEditable: boolean;
   onEditBtnClick: any;
   onCancelBtnClick: any;

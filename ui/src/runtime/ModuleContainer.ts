@@ -58,6 +58,9 @@ import InviteUserToTeamInteractor from "../interactor/team/InviteUserToTeamInter
 import RespondToPendingInviteInteractor from "../interactor/team/RespondToPendingInviteInteractor";
 import GetTeamInvitesForUserInteractor from "../interactor/team/GetTeamInvitesForUserInteractor";
 import UpdateTeamDetailsInteractor from "../interactor/team/UpdateTeamDetailsInteractor";
+import IterationArea from "../areas/IterationArea";
+import ShowIterationInteractor from "../interactor/iteration/ShowIterationInteractor";
+import IterationService from "../service/iteration/IterationService";
 
 //const DEFAULT_CACHE_TIMEOUT_MS = 15000;
 const ModuleContainer = (application: Application): IModuleContainer => {
@@ -129,7 +132,8 @@ const ModuleContainer = (application: Application): IModuleContainer => {
     authenticationService: asFunction(AuthenticationService),
     credentialsService: asFunction(CredentialsService),
     codebookService: asFunction(CodebookService),
-    teamService: asFunction(TeamService)
+    teamService: asFunction(TeamService),
+    iterationService: asFunction(IterationService)
   });
 
   //areas
@@ -137,6 +141,7 @@ const ModuleContainer = (application: Application): IModuleContainer => {
     homeArea: asClass(HomeArea).singleton(),
     userArea: asClass(UserArea).singleton(),
     teamArea: asClass(TeamArea).singleton(),
+    iterationArea: asClass(IterationArea).singleton(),
     authenticationArea: asClass(AuthenticationArea)
   });
 
@@ -163,7 +168,8 @@ const ModuleContainer = (application: Application): IModuleContainer => {
     inviteUserToTeam: asInteractor(InviteUserToTeamInteractor),
     respondToPendingInvite: asInteractor(RespondToPendingInviteInteractor),
     getTeamInvitesForUser: asInteractor(GetTeamInvitesForUserInteractor),
-    updateTeamDetails: asInteractor(UpdateTeamDetailsInteractor)
+    updateTeamDetails: asInteractor(UpdateTeamDetailsInteractor),
+    showIteration: asInteractor(ShowIterationInteractor)
   });
 
   return {

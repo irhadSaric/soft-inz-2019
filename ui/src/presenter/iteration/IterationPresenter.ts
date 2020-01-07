@@ -1,24 +1,21 @@
 import withStore, { TLoadingAwarePresenter, TPresentable } from "../withStore";
 import Application from "../../Application";
-import { ITeamDetails } from "../../model/team/TeamDetails";
-import UpdateTeamDetailsInteractor from "../../interactor/team/UpdateTeamDetailsInteractor";
-import ShowSuccessMessageInteractor from "../../interactor/notifications/ShowSuccessMessageInteractor";
-import ShowErrorMessageInteractor from "../../interactor/notifications/ShowErrorMessageInteractor";
-import { ITeamProject } from "../../model/team/TeamProject";
-import { IActiveTeam } from "../../model/team/ActiveTeam";
-import { IActiveTeamMember } from "../../model/team/ActiveTeamMember";
+import { IIteration } from "../../model/iteration/Iteration";
 
 export interface TIterationPresenter extends TLoadingAwarePresenter {
+  iteration: IIteration;
   isEditableForm: boolean;
   editValidationErrors?: any;
   editButtonDisabled: boolean;
 }
 export interface IIterationPresenter extends TIterationPresenter, TPresentable {
+  loadIterations(iteration: IIteration): void;
   onEditBtnClick(): void;
   onCancelBtnClick(): void;
 }
 
 const defaultState: TIterationPresenter = {
+  iteration: {} as IIteration,
   isEditableForm: false,
   editValidationErrors: undefined,
   editButtonDisabled: false
@@ -29,6 +26,12 @@ const IterationPresenter = withStore<IIterationPresenter, TIterationPresenter>(
     const _store = store;
     const _application: Application = application;
     const state = _store.getState<TIterationPresenter>();
+
+    const loadIterations = (iteration: IIteration) => {
+      return _store.update({
+        iteration
+      });
+    };
 
     const onEditBtnClick = () => {
       _store.update({ isEditableForm: true });
@@ -44,6 +47,7 @@ const IterationPresenter = withStore<IIterationPresenter, TIterationPresenter>(
       loader,
       application: _application,
       translate,
+      loadIterations,
       onEditBtnClick,
       onCancelBtnClick
     };

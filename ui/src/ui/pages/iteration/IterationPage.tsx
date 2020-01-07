@@ -27,6 +27,7 @@ export default class IterationPage extends React.Component<Props, State> {
   render() {
     const {
       translate,
+      iteration,
       isEditableForm,
       onEditBtnClick,
       onCancelBtnClick,
@@ -40,6 +41,7 @@ export default class IterationPage extends React.Component<Props, State> {
       >
         <IterationForm
           translate={translate}
+          iteration={iteration}
           isEditable={isEditableForm}
           onEditBtnClick={onEditBtnClick}
           onCancelBtnClick={onCancelBtnClick}
