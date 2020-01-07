@@ -44,6 +44,21 @@ public class ProjectController {
         return projectService.getAllIterationsForProject(id);
     }
 
+    @GetMapping("/iterations/{id}/active")
+    public Iteration getActiveIterationForProject(@PathVariable("id") Long id){
+        return projectService.getActiveIterationForProject(id);
+    }
+
+    @GetMapping("/iterations/{id}/archived")
+    public List<Iteration> getArchivedIterationsForProject(@PathVariable("id") Long id){
+        return projectService.getAllIterationsByType(id, "archived-iteration");
+    }
+
+    @GetMapping("/iterations/{id}/completed")
+    public List<Iteration> getCompletedIterationsForProject(@PathVariable("id") Long id){
+        return projectService.getAllIterationsByType(id, "completed-iteration");
+    }
+
     @GetMapping("/team/{id}")
     public List<Project> getAllProjectsForTeam(@PathVariable("id") Long id){
         return projectService.getAllProjectsForTeam(id);

@@ -94,11 +94,11 @@ public class IterationService {
             throw new NotFoundException("Iteration not found");
         }
 
-        Status status = statusRepository.getStatusByKey("closed-iteration");
+        Status status = statusRepository.getStatusByKey("completed-iteration");
         Iteration iteration = iterationOpt.get();
         iteration.setStatus(status);
         iterationRepository.save(iteration);
-        Status ticketStatus = statusRepository.getStatusByKey("backlog");
+        Status ticketStatus = statusRepository.getStatusByKey("backlog-ticket");
         ticketRepository.setTicketsToBacklog(ticketStatus.getId(),iterationId);
 
 
