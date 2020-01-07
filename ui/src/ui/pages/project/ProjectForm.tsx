@@ -1,18 +1,7 @@
 import * as React from "react";
-import { ICountry } from "../../../model/country/Country";
-import {
-  Avatar,
-  Button,
-  Divider,
-  Input,
-  Select,
-  Form,
-  List,
-  DatePicker
-} from "antd";
-import { IUser } from "../../../model/user/User";
+import { Avatar, Button, Divider, Input, Form, List, DatePicker } from "antd";
 import Text from "antd/lib/typography/Text";
-import Project, { IProject } from "../../../model/project/Project";
+import { IProject } from "../../../model/project/Project";
 import moment from "moment";
 
 function disabledDate(current) {
@@ -115,14 +104,6 @@ const ProjectForm = ({
             }
           >
             <div className={"form-item"}>
-              {/* <Input
-              addonBefore={<Text>Deadline</Text>}
-              placeholder={"Deadline"}
-              value={project.endDate.toDateString()}
-              allowClear={true}
-              style={{ marginTop: 20, width: 400 }}
-              readOnly={!isEditable}
-            /> */}
               <DatePicker
                 placeholder={"End Date"}
                 format={"DD-MM-YYYY"}

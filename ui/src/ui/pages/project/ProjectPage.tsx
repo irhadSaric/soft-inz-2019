@@ -35,7 +35,6 @@ export default class ProjectPage extends React.Component<Props, State> {
       editValidationErrors,
       onChangeProjectData,
       updateProjectDetails
-      // onChangeProjectDescriptionValue
     } = this.state;
     return (
       <Page
@@ -52,7 +51,6 @@ export default class ProjectPage extends React.Component<Props, State> {
           validationErrors={editValidationErrors}
           onChangeProjectData={onChangeProjectData}
           updateProjectDetails={updateProjectDetails}
-          // onChangeProjectDescription={onChangeProjectDescriptionValue}
         />
       </Page>
     );

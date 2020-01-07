@@ -4,12 +4,17 @@ import Application from "../../Application";
 import ShowSuccessMessageInteractor from "../../interactor/notifications/ShowSuccessMessageInteractor";
 import ShowErrorMessageInteractor from "../../interactor/notifications/ShowErrorMessageInteractor";
 import UpdateProjectDetailsInteractor from "../../interactor/project/UpdateProjectDetailsInteractor";
+import { Moment } from "moment";
 
 export interface TProjectPresenter extends TLoadingAwarePresenter {
   project: IProject;
   isEditableForm: boolean;
   editValidationErrors?: any;
   editButtonDisabled: boolean;
+  /* isCreateIterationModalVisible: boolean;
+  iterationName: string;
+  iterationDescription: string;
+  iterationEndDate: Moment; */
 }
 
 export interface IProjectPresenter extends TProjectPresenter, TPresentable {
@@ -18,13 +23,22 @@ export interface IProjectPresenter extends TProjectPresenter, TPresentable {
   onCancelBtnClick(): void;
   onChangeProjectData(key: string, value: any): void;
   updateProjectDetails(): void;
+  /* createIteration(): void;
+  onCancelIterationModalButtonClick(): void;
+  onChangeIterationNameValue(value: string): void;
+  onChangeIterationDescriptionValue(value: string): void;
+  onChangeIterationEndDateValue(value: Moment): void; */
 }
 
 const defaultState: TProjectPresenter = {
   project: {} as IProject,
   isEditableForm: false,
-  editValidationErrors: undefined,
+  //editValidationErrors: undefined,
   editButtonDisabled: false
+  /* isCreateIterationModalVisible: false,
+  iterationName: "",
+  iterationDescription: "",
+  iterationEndDate: {} as Moment */
 };
 
 const ProjectPresenter = withStore<IProjectPresenter, TProjectPresenter>(
@@ -139,6 +153,10 @@ const ProjectPresenter = withStore<IProjectPresenter, TProjectPresenter>(
       onCancelBtnClick,
       onChangeProjectData,
       updateProjectDetails
+      /* createIteration,
+      onChangeIterationDescriptionValue,
+      onChangeIterationEndDateValue,
+      onChangeIterationNameValue */
     };
   },
   defaultState

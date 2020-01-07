@@ -4,8 +4,9 @@ import { IProjectService } from "../../service/project/ProjectService";
 import ProjectPresenter, {
   IProjectPresenter
 } from "../../presenter/project/ProjectPresenter";
+import { Moment } from "moment";
 
-export default class ShowTeamInteractor {
+export default class ShowProjectInteractor {
   private application: Application;
   private output?: IProjectPresenter;
   private projectService: IProjectService;
@@ -22,6 +23,10 @@ export default class ShowTeamInteractor {
         project: {} as IProject,
         isEditableForm: false,
         editButtonDisabled: false
+        /* isCreateIterationModalVisible: false,
+        iterationName: "",
+        iterationDescription: "",
+        iterationEndDate: {} as Moment */
       }
     });
 

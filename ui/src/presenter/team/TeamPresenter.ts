@@ -1,16 +1,13 @@
 import withStore, { TLoadingAwarePresenter, TPresentable } from "../withStore";
 import Application from "../../Application";
 import { ITeamDetails } from "../../model/team/TeamDetails";
-import { IStatus } from "../../model/status/Status";
 import CreateProjectInteractor from "../../interactor/project/CreateProjectInteractor";
 import UpdateTeamDetailsInteractor from "../../interactor/team/UpdateTeamDetailsInteractor";
 import ShowSuccessMessageInteractor from "../../interactor/notifications/ShowSuccessMessageInteractor";
 import ShowErrorMessageInteractor from "../../interactor/notifications/ShowErrorMessageInteractor";
-import { IStatusType } from "../../model/status/StatusType";
-import { Moment } from "moment";
 import { ITeamProject } from "../../model/team/TeamProject";
-import { IActiveTeam } from "../../model/team/ActiveTeam";
 import { IActiveTeamMember } from "../../model/team/ActiveTeamMember";
+import { IProject } from "../../model/project/Project";
 
 export interface TTeamPresenter extends TLoadingAwarePresenter {
   teamDetails: ITeamDetails;
@@ -20,10 +17,7 @@ export interface TTeamPresenter extends TLoadingAwarePresenter {
   editButtonDisabled: boolean;
   teamId?: number;
   isCreateProjectModalVisible: boolean;
-  projectName: string;
-  projectDescription: string;
-  projectStatus: IStatus;
-  projectEndDate: Moment;
+  project: IProject;
   activeTeamMembers: IActiveTeamMember[];
   createProjectValidationErrors?: any;
 }
@@ -36,10 +30,7 @@ export interface ITeamPresenter extends TTeamPresenter, TPresentable {
   createProject(): void;
   onCreateProjectBtnClick(): void;
   onCancelProjectModalButtonClick(): void;
-  onChangeProjectNameValue(value: string): void;
-  onChangeProjectDescriptionValue(value: string): void;
-  onChangeProjectStatusValue(value: IStatus): void;
-  onChangeProjectEndDateValue(value: Moment): void;
+  onChangeProjectData(key: string, value: any): void;
   updateTeamDetails(): void;
   loadActiveTeamMembersList(activeTeamMembers: IActiveTeamMember[]): void;
 }
@@ -51,10 +42,7 @@ const defaultState: TTeamPresenter = {
   editValidationErrors: undefined,
   editButtonDisabled: false,
   isCreateProjectModalVisible: false,
-  projectName: "",
-  projectDescription: "",
-  projectStatus: {} as IStatus,
-  projectEndDate: {} as Moment,
+  project: {} as IProject,
   activeTeamMembers: []
 };
 
@@ -76,28 +64,10 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
       });
     };
 
-    const onChangeProjectDescriptionValue = (value: string) => {
-      _store.update({
-        projectDescription: value
-      });
-    };
-
-    const onChangeProjectNameValue = (value: string) => {
-      _store.update({
-        projectName: value
-      });
-    };
-
-    const onChangeProjectStatusValue = (value: IStatus) => {
-      _store.update({
-        projectStatus: value
-      });
-    };
-
-    const onChangeProjectEndDateValue = (value: Moment) => {
-      _store.update({
-        projectEndDate: value
-      });
+    const onChangeProjectData = (key: string, value: any) => {
+      let project = _store.getState<TTeamPresenter>().project;
+      project[key] = value;
+      _store.update({ project });
     };
 
     const onCancelProjectModalButtonClick = () => {
@@ -201,11 +171,7 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
     };
 
     const validateCreateProjectForm = () => {
-      const projectName = _store.getState<TTeamPresenter>().projectName;
-      const projectDescription = _store.getState<TTeamPresenter>()
-        .projectDescription;
-      const projectEndDate = _store.getState<TTeamPresenter>().projectEndDate;
-
+      const project = _store.getState<TTeamPresenter>().project;
       let createProjectValidationErrors = _store.getState<TTeamPresenter>()
         .createProjectValidationErrors;
       createProjectValidationErrors = {
@@ -213,19 +179,20 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
         projectDescription: [],
         projectEndDate: []
       };
-      if (!projectName) {
-        console.log(projectName);
+      if (!project.name) {
         createProjectValidationErrors.projectName.push(
           "The Project Name field is required."
         );
       }
-      if (!projectDescription) {
+      if (!project.description) {
         createProjectValidationErrors.projectDescription.push(
           "The Description field is required."
         );
       }
-      if (Object.entries(projectEndDate).length === 0) {
-        console.log(projectEndDate);
+      if (
+        typeof project.endDate === "undefined" ||
+        Object.entries(project.endDate).length === 0
+      ) {
         createProjectValidationErrors.projectEndDate.push(
           "The End Date field is required."
         );
@@ -248,31 +215,25 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
       )
         try {
           loader.start("createProjectLoader");
-          const projectDescription = _store.getState<TTeamPresenter>()
-            .projectDescription;
-          const projectName = _store.getState<TTeamPresenter>().projectName;
+          const project = _store.getState<TTeamPresenter>().project;
           const teamId = _store.getState<TTeamPresenter>().teamId;
-          const projectEndDate = _store.getState<TTeamPresenter>()
-            .projectEndDate;
-          const response =
-            teamId &&
+          teamId &&
             (await _application.container
               .resolve<CreateProjectInteractor>("createProject")
               .execute(
-                projectDescription,
-                projectEndDate.toDate(),
-                projectName,
+                project.description,
+                project.endDate,
+                project.name,
                 teamId
               ));
           loader.stop("createProjectLoader");
           _application.container
             .resolve<ShowSuccessMessageInteractor>("showSuccessMessage")
-            .execute("Uspješno ste kreirali projekt");
+            .execute("You have successfully created a project");
           _store.update({
             isCreateProjectModalVisible: false
           });
         } catch (error) {
-          console.log("ufatio sam ga");
           loader.stop("createProjectLoader");
           _application.container
             .resolve<ShowErrorMessageInteractor>("showErrorMessage")
@@ -294,10 +255,7 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
       createProject,
       onCancelProjectModalButtonClick,
       onCreateProjectBtnClick,
-      onChangeProjectDescriptionValue,
-      onChangeProjectEndDateValue,
-      onChangeProjectNameValue,
-      onChangeProjectStatusValue,
+      onChangeProjectData,
       updateTeamDetails,
       loadActiveTeamMembersList
     };

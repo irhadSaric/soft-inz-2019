@@ -2,11 +2,10 @@ import * as React from "react";
 import { Avatar, Button, Divider, Input, Form, List, Modal } from "antd";
 import Text from "antd/lib/typography/Text";
 import { ITeamDetails } from "../../../model/team/TeamDetails";
-import { IStatus } from "../../../model/status/Status";
 import CreateProjectForm from "../project/CreateProjectForm";
-import { Moment } from "moment";
 import { ITeamProject } from "../../../model/team/TeamProject";
 import { IActiveTeamMember } from "../../../model/team/ActiveTeamMember";
+import { IProject } from "../../../model/project/Project";
 
 const TeamForm = ({
   translate,
@@ -21,14 +20,8 @@ const TeamForm = ({
   onChangeTeamData,
   createProject,
   isCreateProjectModalVisible,
-  projectStatus,
-  projectName,
-  projectDescription,
-  projectEndDate,
-  onChangeProjectNameValue,
-  onChangeProjectDescriptionValue,
-  onChangeProjectEndDateValue,
-  onChangeProjectStatusValue,
+  project,
+  onChangeProjectData,
   onCreateProjectBtnClick,
   onCancelProjectModalButtonClick,
   validationProjectErrors,
@@ -44,20 +37,13 @@ const TeamForm = ({
   onCancelBtnClick: any;
   editButtonDisabled: boolean;
   validationErrors: any;
-  projectStatus: IStatus;
-  projectEndDate: Moment;
-  projectDescription: string;
-  projectName: string;
   isCreateProjectModalVisible: boolean;
   onChangeTeamData(key: string, value: any): void;
   createProject(): void;
-  onChangeProjectNameValue(value: string): void;
-  onChangeProjectDescriptionValue(value: string): void;
-  onChangeProjectStatusValue(value: IStatus): void;
-  onChangeProjectEndDateValue: any;
+  onChangeProjectData(key: string, value: any): void;
+  project: IProject;
   isLoading: boolean;
   updateTeamDetails: any;
-  onChangeTeamData(key: string, value: any): void;
   onCreateProjectBtnClick(): void;
   onCancelProjectModalButtonClick(): void;
   validationProjectErrors: any;
@@ -140,16 +126,8 @@ const TeamForm = ({
                   maskClosable={false}
                 >
                   <CreateProjectForm
-                    projectStatus={projectStatus}
-                    projectName={projectName}
-                    projectDescription={projectDescription}
-                    projectEndDate={projectEndDate}
-                    onChangeProjectNameValue={onChangeProjectNameValue}
-                    onChangeProjectDescriptionValue={
-                      onChangeProjectDescriptionValue
-                    }
-                    onChangeProjectEndDateValue={onChangeProjectEndDateValue}
-                    onChangeProjectStatusValue={onChangeProjectStatusValue}
+                    project={project}
+                    onChangeProjectData={onChangeProjectData}
                     validationProjectErrors={validationProjectErrors}
                   />
                 </Modal>

@@ -6,6 +6,7 @@ import { ITeamDetails } from "../../model/team/TeamDetails";
 import { ITeamService } from "../../service/team/TeamService";
 import { IStatus } from "../../model/status/Status";
 import { Moment } from "moment";
+import { IProject } from "../../model/project/Project";
 
 export default class ShowTeamInteractor {
   private application: Application;
@@ -27,10 +28,11 @@ export default class ShowTeamInteractor {
         editButtonDisabled: false,
         teamId,
         isCreateProjectModalVisible: false,
-        projectName: "",
+        /* projectName: "",
         projectDescription: "",
         projectEndDate: {} as Moment,
-        projectStatus: {} as IStatus,
+        projectStatus: {} as IStatus, */
+        project: {} as IProject,
         activeTeamMembers: []
       }
     });

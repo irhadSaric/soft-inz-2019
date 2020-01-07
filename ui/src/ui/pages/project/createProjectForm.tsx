@@ -1,10 +1,9 @@
 import * as React from "react";
 import { Input, Select, DatePicker } from "antd";
 import Text from "antd/lib/typography/Text";
-import { IUser } from "../../../model/user/User";
-import { TSelectValuePresentationModel } from "../../../presenter/main/HomePresenter";
 import { IStatus } from "../../../model/status/Status";
 import moment, { Moment } from "moment";
+import { IProject } from "../../../model/project/Project";
 
 const { Option } = Select;
 
@@ -14,24 +13,12 @@ function disabledDate(current) {
 }
 
 const CreateProjectForm = ({
-  projectStatus,
-  projectName,
-  projectDescription,
-  projectEndDate,
-  onChangeProjectNameValue,
-  onChangeProjectDescriptionValue,
-  onChangeProjectEndDateValue,
-  onChangeProjectStatusValue,
+  project,
+  onChangeProjectData,
   validationProjectErrors
 }: {
-  projectStatus: IStatus;
-  projectEndDate: Moment;
-  projectDescription: string;
-  projectName: string;
-  onChangeProjectNameValue(value: string): void;
-  onChangeProjectDescriptionValue(value: string): void;
-  onChangeProjectStatusValue(value: IStatus): void;
-  onChangeProjectEndDateValue: any;
+  onChangeProjectData(key: string, value: any): void;
+  project: IProject;
   validationProjectErrors: any;
 }) => {
   const checkValidationErrors = (fieldName: string) => {
@@ -45,8 +32,8 @@ const CreateProjectForm = ({
         <Input
           addonBefore={<Text>Project name</Text>}
           placeholder={"Project Name"}
-          value={projectName}
-          onChange={e => onChangeProjectNameValue(e.target.value)}
+          value={project.name}
+          onChange={e => onChangeProjectData("name", e.target.value)}
           allowClear={true}
           style={{ marginTop: 20 }}
         />
@@ -58,8 +45,8 @@ const CreateProjectForm = ({
       </div>
       <Input.TextArea
         placeholder={"Description"}
-        value={projectDescription}
-        onChange={e => onChangeProjectDescriptionValue(e.target.value)}
+        value={project.description}
+        onChange={e => onChangeProjectData("description", e.target.value)}
         autosize={{ minRows: 4 }}
         style={{ marginTop: 20 }}
       />
@@ -74,7 +61,7 @@ const CreateProjectForm = ({
           format={"DD-MM-YYYY"}
           showToday={false}
           disabledDate={disabledDate}
-          onChange={e => onChangeProjectEndDateValue(e)}
+          onChange={e => onChangeProjectData("endDate", e)}
           style={{ marginTop: 20 }}
         />
       </div>

@@ -13,7 +13,7 @@ export default class UpdateProjectDetailsInteractor {
 
   async execute(project: IProject) {
     try {
-      return await this.projectService.updateProject(project);
+      return this.projectService.updateProject(project);
     } catch (error) {
       console.log(error);
       return error;
