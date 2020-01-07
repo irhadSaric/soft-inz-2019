@@ -1,8 +1,19 @@
 import * as React from "react";
-import { Avatar, Button, Divider, Input, Form, List, DatePicker } from "antd";
+import {
+  Avatar,
+  Button,
+  Divider,
+  Input,
+  Form,
+  List,
+  DatePicker,
+  Modal
+} from "antd";
 import Text from "antd/lib/typography/Text";
 import { IProject } from "../../../model/project/Project";
 import moment from "moment";
+import { IIteration } from "../../../model/iteration/iteration";
+import CreateIterationForm from "../iteration/CreateIterationForm";
 
 function disabledDate(current) {
   // Can not select days before today and today
@@ -18,7 +29,14 @@ const ProjectForm = ({
   editButtonDisabled,
   validationErrors,
   onChangeProjectData,
-  updateProjectDetails
+  updateProjectDetails,
+  onCreateIterationBtnClick,
+  onCancelIterationModalButtonClick,
+  createIterationValidationErrors,
+  createIteration,
+  iteration,
+  onChangeIterationData,
+  isCreateIterationModalVisible
 }: {
   translate: any;
   project: IProject;
@@ -29,6 +47,13 @@ const ProjectForm = ({
   onChangeProjectData(key: string, value: any): void;
   validationErrors: any;
   updateProjectDetails: any;
+  onCreateIterationBtnClick(): void;
+  onCancelIterationModalButtonClick(): void;
+  onChangeIterationData(key: string, value: any): void;
+  iteration: IIteration;
+  createIteration(): void;
+  createIterationValidationErrors: any;
+  isCreateIterationModalVisible: boolean;
 }) => {
   const checkValidationErrors = (fieldName: string) => {
     return validationErrors && validationErrors[fieldName].length > 0;
@@ -123,7 +148,31 @@ const ProjectForm = ({
           </Form.Item>
           <Form.Item>
             <div className={"form-item"}>
-              <h3 style={{ margin: "16px 0" }}>Iterations</h3>
+              <h3 style={{ margin: "16px 0" }}>
+                Iterations
+                <Button
+                  type="primary"
+                  style={{ float: "right" }}
+                  onClick={onCreateIterationBtnClick}
+                >
+                  +
+                </Button>
+                <Modal
+                  title="Create iteration"
+                  visible={isCreateIterationModalVisible}
+                  onOk={createIteration}
+                  onCancel={onCancelIterationModalButtonClick}
+                  maskClosable={false}
+                >
+                  <CreateIterationForm
+                    iteration={iteration}
+                    onChangeIterationData={onChangeIterationData}
+                    createIterationValidationErrors={
+                      createIterationValidationErrors
+                    }
+                  />
+                </Modal>
+              </h3>
               <List
                 size="small"
                 bordered

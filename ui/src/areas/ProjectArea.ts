@@ -34,6 +34,6 @@ export default class ProjectArea extends Area implements IArea {
   public showProjectPage(params: any) {
     return this.application.container
       .resolve<ShowProjectInteractor>("showProject")
-      .execute(params.teamId);
+      .execute(params.Id);
   }
 }

@@ -34,7 +34,14 @@ export default class ProjectPage extends React.Component<Props, State> {
       editButtonDisabled,
       editValidationErrors,
       onChangeProjectData,
-      updateProjectDetails
+      updateProjectDetails,
+      onCreateIterationBtnClick,
+      onCancelIterationModalButtonClick,
+      createIterationValidationErrors,
+      createIteration,
+      iteration,
+      onChangeIterationData,
+      isCreateIterationModalVisible
     } = this.state;
     return (
       <Page
@@ -51,6 +58,13 @@ export default class ProjectPage extends React.Component<Props, State> {
           validationErrors={editValidationErrors}
           onChangeProjectData={onChangeProjectData}
           updateProjectDetails={updateProjectDetails}
+          onCreateIterationBtnClick={onCreateIterationBtnClick}
+          onCancelIterationModalButtonClick={onCancelIterationModalButtonClick}
+          createIterationValidationErrors={createIterationValidationErrors}
+          createIteration={createIteration}
+          iteration={iteration}
+          onChangeIterationData={onChangeIterationData}
+          isCreateIterationModalVisible={isCreateIterationModalVisible}
         />
       </Page>
     );

@@ -63,6 +63,8 @@ import UpdateTeamDetailsInteractor from "../interactor/team/UpdateTeamDetailsInt
 import ShowProjectInteractor from "../interactor/project/ShowProjectInteractor";
 import CreateProjectInteractor from "../interactor/project/CreateProjectInteractor";
 import UpdateProjectDetailsInteractor from "../interactor/project/UpdateProjectDetailsInteractor";
+import CreateIterationInteractor from "../interactor/iteration/CreateIterationInteractor";
+import IterationService from "../service/iteration/IterationService";
 
 //const DEFAULT_CACHE_TIMEOUT_MS = 15000;
 const ModuleContainer = (application: Application): IModuleContainer => {
@@ -135,7 +137,8 @@ const ModuleContainer = (application: Application): IModuleContainer => {
     credentialsService: asFunction(CredentialsService),
     codebookService: asFunction(CodebookService),
     teamService: asFunction(TeamService),
-    projectService: asFunction(ProjectService)
+    projectService: asFunction(ProjectService),
+    iterationService: asFunction(IterationService)
   });
 
   //areas
@@ -173,7 +176,8 @@ const ModuleContainer = (application: Application): IModuleContainer => {
     showProject: asInteractor(ShowProjectInteractor),
     updateTeamDetails: asInteractor(UpdateTeamDetailsInteractor),
     createProject: asInteractor(CreateProjectInteractor),
-    updateProjectDetails: asInteractor(UpdateProjectDetailsInteractor)
+    updateProjectDetails: asInteractor(UpdateProjectDetailsInteractor),
+    createIteration: asInteractor(CreateIterationInteractor)
   });
 
   return {

@@ -33,6 +33,7 @@ export interface ITeamPresenter extends TTeamPresenter, TPresentable {
   onChangeProjectData(key: string, value: any): void;
   updateTeamDetails(): void;
   loadActiveTeamMembersList(activeTeamMembers: IActiveTeamMember[]): void;
+  showProjectPage(ProjectId: number): void;
 }
 
 const defaultState: TTeamPresenter = {
@@ -241,6 +242,10 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
         }
     };
 
+    const showProjectPage = (projectId: number) => {
+      application.navigator.replace({ pathname: `/project/${projectId}` });
+    };
+
     return {
       ...state,
       store: _store,
@@ -257,7 +262,8 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
       onCreateProjectBtnClick,
       onChangeProjectData,
       updateTeamDetails,
-      loadActiveTeamMembersList
+      loadActiveTeamMembersList,
+      showProjectPage
     };
   },
   defaultState

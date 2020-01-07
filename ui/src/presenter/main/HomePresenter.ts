@@ -184,7 +184,7 @@ const HomePresenter = withStore<IHomePresenter, THomePresenter>(
           loader.stop("createTeamLoader");
           _application.container
             .resolve<ShowSuccessMessageInteractor>("showSuccessMessage")
-            .execute("Uspješno ste kreirali tim");
+            .execute("You have successfully created a team");
           selectedUsers.forEach(element => {
             inviteUserToTeam(
               parseInt(element.key, 10),

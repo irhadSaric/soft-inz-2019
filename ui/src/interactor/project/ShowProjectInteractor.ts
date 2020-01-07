@@ -5,6 +5,7 @@ import ProjectPresenter, {
   IProjectPresenter
 } from "../../presenter/project/ProjectPresenter";
 import { Moment } from "moment";
+import { IIteration } from "../../model/iteration/iteration";
 
 export default class ShowProjectInteractor {
   private application: Application;
@@ -22,20 +23,15 @@ export default class ShowProjectInteractor {
       initialState: {
         project: {} as IProject,
         isEditableForm: false,
-        editButtonDisabled: false
-        /* isCreateIterationModalVisible: false,
-        iterationName: "",
-        iterationDescription: "",
-        iterationEndDate: {} as Moment */
+        editButtonDisabled: false,
+        isCreateIterationModalVisible: false,
+        iteration: {} as IIteration,
+        projectId
       }
     });
 
-    /*  this.projectService
-      .getProject(projectId)
-      .then(this.output && this.output.loadProject); */
-
     this.projectService
-      .getProject(4)
+      .getProject(projectId)
       .then(this.output && this.output.loadProject);
 
     return this.output;

@@ -26,7 +26,8 @@ const TeamForm = ({
   onCancelProjectModalButtonClick,
   validationProjectErrors,
   updateTeamDetails,
-  activeTeamMembers
+  activeTeamMembers,
+  showProjectPage
 }: {
   translate: any;
   teamDetails: ITeamDetails;
@@ -47,6 +48,7 @@ const TeamForm = ({
   onCreateProjectBtnClick(): void;
   onCancelProjectModalButtonClick(): void;
   validationProjectErrors: any;
+  showProjectPage: any;
 }) => {
   const checkValidationErrors = (fieldName: string) => {
     return validationErrors && validationErrors[fieldName].length > 0;
@@ -132,12 +134,20 @@ const TeamForm = ({
                   />
                 </Modal>
               </h3>
-              {/* <List
+              <List
                 size="small"
                 bordered
                 dataSource={teamProjects}
-                renderItem={item => <List.Item>{item.name}</List.Item>}
-              /> */}
+                renderItem={item => (
+                  <List.Item
+                    onClick={() => {
+                      showProjectPage(item.id);
+                    }}
+                  >
+                    {item.name}
+                  </List.Item>
+                )}
+              />
             </div>
           </Form.Item>
           <Form.Item>

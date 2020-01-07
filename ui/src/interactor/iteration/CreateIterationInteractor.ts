@@ -21,7 +21,6 @@ export default class CreateIterationInteractor {
         projectId
       );
     } catch (error) {
-      console.log(error);
       return error;
     }
   }

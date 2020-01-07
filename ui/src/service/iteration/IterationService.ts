@@ -1,6 +1,5 @@
 import { IHttpService } from "../HttpService";
-import Iteration, { IIteration } from "../../model/iteration/iteration";
-import { createInflateRaw } from "zlib";
+import Iteration, { IIteration } from "../../model/iteration/Iteration";
 
 export interface IIterationService {
   getIteration(id: number): Promise<IIteration>;

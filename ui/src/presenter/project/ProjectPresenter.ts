@@ -4,17 +4,18 @@ import Application from "../../Application";
 import ShowSuccessMessageInteractor from "../../interactor/notifications/ShowSuccessMessageInteractor";
 import ShowErrorMessageInteractor from "../../interactor/notifications/ShowErrorMessageInteractor";
 import UpdateProjectDetailsInteractor from "../../interactor/project/UpdateProjectDetailsInteractor";
-import { Moment } from "moment";
+import { IIteration } from "../../model/iteration/iteration";
+import CreateIterationInteractor from "../../interactor/iteration/CreateIterationInteractor";
 
 export interface TProjectPresenter extends TLoadingAwarePresenter {
   project: IProject;
   isEditableForm: boolean;
   editValidationErrors?: any;
   editButtonDisabled: boolean;
-  /* isCreateIterationModalVisible: boolean;
-  iterationName: string;
-  iterationDescription: string;
-  iterationEndDate: Moment; */
+  isCreateIterationModalVisible: boolean;
+  iteration: IIteration;
+  projectId?: number;
+  createIterationValidationErrors?: any;
 }
 
 export interface IProjectPresenter extends TProjectPresenter, TPresentable {
@@ -23,22 +24,19 @@ export interface IProjectPresenter extends TProjectPresenter, TPresentable {
   onCancelBtnClick(): void;
   onChangeProjectData(key: string, value: any): void;
   updateProjectDetails(): void;
-  /* createIteration(): void;
+  createIteration(): void;
+  onChangeIterationData(key: string, value: any): void;
+  onCreateIterationBtnClick(): void;
   onCancelIterationModalButtonClick(): void;
-  onChangeIterationNameValue(value: string): void;
-  onChangeIterationDescriptionValue(value: string): void;
-  onChangeIterationEndDateValue(value: Moment): void; */
 }
 
 const defaultState: TProjectPresenter = {
   project: {} as IProject,
   isEditableForm: false,
-  //editValidationErrors: undefined,
-  editButtonDisabled: false
-  /* isCreateIterationModalVisible: false,
-  iterationName: "",
-  iterationDescription: "",
-  iterationEndDate: {} as Moment */
+  editValidationErrors: undefined,
+  editButtonDisabled: false,
+  isCreateIterationModalVisible: false,
+  iteration: {} as IIteration
 };
 
 const ProjectPresenter = withStore<IProjectPresenter, TProjectPresenter>(
@@ -142,6 +140,98 @@ const ProjectPresenter = withStore<IProjectPresenter, TProjectPresenter>(
       editValidationErrors && validateEditProjectForm();
     };
 
+    const onCreateIterationBtnClick = () => {
+      _store.update({
+        isCreateIterationModalVisible: true
+      });
+    };
+
+    const onChangeIterationData = (key: string, value: any) => {
+      let iteration = _store.getState<TProjectPresenter>().iteration;
+      iteration[key] = value;
+      _store.update({ iteration });
+    };
+
+    const onCancelIterationModalButtonClick = () => {
+      _store.update({
+        isCreateIterationModalVisible: false,
+        iterationName: "",
+        iterationDescription: ""
+      });
+    };
+
+    const validateCreateIterationForm = () => {
+      const iteration = _store.getState<TProjectPresenter>().iteration;
+      let createIterationValidationErrors = _store.getState<TProjectPresenter>()
+        .createIterationValidationErrors;
+      createIterationValidationErrors = {
+        iterationName: [],
+        iterationDescription: [],
+        iterationEndDate: []
+      };
+      if (!iteration.name) {
+        createIterationValidationErrors.iterationName.push(
+          "The Iteration Name field is required."
+        );
+      }
+      if (!iteration.description) {
+        createIterationValidationErrors.iterationDescription.push(
+          "The Description field is required."
+        );
+      }
+      if (
+        typeof iteration.endDate === "undefined" ||
+        Object.entries(iteration.endDate).length === 0
+      ) {
+        createIterationValidationErrors.iterationEndDate.push(
+          "The End Date field is required."
+        );
+      }
+      _store.update({
+        createIterationValidationErrors
+      });
+    };
+
+    const createIteration = async () => {
+      validateCreateIterationForm();
+      const createIterationValidationErrors = _store.getState<
+        TProjectPresenter
+      >().createIterationValidationErrors;
+      if (
+        !(
+          createIterationValidationErrors.iterationName.length ||
+          createIterationValidationErrors.iterationDescription.length ||
+          createIterationValidationErrors.iterationEndDate.length
+        )
+      )
+        try {
+          loader.start("createIterationLoader");
+          const iteration = _store.getState<TProjectPresenter>().iteration;
+          const projectId = _store.getState<TProjectPresenter>().projectId;
+          projectId &&
+            (await _application.container
+              .resolve<CreateIterationInteractor>("createIteration")
+              .execute(
+                iteration.description,
+                iteration.endDate,
+                iteration.name,
+                projectId
+              ));
+          loader.stop("createIterationLoader");
+          _application.container
+            .resolve<ShowSuccessMessageInteractor>("showSuccessMessage")
+            .execute("You have successfully created an iteration");
+          _store.update({
+            isCreateProjectModalVisible: false
+          });
+        } catch (error) {
+          loader.stop("createIterationLoader");
+          _application.container
+            .resolve<ShowErrorMessageInteractor>("showErrorMessage")
+            .execute(error.message);
+        }
+    };
+
     return {
       ...state,
       store: _store,
@@ -152,11 +242,11 @@ const ProjectPresenter = withStore<IProjectPresenter, TProjectPresenter>(
       onEditBtnClick,
       onCancelBtnClick,
       onChangeProjectData,
-      updateProjectDetails
-      /* createIteration,
-      onChangeIterationDescriptionValue,
-      onChangeIterationEndDateValue,
-      onChangeIterationNameValue */
+      updateProjectDetails,
+      createIteration,
+      onChangeIterationData,
+      onCancelIterationModalButtonClick,
+      onCreateIterationBtnClick
     };
   },
   defaultState
