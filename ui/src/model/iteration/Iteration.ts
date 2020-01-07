@@ -49,11 +49,20 @@ const Iteration = Model(
       get status() {
         return _Iteration.status;
       },
+      set status(value) {
+        _Iteration.status = value;
+      },
       get project() {
         return _Iteration.project;
       },
+      set project(value) {
+        _Iteration.project = value;
+      },
       get startDate() {
         return _Iteration.startDate;
+      },
+      set startDate(value) {
+        _Iteration.startDate = value;
       }
     };
     return create(Iteration);

@@ -36,7 +36,8 @@ const ProjectForm = ({
   createIteration,
   iteration,
   onChangeIterationData,
-  isCreateIterationModalVisible
+  isCreateIterationModalVisible,
+  activeIterations
 }: {
   translate: any;
   project: IProject;
@@ -54,11 +55,11 @@ const ProjectForm = ({
   createIteration(): void;
   createIterationValidationErrors: any;
   isCreateIterationModalVisible: boolean;
+  activeIterations: IIteration[];
 }) => {
   const checkValidationErrors = (fieldName: string) => {
     return validationErrors && validationErrors[fieldName].length > 0;
   };
-  const data = ["Iteration 1.", "Iteration 2."];
   const data2 = ["Backlog 1.", "Backlog 2.", "Backlog 3."];
   return (
     <div
@@ -176,8 +177,8 @@ const ProjectForm = ({
               <List
                 size="small"
                 bordered
-                dataSource={data}
-                renderItem={item => <List.Item>{item}</List.Item>}
+                dataSource={activeIterations}
+                renderItem={item => <List.Item>{item.name}</List.Item>}
               />
             </div>
           </Form.Item>

@@ -16,6 +16,7 @@ export interface TProjectPresenter extends TLoadingAwarePresenter {
   iteration: IIteration;
   projectId?: number;
   createIterationValidationErrors?: any;
+  activeIterations: IIteration[];
 }
 
 export interface IProjectPresenter extends TProjectPresenter, TPresentable {
@@ -28,6 +29,7 @@ export interface IProjectPresenter extends TProjectPresenter, TPresentable {
   onChangeIterationData(key: string, value: any): void;
   onCreateIterationBtnClick(): void;
   onCancelIterationModalButtonClick(): void;
+  loadActiveIterations(activeIterations: IIteration[]): void;
 }
 
 const defaultState: TProjectPresenter = {
@@ -36,7 +38,8 @@ const defaultState: TProjectPresenter = {
   editValidationErrors: undefined,
   editButtonDisabled: false,
   isCreateIterationModalVisible: false,
-  iteration: {} as IIteration
+  iteration: {} as IIteration,
+  activeIterations: []
 };
 
 const ProjectPresenter = withStore<IProjectPresenter, TProjectPresenter>(
@@ -232,6 +235,12 @@ const ProjectPresenter = withStore<IProjectPresenter, TProjectPresenter>(
         }
     };
 
+    const loadActiveIterations = (activeIterations: IIteration[]) => {
+      return _store.update({
+        activeIterations
+      });
+    };
+
     return {
       ...state,
       store: _store,
@@ -246,7 +255,8 @@ const ProjectPresenter = withStore<IProjectPresenter, TProjectPresenter>(
       createIteration,
       onChangeIterationData,
       onCancelIterationModalButtonClick,
-      onCreateIterationBtnClick
+      onCreateIterationBtnClick,
+      loadActiveIterations
     };
   },
   defaultState

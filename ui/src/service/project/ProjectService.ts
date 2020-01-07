@@ -1,6 +1,7 @@
 import Project, { IProject } from "../../model/project/Project";
 import { IHttpService } from "../HttpService";
-import { IStatus } from "../../model/status/Status";
+import Status, { IStatus } from "../../model/status/Status";
+import Iteration, { IIteration } from "../../model/iteration/Iteration";
 
 export interface IProjectService {
   getProject(id: number): Promise<IProject>;
@@ -11,13 +12,27 @@ export interface IProjectService {
     name: string,
     teamId: number
   ): Promise<any>;
+  getActiveIterationForProject(projectId: number): Promise<IIteration[]>;
 }
+
+let buildIterationsList = (json: any): IIteration[] => {
+  return json.map(item => {
+    let iterations = Iteration(item);
+    iterations.startDate = new Date(item.startDate);
+    iterations.endDate = new Date(item.endDate);
+    iterations.project = Project(item.project);
+    iterations.status = Status(item.status);
+    return iterations;
+  });
+};
 
 const ProjectService = ({ httpService }): IProjectService => {
   const _http: IHttpService = httpService;
   const _basePath: string = "/api/project";
   const _createPath: string = "/create";
   const _editPath: string = "/edit";
+  const _iterationsPath: string = "/iterations";
+  const _activePath: string = "/active";
 
   return {
     async getProject(id: number) {
@@ -58,6 +73,16 @@ const ProjectService = ({ httpService }): IProjectService => {
         }
       });
       return _http.toJSON(response);
+    },
+    async getActiveIterationForProject(projectId: number) {
+      const path = _http.buildPath(
+        _basePath,
+        _iterationsPath,
+        projectId.toString()
+      );
+      const response = await _http.get(path);
+      const responseJSON = await _http.toJSON(response);
+      return buildIterationsList(responseJSON);
     }
   };
 };

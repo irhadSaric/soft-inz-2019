@@ -26,13 +26,18 @@ export default class ShowProjectInteractor {
         editButtonDisabled: false,
         isCreateIterationModalVisible: false,
         iteration: {} as IIteration,
-        projectId
+        projectId,
+        activeIterations: []
       }
     });
 
     this.projectService
       .getProject(projectId)
       .then(this.output && this.output.loadProject);
+
+    this.projectService
+      .getActiveIterationForProject(projectId)
+      .then(this.output && this.output.loadActiveIterations);
 
     return this.output;
   }
