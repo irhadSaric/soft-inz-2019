@@ -198,7 +198,7 @@ public class TeamService {
             return;
         }
 
-        if (userTeam.getRole().getKey().equals("lead")) {
+        if (userTeam.getRole().getKey().equals("team-lead")) {
             // Sta kada lider izlazi iz tima a ima u timu vise ljudi ?
         }
         userTeamRepository.delete(userTeam);

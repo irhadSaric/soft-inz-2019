@@ -17,59 +17,59 @@ export interface ITeamProject extends TTeamProject {}
 
 const TeamProject = Model(
   (model: TTeamProject): ITeamProject => {
-    const _teamProject: ITeamProject = Object.assign({}, model);
+    const _teamProjects: ITeamProject = Object.assign({}, model);
 
-    let create = (teamProject: ITeamProject): ITeamProject => {
-      let obj = ValidatableObject(teamProject);
+    let create = (teamProjects: ITeamProject): ITeamProject => {
+      let obj = ValidatableObject(teamProjects);
       return obj;
     };
 
-    let teamProject = {
+    let teamProjects = {
       get id() {
-        return _teamProject.id;
+        return _teamProjects.id;
       },
       set id(value) {
-        _teamProject.id = value;
+        _teamProjects.id = value;
       },
       get name() {
-        return _teamProject.name;
+        return _teamProjects.name;
       },
       set name(value) {
-        _teamProject.name = value;
+        _teamProjects.name = value;
       },
       get description() {
-        return _teamProject.description;
+        return _teamProjects.description;
       },
       set description(value) {
-        _teamProject.description = value;
+        _teamProjects.description = value;
       },
       get startDate() {
-        return _teamProject.startDate;
+        return _teamProjects.startDate;
       },
       set startDate(value) {
-        _teamProject.startDate = value;
+        _teamProjects.startDate = value;
       },
       get endDate() {
-        return _teamProject.endDate;
+        return _teamProjects.endDate;
       },
       set endDate(value) {
-        _teamProject.endDate = value;
+        _teamProjects.endDate = value;
       },
       get teamDetails() {
-        return _teamProject.teamDetails;
+        return _teamProjects.teamDetails;
       },
       set teamDetails(value) {
-        _teamProject.teamDetails = value;
+        _teamProjects.teamDetails = value;
       },
       get status() {
-        return _teamProject.status;
+        return _teamProjects.status;
       },
       set status(value) {
-        _teamProject.status = value;
+        _teamProjects.status = value;
       }
     };
 
-    return create(teamProject);
+    return create(teamProjects);
   }
 );
 
