@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Avatar, Button, Divider, Input, Form, List } from "antd";
+import { PageHeader, Input, Form, List } from "antd";
 import Text from "antd/lib/typography/Text";
 import { IIteration } from "../../../model/iteration/Iteration";
 
@@ -36,14 +36,7 @@ const IterationForm = ({
         width: 780
       }}
     >
-      <div style={{ width: 200, display: "flex", flexDirection: "column" }}>
-        <Avatar style={{ marginLeft: 20 }} size={150} icon="user" />
-      </div>
-      <Divider
-        style={{ height: "auto", background: "#cccccc" }}
-        type={"vertical"}
-      />
-      <div style={{ display: "flex", flexDirection: "column" }}>
+      <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
         <Form>
           <Form.Item
             validateStatus={
@@ -51,18 +44,13 @@ const IterationForm = ({
             }
           >
             <div className={"form-item"}>
-              <Input
-                placeholder={"Iteration Name"}
-                //onChange={e => onChangeTeamData("name", e.target.value)}
-                allowClear={true}
-                style={{ marginTop: 20, width: 400 }}
-                readOnly={!isEditable}
-              />
-              {checkValidationErrors("name") && (
-                <Text className={"error-text"}>
-                  {validationErrors["name"][0]}
-                </Text>
-              )}
+            <PageHeader
+              style={{
+                border: '1px solid rgb(235, 237, 240)',
+              }}  
+              title={iteration.name}
+              subTitle={iteration.startDate}
+            />
             </div>
           </Form.Item>
           <Form.Item
@@ -73,7 +61,7 @@ const IterationForm = ({
             <div className={"form-item"}>
             <Input.TextArea
               placeholder={"Description"}
-              //onChange={e => onChangeTeamData("description", e.target.value)}
+              value={iteration.description}
               autosize={{ minRows: 4 }}
               style={{ marginTop: 20 }}
               readOnly={!isEditable}
@@ -81,39 +69,6 @@ const IterationForm = ({
             </div>
           </Form.Item>
         </Form>
-
-        {isEditable && (
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignSelf: "flex-end",
-              marginTop: 20
-            }}
-          >
-            <Button type={"link"} onClick={onCancelBtnClick}>
-              Cancel
-            </Button>
-            <Button
-              type={"primary"}
-              loading={isLoading}
-              disabled={editButtonDisabled}
-            >
-              Save
-            </Button>
-          </div>
-        )}
-      </div>
-      <div style={{ marginTop: -15, marginLeft: 30 }}>
-        <Button
-          type="primary"
-          shape={"circle"}
-          icon="edit"
-          onClick={onEditBtnClick}
-          disabled={isEditable}
-        >
-          Edit
-        </Button>
       </div>
     </div>
   );

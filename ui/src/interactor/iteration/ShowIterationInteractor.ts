@@ -15,7 +15,7 @@ export default class ShowIterationInteractor {
     this.iterationService = iterationService;
   }
 
-  execute(iterationId: number) {
+  execute() {
     this.output = IterationPresenter({
       application: this.application,
       initialState: {

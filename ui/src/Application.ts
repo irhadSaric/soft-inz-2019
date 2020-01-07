@@ -13,7 +13,7 @@ export default class Application {
   private _container: IModuleContainer;
   private _localeProvider: ILocaleProvider;
 
-  private _areas = ["home", "user", "authentication", "team"];
+  private _areas = ["home", "user", "authentication", "team", "iteration"];
 
   get container() {
     return this._container;

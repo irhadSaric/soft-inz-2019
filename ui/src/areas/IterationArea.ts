@@ -22,7 +22,6 @@ export default class IterationArea extends Area implements IArea {
 
   register(params: any) {
     this.router.registerRoutes({
-      //path: "/iteration/:iterationId",
       path: "/iteration",
       page: this.createPage({
         Page: IterationPage,
@@ -32,9 +31,9 @@ export default class IterationArea extends Area implements IArea {
     });
   }
 
-  public showIterationPage(params: any) {
+  public showIterationPage() {
     return this.application.container
       .resolve<ShowIterationInteractor>("showIteration")
-      .execute(params.teamId);
+      .execute();
   }
 }
