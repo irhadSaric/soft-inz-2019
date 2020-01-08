@@ -1,5 +1,6 @@
 import { IHttpService } from "../HttpService";
 import Team, { ITeam } from "../../model/team/Team";
+import Status from "../../model/status/Status";
 import TeamInvite, { ITeamInvite } from "../../model/team/TeamInvite";
 import TeamDetails, { ITeamDetails } from "../../model/team/TeamDetails";
 import ActiveTeam, { IActiveTeam } from "../../model/team/ActiveTeam";
@@ -49,13 +50,14 @@ const TeamService = ({ httpService }): ITeamService => {
   const _teamProject: string = "/api/project/team";
   const _members: string = "/members";
 
-  let buildProjectList = (json: any) => {
-    return json.map((item: any) => {
-      let teamProject = TeamProject(item);
-      teamProject.startDate = new Date(item.startDate);
-      teamProject.endDate = new Date(item.endDate);
-      teamProject.teamDetails = item.teamDetails;
-      teamProject.status = item.status;
+  let buildProjectList = (json: any): ITeamProject[] => {
+    return json.map(item => {
+      let teamProjects = TeamProject(item);
+      teamProjects.startDate = new Date(item.startDate);
+      teamProjects.endDate = new Date(item.endDate);
+      teamProjects.teamDetails = Team(item.team);
+      teamProjects.status = Status(item.statusId);
+      return teamProjects;
     });
   };
 
@@ -69,10 +71,6 @@ const TeamService = ({ httpService }): ITeamService => {
 
   const buildTeamInvitesList = (data: any): ITeamInvite[] => {
     return data.map(item => TeamInvite(item));
-  };
-
-  const buildTeamDetailsList = (data: any): ITeamDetails[] => {
-    return data.map(item => TeamDetails(item));
   };
 
   const buildActiveTeamMembersList = (data: any) => {
