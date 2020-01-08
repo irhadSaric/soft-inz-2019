@@ -12,7 +12,8 @@ export interface IProjectService {
     name: string,
     teamId: number
   ): Promise<any>;
-  getActiveIterationForProject(projectId: number): Promise<IIteration[]>;
+  getActiveIterationForProject(projectId: number): Promise<IIteration>;
+  getCompletedIterationsForProject(projectId: number): Promise<IIteration[]>;
 }
 
 let buildIterationsList = (json: any): IIteration[] => {
@@ -33,6 +34,7 @@ const ProjectService = ({ httpService }): IProjectService => {
   const _editPath: string = "/edit";
   const _iterationsPath: string = "/iterations";
   const _activePath: string = "/active";
+  const _completedPath: string = "/completed";
 
   return {
     async getProject(id: number) {
@@ -78,7 +80,19 @@ const ProjectService = ({ httpService }): IProjectService => {
       const path = _http.buildPath(
         _basePath,
         _iterationsPath,
-        projectId.toString()
+        projectId.toString(),
+        _activePath
+      );
+      const response = await _http.get(path);
+      const responseJSON = await _http.toJSON(response);
+      return Iteration(responseJSON);
+    },
+    async getCompletedIterationsForProject(projectId: number) {
+      const path = _http.buildPath(
+        _basePath,
+        _iterationsPath,
+        projectId.toString(),
+        _completedPath
       );
       const response = await _http.get(path);
       const responseJSON = await _http.toJSON(response);

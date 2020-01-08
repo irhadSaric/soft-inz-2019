@@ -37,7 +37,8 @@ const ProjectForm = ({
   iteration,
   onChangeIterationData,
   isCreateIterationModalVisible,
-  activeIterations
+  activeIteration,
+  completedIterations
 }: {
   translate: any;
   project: IProject;
@@ -55,12 +56,14 @@ const ProjectForm = ({
   createIteration(): void;
   createIterationValidationErrors: any;
   isCreateIterationModalVisible: boolean;
-  activeIterations: IIteration[];
+  activeIteration: IIteration;
+  completedIterations: IIteration[];
 }) => {
   const checkValidationErrors = (fieldName: string) => {
     return validationErrors && validationErrors[fieldName].length > 0;
   };
-  const data2 = ["Backlog 1.", "Backlog 2.", "Backlog 3."];
+  const activeIterationList = [activeIteration];
+  const data2 = ["backolg1", "backlog2"];
   return (
     <div
       style={{
@@ -151,13 +154,15 @@ const ProjectForm = ({
             <div className={"form-item"}>
               <h3 style={{ margin: "16px 0" }}>
                 Iterations
-                <Button
-                  type="primary"
-                  style={{ float: "right" }}
-                  onClick={onCreateIterationBtnClick}
-                >
-                  +
-                </Button>
+                {Object.entries(activeIteration).length === 0 && (
+                  <Button
+                    type="primary"
+                    style={{ float: "right" }}
+                    onClick={onCreateIterationBtnClick}
+                  >
+                    +
+                  </Button>
+                )}
                 <Modal
                   title="Create iteration"
                   visible={isCreateIterationModalVisible}
@@ -177,9 +182,17 @@ const ProjectForm = ({
               <List
                 size="small"
                 bordered
-                dataSource={activeIterations}
+                dataSource={activeIterationList}
                 renderItem={item => <List.Item>{item.name}</List.Item>}
               />
+              {completedIterations.length !== 0 && (
+                <List
+                  size="small"
+                  bordered
+                  dataSource={completedIterations}
+                  renderItem={item => <List.Item>{item.name}</List.Item>}
+                />
+              )}
             </div>
           </Form.Item>
           <Form.Item>

@@ -6,6 +6,8 @@ import ShowErrorMessageInteractor from "../../interactor/notifications/ShowError
 import UpdateProjectDetailsInteractor from "../../interactor/project/UpdateProjectDetailsInteractor";
 import { IIteration } from "../../model/iteration/iteration";
 import CreateIterationInteractor from "../../interactor/iteration/CreateIterationInteractor";
+import ShowProjectInteractor from "../../interactor/project/ShowProjectInteractor";
+import GetActiveIterationInteractor from "../../interactor/project/GetAcitveIterationForProjectInteractor";
 
 export interface TProjectPresenter extends TLoadingAwarePresenter {
   project: IProject;
@@ -16,7 +18,8 @@ export interface TProjectPresenter extends TLoadingAwarePresenter {
   iteration: IIteration;
   projectId?: number;
   createIterationValidationErrors?: any;
-  activeIterations: IIteration[];
+  activeIteration: IIteration;
+  completedIterations: IIteration[];
 }
 
 export interface IProjectPresenter extends TProjectPresenter, TPresentable {
@@ -29,7 +32,8 @@ export interface IProjectPresenter extends TProjectPresenter, TPresentable {
   onChangeIterationData(key: string, value: any): void;
   onCreateIterationBtnClick(): void;
   onCancelIterationModalButtonClick(): void;
-  loadActiveIterations(activeIterations: IIteration[]): void;
+  loadActiveIteration(activeIteration: IIteration): void;
+  loadCompletedIterations(completedIterations: IIteration[]): void;
 }
 
 const defaultState: TProjectPresenter = {
@@ -39,7 +43,8 @@ const defaultState: TProjectPresenter = {
   editButtonDisabled: false,
   isCreateIterationModalVisible: false,
   iteration: {} as IIteration,
-  activeIterations: []
+  activeIteration: {} as IIteration,
+  completedIterations: []
 };
 
 const ProjectPresenter = withStore<IProjectPresenter, TProjectPresenter>(
@@ -211,22 +216,31 @@ const ProjectPresenter = withStore<IProjectPresenter, TProjectPresenter>(
           loader.start("createIterationLoader");
           const iteration = _store.getState<TProjectPresenter>().iteration;
           const projectId = _store.getState<TProjectPresenter>().projectId;
-          projectId &&
-            (await _application.container
+          if (projectId) {
+            await _application.container
               .resolve<CreateIterationInteractor>("createIteration")
               .execute(
                 iteration.description,
                 iteration.endDate,
                 iteration.name,
                 projectId
-              ));
-          loader.stop("createIterationLoader");
-          _application.container
-            .resolve<ShowSuccessMessageInteractor>("showSuccessMessage")
-            .execute("You have successfully created an iteration");
-          _store.update({
-            isCreateProjectModalVisible: false
-          });
+              );
+            loader.stop("createIterationLoader");
+            _application.container
+              .resolve<ShowSuccessMessageInteractor>("showSuccessMessage")
+              .execute("You have successfully created an iteration");
+
+            const activeIteration = await _application.container
+              .resolve<GetActiveIterationInteractor>(
+                "getActiveIterationForProject"
+              )
+              .execute(projectId);
+
+            _store.update({
+              activeIteration: activeIteration,
+              isCreateIterationModalVisible: false
+            });
+          }
         } catch (error) {
           loader.stop("createIterationLoader");
           _application.container
@@ -235,9 +249,15 @@ const ProjectPresenter = withStore<IProjectPresenter, TProjectPresenter>(
         }
     };
 
-    const loadActiveIterations = (activeIterations: IIteration[]) => {
+    const loadActiveIteration = (activeIteration: IIteration) => {
       return _store.update({
-        activeIterations
+        activeIteration
+      });
+    };
+
+    const loadCompletedIterations = (completedIterations: IIteration[]) => {
+      return _store.update({
+        completedIterations
       });
     };
 
@@ -256,7 +276,8 @@ const ProjectPresenter = withStore<IProjectPresenter, TProjectPresenter>(
       onChangeIterationData,
       onCancelIterationModalButtonClick,
       onCreateIterationBtnClick,
-      loadActiveIterations
+      loadActiveIteration,
+      loadCompletedIterations
     };
   },
   defaultState

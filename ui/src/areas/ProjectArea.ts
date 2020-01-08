@@ -22,7 +22,7 @@ export default class ProjectArea extends Area implements IArea {
 
   register(params: any) {
     this.router.registerRoutes({
-      path: "/project/:Id",
+      path: "/project/:projectId",
       page: this.createPage({
         Page: ProjectPage,
         action: this.showProjectPage.bind(this)
@@ -34,6 +34,6 @@ export default class ProjectArea extends Area implements IArea {
   public showProjectPage(params: any) {
     return this.application.container
       .resolve<ShowProjectInteractor>("showProject")
-      .execute(params.Id);
+      .execute(params.projectId);
   }
 }

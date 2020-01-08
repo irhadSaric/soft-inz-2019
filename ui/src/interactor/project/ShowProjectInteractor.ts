@@ -27,7 +27,8 @@ export default class ShowProjectInteractor {
         isCreateIterationModalVisible: false,
         iteration: {} as IIteration,
         projectId,
-        activeIterations: []
+        activeIteration: {} as IIteration,
+        completedIterations: []
       }
     });
 
@@ -37,7 +38,11 @@ export default class ShowProjectInteractor {
 
     this.projectService
       .getActiveIterationForProject(projectId)
-      .then(this.output && this.output.loadActiveIterations);
+      .then(this.output && this.output.loadActiveIteration);
+
+    this.projectService
+      .getCompletedIterationsForProject(projectId)
+      .then(this.output && this.output.loadCompletedIterations);
 
     return this.output;
   }

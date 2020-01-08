@@ -65,6 +65,7 @@ import CreateProjectInteractor from "../interactor/project/CreateProjectInteract
 import UpdateProjectDetailsInteractor from "../interactor/project/UpdateProjectDetailsInteractor";
 import CreateIterationInteractor from "../interactor/iteration/CreateIterationInteractor";
 import IterationService from "../service/iteration/IterationService";
+import GetActiveIterationForProjectInteractor from "../interactor/project/GetAcitveIterationForProjectInteractor";
 
 //const DEFAULT_CACHE_TIMEOUT_MS = 15000;
 const ModuleContainer = (application: Application): IModuleContainer => {
@@ -177,7 +178,10 @@ const ModuleContainer = (application: Application): IModuleContainer => {
     updateTeamDetails: asInteractor(UpdateTeamDetailsInteractor),
     createProject: asInteractor(CreateProjectInteractor),
     updateProjectDetails: asInteractor(UpdateProjectDetailsInteractor),
-    createIteration: asInteractor(CreateIterationInteractor)
+    createIteration: asInteractor(CreateIterationInteractor),
+    getActiveIterationForProject: asInteractor(
+      GetActiveIterationForProjectInteractor
+    )
   });
 
   return {
