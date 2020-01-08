@@ -59,19 +59,20 @@ const CreateTeamForm = ({
           {validationErrors["projectDescription"][0]}
         </Text>
       )}
+      
       <Select
         mode="multiple"
         labelInValue
         value={selectedUsers}
         placeholder="Select users"
-        //notFoundContent={fetching ? <Spin size="small" /> : null}
-        filterOption={false}
-        //onSearch={this.fetchUser}
+        filterOption={true}
+        onBlur={onChangeSelectUserList}
         onChange={e => onChangeSelectUserList(e)}
         style={{ width: "100%", marginTop: 20 }}
       >
         {users.map(user => (
           <Option key={user.id}>{user.email}</Option>
+          //<Option key={user.id} value={user.email}>{user.email}</Option>  ///ovako filter radi, ali ne salju se invite-i dodanim userima
         ))}
       </Select>
     </div>

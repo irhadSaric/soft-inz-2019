@@ -7,6 +7,9 @@ import ShowErrorMessageInteractor from "../../interactor/notifications/ShowError
 import { ITeamProject } from "../../model/team/TeamProject";
 import { IActiveTeam } from "../../model/team/ActiveTeam";
 import { IActiveTeamMember } from "../../model/team/ActiveTeamMember";
+import { IUser } from "../../model/user/User";
+import { ITeamInvite } from "../../model/team/TeamInvite";
+import { TSelectValuePresentationModel } from "../main/HomePresenter";
 
 export interface TTeamPresenter extends TLoadingAwarePresenter {
   teamDetails: ITeamDetails;
@@ -15,6 +18,8 @@ export interface TTeamPresenter extends TLoadingAwarePresenter {
   editValidationErrors?: any;
   editButtonDisabled: boolean;
   activeTeamMembers: IActiveTeamMember[];
+  userList: IUser[];
+  selectedUsers: TSelectValuePresentationModel[];
 }
 export interface ITeamPresenter extends TTeamPresenter, TPresentable {
   loadTeamDetails(teamDetails: ITeamDetails): void;
@@ -24,6 +29,10 @@ export interface ITeamPresenter extends TTeamPresenter, TPresentable {
   onChangeTeamData(key: string, value: any): void;
   updateTeamDetails(): void;
   loadActiveTeamMembersList(activeTeamMembers: IActiveTeamMember[]): void;
+  loadUserList(userList: IUser[]): void;
+  loadTeamInvitesForUser(teamInvitesForUser: ITeamInvite[]): void;
+  loadUserProfile(userProfile: IUser): void;
+  onChangeSelectUserList(value: TSelectValuePresentationModel[]): void;
 }
 
 const defaultState: TTeamPresenter = {
@@ -32,7 +41,9 @@ const defaultState: TTeamPresenter = {
   isEditableForm: false,
   editValidationErrors: undefined,
   editButtonDisabled: false,
-  activeTeamMembers: []
+  activeTeamMembers: [],
+  userList: [],
+  selectedUsers: []
 };
 
 const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
@@ -140,6 +151,28 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
       });
     };
 
+    const loadUserList = (userList: IUser[]) => {
+      _store.update({
+        userList
+      });
+    };
+
+    const loadTeamInvitesForUser = (teamInvitesForUser: ITeamInvite[]) => {
+      return _store.update({
+        teamInvitesForUser
+      });
+    };
+
+    const loadUserProfile = (userProfile: IUser) => {
+      return _store.update({
+        userProfile
+      });
+    };
+
+    const onChangeSelectUserList = (value: TSelectValuePresentationModel[]) => {
+      _store.update({ selectedUsers: value });
+    };
+
     return {
       ...state,
       store: _store,
@@ -152,7 +185,11 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
       onCancelBtnClick,
       onChangeTeamData,
       updateTeamDetails,
-      loadActiveTeamMembersList
+      loadActiveTeamMembersList,
+      loadUserList,
+      loadTeamInvitesForUser,
+      loadUserProfile,
+      onChangeSelectUserList
     };
   },
   defaultState

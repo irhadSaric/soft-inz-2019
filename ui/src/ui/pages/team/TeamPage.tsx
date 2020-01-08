@@ -36,7 +36,10 @@ export default class TeamPage extends React.Component<Props, State> {
       editValidationErrors,
       updateTeamDetails,
       onChangeTeamData,
-      activeTeamMembers
+      activeTeamMembers,
+      userList,
+      onChangeSelectUserList,
+      selectedUsers
     } = this.state;
     return (
       <Page
@@ -56,6 +59,9 @@ export default class TeamPage extends React.Component<Props, State> {
           updateTeamDetails={updateTeamDetails}
           onChangeTeamData={onChangeTeamData}
           activeTeamMembers={activeTeamMembers}
+          users={userList}
+          onChangeSelectUserList={onChangeSelectUserList}
+          selectedUsers={selectedUsers}
         />
       </Page>
     );

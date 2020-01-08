@@ -5,15 +5,28 @@ import TeamPresenter, {
 import { ITeamDetails } from "../../model/team/TeamDetails";
 import { ITeamService } from "../../service/team/TeamService";
 import { ITeamProject } from "../../model/team/TeamProject";
+import { IUserService } from "../../service/user/UserService";
+import { ICredentialsService } from "../../service/authentication/CredentialsService";
+import { IUser } from "../../model/user/User";
+import { ITeamInvite } from "../../model/team/TeamInvite";
 
 export default class ShowTeamInteractor {
   private application: Application;
   private output?: ITeamPresenter;
   private teamService: ITeamService;
+  private userService: IUserService;
+  private credentialsService: ICredentialsService;
 
-  constructor({ application, teamService }: any) {
+  constructor({
+    application,
+    teamService,
+    userService,
+    credentialsService
+  }: any) {
     this.application = application;
     this.teamService = teamService;
+    this.userService = userService;
+    this.credentialsService = credentialsService;
   }
 
   execute(teamId: number) {
@@ -24,7 +37,9 @@ export default class ShowTeamInteractor {
         teamProjects: [],
         isEditableForm: false,
         editButtonDisabled: false,
-        activeTeamMembers: []
+        activeTeamMembers: [],
+        userList: [],
+        selectedUsers: []
       }
     });
 
@@ -39,6 +54,22 @@ export default class ShowTeamInteractor {
     this.teamService
       .getActiveTeamMembersList(teamId)
       .then(this.output && this.output.loadActiveTeamMembersList);
+
+    this.userService.getUsers().then(this.output && this.output.loadUserList);
+
+    this.credentialsService.getEmailFromStorage().then(email => {
+      if (email) {
+        this.userService.getUserByEmail(email).then((user: IUser) => {
+          this.teamService
+            .getTeamInvitesForUser(user.id)
+            .then((teamInvitesForUser: ITeamInvite[]) => {
+              this.output &&
+                this.output.loadTeamInvitesForUser(teamInvitesForUser);
+            });
+          this.output && this.output.loadUserProfile(user);
+        });
+      }
+    });
 
     return this.output;
   }

@@ -1,9 +1,11 @@
 import * as React from "react";
-import { Avatar, Button, Divider, Input, Form, List } from "antd";
+import { Avatar, Button, Divider, Input, Form, List, Select } from "antd";
 import Text from "antd/lib/typography/Text";
 import { ITeamDetails } from "../../../model/team/TeamDetails";
 import { ITeamProject } from "../../../model/team/TeamProject";
 import { IActiveTeamMember } from "../../../model/team/ActiveTeamMember";
+import { IUser } from "../../../model/user/User";
+import { TSelectValuePresentationModel } from "../../../presenter/main/HomePresenter";
 
 const TeamForm = ({
   translate,
@@ -17,12 +19,17 @@ const TeamForm = ({
   isLoading,
   onChangeTeamData,
   updateTeamDetails,
-  activeTeamMembers
+  activeTeamMembers,
+  users,
+  onChangeSelectUserList,
+  selectedUsers
 }: {
   translate: any,
   teamDetails: ITeamDetails;
   teamProjects: ITeamProject[];
   activeTeamMembers: IActiveTeamMember[];
+  users: IUser[];
+  selectedUsers: TSelectValuePresentationModel[];
   isEditable: boolean;
   onEditBtnClick: any;
   onCancelBtnClick: any;
@@ -31,6 +38,8 @@ const TeamForm = ({
   isLoading: boolean;
   updateTeamDetails: any
   onChangeTeamData(key: string, value: any): void;
+  onChangeSelectUserList: any;
+  
 }) => {
   const checkValidationErrors = (fieldName: string) => {
     return validationErrors && validationErrors[fieldName].length > 0;
@@ -107,6 +116,23 @@ const TeamForm = ({
           <Form.Item>
             <div className={"form-item"}>
               <h3 style={{ margin: '16px 0' }}>Users</h3>
+              <Select
+              placeholder={"Add user"}
+              allowClear
+              value={selectedUsers}
+              showSearch={true}
+              style={{ marginTop: 20, width: 400 }}
+              onChange={e => onChangeSelectUserList(e)}
+            >
+              {users.map(item => (
+                <Select.Option key={item.id}>
+                  {item.email}
+                </Select.Option>
+              ))}
+            </Select>
+
+
+
               <List
                 size="small"
                 bordered
