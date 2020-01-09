@@ -16,4 +16,10 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     @Query(value = "select p from Project p where p.team.id = :teamId")
     List<Project> getAllByTeamId(@Param("teamId") Long teamId);
+
+    @Query(value = "select i from Iteration i where i.project.id = :projectId and i.status.key = :iterationType order by i.endDate desc")
+    List<Iteration> getAllIterationsByType(@Param("projectId") Long projectId, @Param("iterationType") String iterationType);
+
+    @Query(value = "select i from Iteration i where i.project.id = :projectId and i.status.key = 'active-iteration'")
+    Iteration getActiveIterationForProject(@Param("projectId") Long projectId);
 }

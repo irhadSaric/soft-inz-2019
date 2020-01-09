@@ -100,4 +100,12 @@ public class ProjectService {
     public List<Project> getAllProjectsForTeam(Long id) {
         return projectRepository.getAllByTeamId(id);
     }
+
+    public List<Iteration> getAllIterationsByType(Long id, String s) {
+        return projectRepository.getAllIterationsByType(id, s);
+    }
+
+    public Iteration getActiveIterationForProject(Long id) {
+        return projectRepository.getActiveIterationForProject(id);
+    }
 }
