@@ -1,21 +1,25 @@
 import withStore, { TLoadingAwarePresenter, TPresentable } from "../withStore";
 import Application from "../../Application";
 import { IIteration } from "../../model/iteration/Iteration";
+import { IIterationTickets } from "../../model/iteration/IterationTickets";
 
 export interface TIterationPresenter extends TLoadingAwarePresenter {
   iteration: IIteration;
+  iterationTickets: IIterationTickets[];
   isEditableForm: boolean;
   editValidationErrors?: any;
   editButtonDisabled: boolean;
 }
 export interface IIterationPresenter extends TIterationPresenter, TPresentable {
   loadIterations(iteration: IIteration): void;
+  loadIterationTickets(iterationTickets: IIterationTickets[]): void;
   onEditBtnClick(): void;
   onCancelBtnClick(): void;
 }
 
 const defaultState: TIterationPresenter = {
   iteration: {} as IIteration,
+  iterationTickets: [],
   isEditableForm: false,
   editValidationErrors: undefined,
   editButtonDisabled: false
@@ -30,6 +34,12 @@ const IterationPresenter = withStore<IIterationPresenter, TIterationPresenter>(
     const loadIterations = (iteration: IIteration) => {
       return _store.update({
         iteration
+      });
+    };
+
+    const loadIterationTickets = (iterationTickets: IIterationTickets[]) => {
+      return _store.update({
+        iterationTickets
       });
     };
 
@@ -48,6 +58,7 @@ const IterationPresenter = withStore<IIterationPresenter, TIterationPresenter>(
       application: _application,
       translate,
       loadIterations,
+      loadIterationTickets,
       onEditBtnClick,
       onCancelBtnClick
     };

@@ -20,6 +20,7 @@ export default class ShowIterationInteractor {
       application: this.application,
       initialState: {
         iteration: {} as IIteration,
+        iterationTickets: [],
         isEditableForm: false,
         editButtonDisabled: false
       }
@@ -28,6 +29,10 @@ export default class ShowIterationInteractor {
     this.iterationService
       .getAllIterations(1)
       .then(this.output && this.output.loadIterations);
+
+    this.iterationService
+      .getAllIterationTickets(1)
+      .then(this.output && this.output.loadIterationTickets);
 
     return this.output;
   }
