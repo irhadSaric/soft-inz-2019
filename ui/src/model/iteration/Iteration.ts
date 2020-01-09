@@ -17,55 +17,55 @@ export interface IIteration extends TIteration {}
 
 const Iteration = Model(
   (model: TIteration): IIteration => {
-    const _Iteration: TIteration = Object.assign({}, model);
+    const _iteration: TIteration = Object.assign({}, model);
 
     let create = (Iteration: IIteration): IIteration => {
       let obj = ValidatableObject(Iteration);
       return obj;
     };
 
-    let Iteration = {
+    let iteration = {
       get description() {
-        return _Iteration.description;
+        return _iteration.description;
       },
       set description(value) {
-        _Iteration.description = value;
+        _iteration.description = value;
       },
       get endDate() {
-        return _Iteration.endDate;
+        return _iteration.endDate;
       },
       set endDate(value) {
-        _Iteration.endDate = value;
+        _iteration.endDate = value;
       },
       get id() {
-        return _Iteration.id;
+        return _iteration.id;
       },
       get name() {
-        return _Iteration.name;
+        return _iteration.name;
       },
       set name(value) {
-        _Iteration.name = value;
+        _iteration.name = value;
       },
       get status() {
-        return _Iteration.status;
+        return _iteration.status;
       },
       set status(value) {
-        _Iteration.status = value;
+        _iteration.status = value;
       },
       get project() {
-        return _Iteration.project;
+        return _iteration.project;
       },
       set project(value) {
-        _Iteration.project = value;
+        _iteration.project = value;
       },
       get startDate() {
-        return _Iteration.startDate;
+        return _iteration.startDate;
       },
       set startDate(value) {
-        _Iteration.startDate = value;
+        _iteration.startDate = value;
       }
     };
-    return create(Iteration);
+    return create(iteration);
   }
 );
 

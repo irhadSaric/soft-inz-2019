@@ -84,8 +84,13 @@ const ProjectService = ({ httpService }): IProjectService => {
         _activePath
       );
       const response = await _http.get(path);
-      const responseJSON = await _http.toJSON(response);
-      return Iteration(responseJSON);
+      try {
+        const responseJSON = await _http.toJSON(response);
+        return Iteration(responseJSON);
+      } catch {
+        const iteration = {} as IIteration;
+        return iteration;
+      }
     },
     async getCompletedIterationsForProject(projectId: number) {
       const path = _http.buildPath(
