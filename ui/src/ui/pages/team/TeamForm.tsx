@@ -1,9 +1,11 @@
 import * as React from "react";
-import { Avatar, Button, Divider, Input, Form, List } from "antd";
+import { Avatar, Button, Divider, Input, Form, List, Modal } from "antd";
 import Text from "antd/lib/typography/Text";
 import { ITeamDetails } from "../../../model/team/TeamDetails";
+import CreateProjectForm from "../project/CreateProjectForm";
 import { ITeamProject } from "../../../model/team/TeamProject";
 import { IActiveTeamMember } from "../../../model/team/ActiveTeamMember";
+import { IProject } from "../../../model/project/Project";
 
 const TeamForm = ({
   translate,
@@ -16,10 +18,18 @@ const TeamForm = ({
   validationErrors,
   isLoading,
   onChangeTeamData,
+  createProject,
+  isCreateProjectModalVisible,
+  project,
+  onChangeProjectData,
+  onCreateProjectBtnClick,
+  onCancelProjectModalButtonClick,
+  validationProjectErrors,
   updateTeamDetails,
-  activeTeamMembers
+  activeTeamMembers,
+  showProjectPage
 }: {
-  translate: any,
+  translate: any;
   teamDetails: ITeamDetails;
   teamProjects: ITeamProject[];
   activeTeamMembers: IActiveTeamMember[];
@@ -28,9 +38,17 @@ const TeamForm = ({
   onCancelBtnClick: any;
   editButtonDisabled: boolean;
   validationErrors: any;
-  isLoading: boolean;
-  updateTeamDetails: any
+  isCreateProjectModalVisible: boolean;
   onChangeTeamData(key: string, value: any): void;
+  createProject(): void;
+  onChangeProjectData(key: string, value: any): void;
+  project: IProject;
+  isLoading: boolean;
+  updateTeamDetails: any;
+  onCreateProjectBtnClick(): void;
+  onCancelProjectModalButtonClick(): void;
+  validationProjectErrors: any;
+  showProjectPage: any;
 }) => {
   const checkValidationErrors = (fieldName: string) => {
     return validationErrors && validationErrors[fieldName].length > 0;
@@ -47,7 +65,7 @@ const TeamForm = ({
       }}
     >
       <div style={{ width: 200, display: "flex", flexDirection: "column" }}>
-        <Avatar style={{ marginLeft: 20 }} size={150} icon="user" />
+        <Avatar style={{ marginLeft: 20 }} size={150} icon="team" />
       </div>
       <Divider
         style={{ height: "auto", background: "#cccccc" }}
@@ -56,9 +74,7 @@ const TeamForm = ({
       <div style={{ display: "flex", flexDirection: "column" }}>
         <Form>
           <Form.Item
-            validateStatus={
-              checkValidationErrors("name") ? "error" : undefined
-            }
+            validateStatus={checkValidationErrors("name") ? "error" : undefined}
           >
             <div className={"form-item"}>
               <Input
@@ -83,30 +99,60 @@ const TeamForm = ({
             }
           >
             <div className={"form-item"}>
-            <Input.TextArea
-              placeholder={"Description"}
-              value={teamDetails.description}
-              onChange={e => onChangeTeamData("description", e.target.value)}
-              autosize={{ minRows: 4 }}
-              style={{ marginTop: 20 }}
-              readOnly={!isEditable}
-            />
-            </div>
-          </Form.Item>
-          <Form.Item>
-            <div className={"form-item"}>
-              <h3 style={{ margin: '16px 0' }}>Projects</h3>
-              <List
-                size="small"
-                bordered
-                dataSource={teamProjects}
-                renderItem={item => <List.Item>{item.name}</List.Item>}
+              <Input.TextArea
+                placeholder={"Description"}
+                value={teamDetails.description}
+                onChange={e => onChangeTeamData("description", e.target.value)}
+                autosize={{ minRows: 4 }}
+                style={{ marginTop: 20 }}
+                readOnly={!isEditable}
               />
             </div>
           </Form.Item>
           <Form.Item>
             <div className={"form-item"}>
-              <h3 style={{ margin: '16px 0' }}>Users</h3>
+              <h3 style={{ margin: "16px 0" }}>
+                Projects
+                <Button
+                  type="primary"
+                  style={{ float: "right" }}
+                  onClick={onCreateProjectBtnClick}
+                >
+                  +
+                </Button>
+                <Modal
+                  title="Create project"
+                  visible={isCreateProjectModalVisible}
+                  onOk={createProject}
+                  onCancel={onCancelProjectModalButtonClick}
+                  maskClosable={false}
+                >
+                  <CreateProjectForm
+                    project={project}
+                    onChangeProjectData={onChangeProjectData}
+                    validationProjectErrors={validationProjectErrors}
+                  />
+                </Modal>
+              </h3>
+              <List
+                size="small"
+                bordered
+                dataSource={teamProjects}
+                renderItem={item => (
+                  <List.Item
+                    onClick={() => {
+                      showProjectPage(item.id);
+                    }}
+                  >
+                    {item.name}
+                  </List.Item>
+                )}
+              />
+            </div>
+          </Form.Item>
+          <Form.Item>
+            <div className={"form-item"}>
+              <h3 style={{ margin: "16px 0" }}>Users</h3>
               <List
                 size="small"
                 bordered

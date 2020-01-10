@@ -1,12 +1,13 @@
 import withStore, { TLoadingAwarePresenter, TPresentable } from "../withStore";
 import Application from "../../Application";
 import { ITeamDetails } from "../../model/team/TeamDetails";
+import CreateProjectInteractor from "../../interactor/project/CreateProjectInteractor";
 import UpdateTeamDetailsInteractor from "../../interactor/team/UpdateTeamDetailsInteractor";
 import ShowSuccessMessageInteractor from "../../interactor/notifications/ShowSuccessMessageInteractor";
 import ShowErrorMessageInteractor from "../../interactor/notifications/ShowErrorMessageInteractor";
 import { ITeamProject } from "../../model/team/TeamProject";
-import { IActiveTeam } from "../../model/team/ActiveTeam";
 import { IActiveTeamMember } from "../../model/team/ActiveTeamMember";
+import { IProject } from "../../model/project/Project";
 
 export interface TTeamPresenter extends TLoadingAwarePresenter {
   teamDetails: ITeamDetails;
@@ -14,7 +15,11 @@ export interface TTeamPresenter extends TLoadingAwarePresenter {
   isEditableForm: boolean;
   editValidationErrors?: any;
   editButtonDisabled: boolean;
+  teamId?: number;
+  isCreateProjectModalVisible: boolean;
+  project: IProject;
   activeTeamMembers: IActiveTeamMember[];
+  createProjectValidationErrors?: any;
 }
 export interface ITeamPresenter extends TTeamPresenter, TPresentable {
   loadTeamDetails(teamDetails: ITeamDetails): void;
@@ -22,8 +27,13 @@ export interface ITeamPresenter extends TTeamPresenter, TPresentable {
   onEditBtnClick(): void;
   onCancelBtnClick(): void;
   onChangeTeamData(key: string, value: any): void;
+  createProject(): void;
+  onCreateProjectBtnClick(): void;
+  onCancelProjectModalButtonClick(): void;
+  onChangeProjectData(key: string, value: any): void;
   updateTeamDetails(): void;
   loadActiveTeamMembersList(activeTeamMembers: IActiveTeamMember[]): void;
+  showProjectPage(ProjectId: number): void;
 }
 
 const defaultState: TTeamPresenter = {
@@ -32,6 +42,8 @@ const defaultState: TTeamPresenter = {
   isEditableForm: false,
   editValidationErrors: undefined,
   editButtonDisabled: false,
+  isCreateProjectModalVisible: false,
+  project: {} as IProject,
   activeTeamMembers: []
 };
 
@@ -47,6 +59,25 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
       });
     };
 
+    const onCreateProjectBtnClick = () => {
+      _store.update({
+        isCreateProjectModalVisible: true
+      });
+    };
+
+    const onChangeProjectData = (key: string, value: any) => {
+      let project = _store.getState<TTeamPresenter>().project;
+      project[key] = value;
+      _store.update({ project });
+    };
+
+    const onCancelProjectModalButtonClick = () => {
+      _store.update({
+        isCreateProjectModalVisible: false,
+        projectName: "",
+        projectDescription: ""
+      });
+    };
     const loadTeamProjects = (teamProjects: ITeamProject[]) => {
       return _store.update({
         teamProjects
@@ -140,6 +171,81 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
       });
     };
 
+    const validateCreateProjectForm = () => {
+      const project = _store.getState<TTeamPresenter>().project;
+      let createProjectValidationErrors = _store.getState<TTeamPresenter>()
+        .createProjectValidationErrors;
+      createProjectValidationErrors = {
+        projectName: [],
+        projectDescription: [],
+        projectEndDate: []
+      };
+      if (!project.name) {
+        createProjectValidationErrors.projectName.push(
+          "The Project Name field is required."
+        );
+      }
+      if (!project.description) {
+        createProjectValidationErrors.projectDescription.push(
+          "The Description field is required."
+        );
+      }
+      if (
+        typeof project.endDate === "undefined" ||
+        Object.entries(project.endDate).length === 0
+      ) {
+        createProjectValidationErrors.projectEndDate.push(
+          "The End Date field is required."
+        );
+      }
+      _store.update({
+        createProjectValidationErrors
+      });
+    };
+
+    const createProject = async () => {
+      validateCreateProjectForm();
+      const createProjectValidationErrors = _store.getState<TTeamPresenter>()
+        .createProjectValidationErrors;
+      if (
+        !(
+          createProjectValidationErrors.projectName.length ||
+          createProjectValidationErrors.projectDescription.length ||
+          createProjectValidationErrors.projectEndDate.length
+        )
+      )
+        try {
+          loader.start("createProjectLoader");
+          const project = _store.getState<TTeamPresenter>().project;
+          const teamId = _store.getState<TTeamPresenter>().teamId;
+          teamId &&
+            (await _application.container
+              .resolve<CreateProjectInteractor>("createProject")
+              .execute(
+                project.description,
+                project.endDate,
+                project.name,
+                teamId
+              ));
+          loader.stop("createProjectLoader");
+          _application.container
+            .resolve<ShowSuccessMessageInteractor>("showSuccessMessage")
+            .execute("You have successfully created a project");
+          _store.update({
+            isCreateProjectModalVisible: false
+          });
+        } catch (error) {
+          loader.stop("createProjectLoader");
+          _application.container
+            .resolve<ShowErrorMessageInteractor>("showErrorMessage")
+            .execute(error.message);
+        }
+    };
+
+    const showProjectPage = (projectId: number) => {
+      application.navigator.replace({ pathname: `/project/${projectId}` });
+    };
+
     return {
       ...state,
       store: _store,
@@ -151,8 +257,13 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
       onEditBtnClick,
       onCancelBtnClick,
       onChangeTeamData,
+      createProject,
+      onCancelProjectModalButtonClick,
+      onCreateProjectBtnClick,
+      onChangeProjectData,
       updateTeamDetails,
-      loadActiveTeamMembersList
+      loadActiveTeamMembersList,
+      showProjectPage
     };
   },
   defaultState
