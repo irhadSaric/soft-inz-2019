@@ -18,6 +18,15 @@ public class Ticket extends BaseEntity{
     @Column(name = "end_date", nullable = false)
     private Date endDate;
 
+    @Column(name = "finish_date", nullable = false)
+    private Date finishDate;
+
+    @Column(name = "achieved_score")
+    private Float achievedScore;
+
+    @Column(name = "score", nullable = false)
+    private Short score;
+
     @ManyToOne
     @JoinColumn(name = "assignee_id")
     private User assignee;
@@ -106,4 +115,27 @@ public class Ticket extends BaseEntity{
 
     public void setProject(Project project) { this.project = project; }
 
+    public Date getFinishDate() {
+        return finishDate;
+    }
+
+    public void setFinishDate(Date finishDate) {
+        this.finishDate = finishDate;
+    }
+
+    public Short getScore() {
+        return score;
+    }
+
+    public void setScore(Short score) {
+        this.score = score;
+    }
+
+    public Float getAchievedScore() {
+        return achievedScore;
+    }
+
+    public void setAchievedScore(Float achievedScore) {
+        this.achievedScore = achievedScore;
+    }
 }
