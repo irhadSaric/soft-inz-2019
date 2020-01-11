@@ -160,6 +160,7 @@ const TeamService = ({ httpService }): ITeamService => {
         }
       });
     },
+
     async respondToPendingInvite(
       userId: number,
       teamId: number,

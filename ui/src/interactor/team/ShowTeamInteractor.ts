@@ -39,7 +39,8 @@ export default class ShowTeamInteractor {
         editButtonDisabled: false,
         activeTeamMembers: [],
         userList: [],
-        selectedUsers: []
+        selectedUsers: [],
+        userProfile: {} as IUser
       }
     });
 
@@ -55,7 +56,12 @@ export default class ShowTeamInteractor {
       .getActiveTeamMembersList(teamId)
       .then(this.output && this.output.loadActiveTeamMembersList);
 
-    this.userService.getUsers().then(this.output && this.output.loadUserList);
+    this.credentialsService.getEmailFromStorage().then(email => {
+      email &&
+        this.userService
+          .getUserByEmail(email)
+          .then(this.output && this.output.loadUserProfile);
+    });
 
     this.credentialsService.getEmailFromStorage().then(email => {
       if (email) {
@@ -70,6 +76,8 @@ export default class ShowTeamInteractor {
         });
       }
     });
+
+    this.userService.getUsers().then(this.output && this.output.loadUserList);
 
     return this.output;
   }

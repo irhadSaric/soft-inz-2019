@@ -5,11 +5,15 @@ import UpdateTeamDetailsInteractor from "../../interactor/team/UpdateTeamDetails
 import ShowSuccessMessageInteractor from "../../interactor/notifications/ShowSuccessMessageInteractor";
 import ShowErrorMessageInteractor from "../../interactor/notifications/ShowErrorMessageInteractor";
 import { ITeamProject } from "../../model/team/TeamProject";
-import { IActiveTeam } from "../../model/team/ActiveTeam";
 import { IActiveTeamMember } from "../../model/team/ActiveTeamMember";
 import { IUser } from "../../model/user/User";
-import { ITeamInvite } from "../../model/team/TeamInvite";
-import { TSelectValuePresentationModel } from "../main/HomePresenter";
+import { ITeamInvite, TTeamInvite } from "../../model/team/TeamInvite";
+import {
+  TSelectValuePresentationModel,
+  THomePresenter
+} from "../main/HomePresenter";
+import InviteUserToTeamInteractor from "../../interactor/team/InviteUserToTeamInteractor";
+import { userInfo } from "os";
 
 export interface TTeamPresenter extends TLoadingAwarePresenter {
   teamDetails: ITeamDetails;
@@ -20,6 +24,7 @@ export interface TTeamPresenter extends TLoadingAwarePresenter {
   activeTeamMembers: IActiveTeamMember[];
   userList: IUser[];
   selectedUsers: TSelectValuePresentationModel[];
+  userProfile: IUser;
 }
 export interface ITeamPresenter extends TTeamPresenter, TPresentable {
   loadTeamDetails(teamDetails: ITeamDetails): void;
@@ -33,6 +38,7 @@ export interface ITeamPresenter extends TTeamPresenter, TPresentable {
   loadTeamInvitesForUser(teamInvitesForUser: ITeamInvite[]): void;
   loadUserProfile(userProfile: IUser): void;
   onChangeSelectUserList(value: TSelectValuePresentationModel[]): void;
+  inviteUserToTeam(invitedUserId: number, teamId: number, userId: number): void;
 }
 
 const defaultState: TTeamPresenter = {
@@ -43,7 +49,8 @@ const defaultState: TTeamPresenter = {
   editButtonDisabled: false,
   activeTeamMembers: [],
   userList: [],
-  selectedUsers: []
+  selectedUsers: [],
+  userProfile: {} as IUser
 };
 
 const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
@@ -120,6 +127,12 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
         try {
           loader.start("editTeamLoader");
           const teamDetails = _store.getState<TTeamPresenter>().teamDetails;
+          const selectedUsers = _store.getState<THomePresenter>().selectedUsers;
+          const userProfile = _store.getState<THomePresenter>().userProfile;
+          const invitedUser = _store.getState<ITeamInvite>().userId;
+          const response = await _application.container
+            .resolve<InviteUserToTeamInteractor>("inviteUserToTeam")
+            .execute(invitedUser, teamDetails.id, userProfile.id);
           _application.container
             .resolve<UpdateTeamDetailsInteractor>("updateTeamDetails")
             .execute(teamDetails);
@@ -127,6 +140,13 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
           _application.container
             .resolve<ShowSuccessMessageInteractor>("showSuccessMessage")
             .execute("Changes successfully saved");
+          // selectedUsers.forEach(element => {
+          //   inviteUserToTeam(
+          //     parseInt(element.key, 10),
+          //     response.teamId,
+          //     userProfile.id
+          //   );
+          // });
           _store.update({
             teamDetails,
             isEditableForm: false
@@ -173,6 +193,16 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
       _store.update({ selectedUsers: value });
     };
 
+    const inviteUserToTeam = async (
+      invitedUserId: number,
+      teamId: number,
+      userId: number
+    ) => {
+      await _application.container
+        .resolve<InviteUserToTeamInteractor>("inviteUserToTeam")
+        .execute(invitedUserId, teamId, userId);
+    };
+
     return {
       ...state,
       store: _store,
@@ -189,7 +219,8 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
       loadUserList,
       loadTeamInvitesForUser,
       loadUserProfile,
-      onChangeSelectUserList
+      onChangeSelectUserList,
+      inviteUserToTeam
     };
   },
   defaultState

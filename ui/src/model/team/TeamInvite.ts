@@ -17,9 +17,7 @@ const TeamInvite = Model(
   (model: TTeamInvite): ITeamInvite => {
     const _TeamInvite: TTeamInvite = Object.assign({}, model);
 
-    let create = (
-      TeamInvite: ITeamInvite
-    ): ITeamInvite => {
+    let create = (TeamInvite: ITeamInvite): ITeamInvite => {
       let obj = ValidatableObject(TeamInvite);
       return obj;
     };
