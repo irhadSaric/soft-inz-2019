@@ -7,6 +7,7 @@ import ba.unsa.pmf.pragma.service.UserTeamService;
 import ba.unsa.pmf.pragma.service.dtos.*;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,6 +30,7 @@ public class TeamController {
         return teamService.getAll();
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/create-team")
     public UserTeamResponse createTeam(@RequestBody CreateTeamRequest request) throws NotFoundException {
         return teamService.createTeam(request);
