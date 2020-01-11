@@ -16,7 +16,7 @@ export interface IAuthenticationService {
 
 const AuthenticationService = ({ httpService }): IAuthenticationService => {
   const _http: IHttpService = httpService;
-  const _basePath = "/login";
+  const _basePath = "/api/login";
   const _registerPath = "/register";
 
   return {
