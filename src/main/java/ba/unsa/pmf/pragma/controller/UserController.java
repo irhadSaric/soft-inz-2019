@@ -40,7 +40,7 @@ public class UserController extends BaseController {
     }
 
     @PostMapping("/login")
-    public RegistrationResponse login(@Valid LoginRequest request) throws Exception {
+    public RegistrationResponse login(@Valid @RequestBody LoginRequest request) throws Exception {
         return userService.login(request);
     }
 

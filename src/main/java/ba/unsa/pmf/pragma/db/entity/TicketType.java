@@ -6,15 +6,16 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "ticket_types")
-public class TicketType extends LookupEntity{
+public class TicketType extends LookupEntity {
+
     @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "score", nullable = false)
-    private Long score;
+    @Column(name = "min_score", nullable = false)
+    private Short minScore;
 
-    @Column(name = "duration", nullable = false)
-    private Long duration;
+    @Column(name = "max_score", nullable = false)
+    private Short maxScore;
 
     public String getDescription() {
         return description;
@@ -24,19 +25,19 @@ public class TicketType extends LookupEntity{
         this.description = description;
     }
 
-    public Long getScore() {
-        return score;
+    public Short getMinScore() {
+        return minScore;
     }
 
-    public void setScore(Long score) {
-        this.score = score;
+    public void setMinScore(Short minScore) {
+        this.minScore = minScore;
     }
 
-    public Long getDuration() {
-        return duration;
+    public Short getMaxScore() {
+        return maxScore;
     }
 
-    public void setDuration(Long duration) {
-        this.duration = duration;
+    public void setMaxScore(Short maxScore) {
+        this.maxScore = maxScore;
     }
 }

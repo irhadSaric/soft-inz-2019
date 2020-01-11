@@ -12,6 +12,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author malek.chahin
  * November, 11, 2019.
@@ -28,8 +30,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        //auth.userDetailsService(userDetailsServiceImpl).passwordEncoder(new BCryptPasswordEncoder());
-        auth.authenticationProvider(customAuthenticationProvider);
+        auth.userDetailsService(userDetailsServiceImpl).passwordEncoder(new BCryptPasswordEncoder());
+        auth.authenticationProvider(customAuthenticationProvider)
+                .getDefaultUserDetailsService();
     }
 
     @Override
@@ -39,13 +42,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/teams/create-team", "/api/codebooks/countries/all")
                 .hasAnyAuthority("admin")
                 .and()
-                .authorizeRequests()
+//                .authorizeRequests()
 //                .and()
 //                .authorizeRequests()
 //                .antMatchers("/api/project/all")
 //                .authenticated()
 //                .anyRequest()
-                .and()
+//                .and()
                 .formLogin()
                 .usernameParameter("email")
                 .loginProcessingUrl("/login")
