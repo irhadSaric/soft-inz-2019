@@ -33,7 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/api/teams/create-team", "/api/codebooks/countries/all")
-                .hasAnyAuthority("ADMIN", "admin", "ROLE_ADMIN", "role_admin", "role-admin")
+                .hasAnyAuthority("admin")
                 .and()
                 .authorizeRequests()
 //                .and()
@@ -44,6 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginProcessingUrl("/login")
+                .defaultSuccessUrl("/api/codebooks/countries/all")
                 .permitAll()
                 ;
     }
