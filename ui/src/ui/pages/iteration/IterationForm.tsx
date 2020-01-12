@@ -28,6 +28,8 @@ const IterationForm = ({
   const checkValidationErrors = (fieldName: string) => {
     return validationErrors && validationErrors[fieldName].length > 0;
   };
+  const newStartDate = new Date(iteration.startDate).toLocaleDateString();
+  const newEndDate = new Date(iteration.endDate).toLocaleDateString();
   return (
     <div
       style={{
@@ -51,7 +53,7 @@ const IterationForm = ({
                 border: '1px solid rgb(235, 237, 240)',
               }}  
               title={iteration.name}
-              subTitle={iteration.startDate}
+              subTitle={newStartDate + "-" + newEndDate}
             />
             </div>
           </Form.Item>
