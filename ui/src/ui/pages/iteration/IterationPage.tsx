@@ -30,9 +30,6 @@ export default class IterationPage extends React.Component<Props, State> {
       iteration,
       iterationTickets,
       isEditableForm,
-      onEditBtnClick,
-      onCancelBtnClick,
-      editButtonDisabled,
       editValidationErrors,
     } = this.state;
     return (
@@ -45,11 +42,7 @@ export default class IterationPage extends React.Component<Props, State> {
           iteration={iteration}
           iterationTickets={iterationTickets}
           isEditable={isEditableForm}
-          onEditBtnClick={onEditBtnClick}
-          onCancelBtnClick={onCancelBtnClick}
-          editButtonDisabled={editButtonDisabled}
           validationErrors={editValidationErrors}
-          isLoading={this.state.loaders.editTeamLoader}
         />
       </Page>
     );

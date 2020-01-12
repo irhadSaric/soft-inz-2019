@@ -9,21 +9,13 @@ const IterationForm = ({
   iteration,
   iterationTickets,
   isEditable,
-  onEditBtnClick,
-  onCancelBtnClick,
-  editButtonDisabled,
   validationErrors,
-  isLoading,
 }: {
   translate: any;
   iteration: IIteration;
   iterationTickets: IIterationTicket[];
   isEditable: boolean;
-  onEditBtnClick: any;
-  onCancelBtnClick: any;
-  editButtonDisabled: boolean;
   validationErrors: any;
-  isLoading: boolean;
 }) => {
   const checkValidationErrors = (fieldName: string) => {
     return validationErrors && validationErrors[fieldName].length > 0;
