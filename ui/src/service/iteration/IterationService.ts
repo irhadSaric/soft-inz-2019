@@ -1,13 +1,13 @@
 import { IHttpService } from "../HttpService";
 import Iteration, { IIteration } from "../../model/iteration/Iteration";
 import Status from "../../model/status/Status";
-import IterationTickets, {
-  IIterationTickets
-} from "../../model/iteration/IterationTickets";
+import IterationTicket, {
+  IIterationTicket
+} from "../../model/iteration/IterationTicket";
 
 export interface IIterationService {
   getAllIterations(iterationId: number): Promise<IIteration>;
-  getAllIterationTickets(iterationId: number): Promise<IIterationTickets[]>;
+  getAllIterationTickets(iterationId: number): Promise<IIterationTicket[]>;
   getIteration(id: number): Promise<IIteration>;
   createIteration(
     description: string,
@@ -26,9 +26,9 @@ const IterationService = ({ httpService }): IIterationService => {
   const _editPath: string = "/edit";
   const _getPath: string = "/get";
 
-  let buildProjectList = (json: any): IIterationTickets[] => {
+  let buildIterationTicketList = (json: any): IIterationTicket[] => {
     return json.map(item => {
-      let iterationTickets = IterationTickets(item);
+      let iterationTickets = IterationTicket(item);
       iterationTickets.startDate = new Date(item.startDate);
       iterationTickets.endDate = new Date(item.endDate);
       iterationTickets.status = Status(item.statusId);
@@ -53,7 +53,7 @@ const IterationService = ({ httpService }): IIterationService => {
       const path = _http.buildPath(_basePath, iterationId.toString(), _tickets);
       const response = await _http.get(path);
       const responseJSON = await _http.toJSON(response);
-      return buildProjectList(responseJSON);
+      return buildIterationTicketList(responseJSON);
     },
     async createIteration(
       description: string,

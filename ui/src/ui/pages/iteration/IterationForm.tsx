@@ -2,7 +2,7 @@ import * as React from "react";
 import { PageHeader, Input, Form, List, Row, Col } from "antd";
 import Text from "antd/lib/typography/Text";
 import { IIteration } from "../../../model/iteration/Iteration";
-import { IIterationTickets } from "../../../model/iteration/IterationTickets";
+import { IIterationTicket } from "../../../model/iteration/IterationTicket";
 
 const IterationForm = ({
   translate,
@@ -17,7 +17,7 @@ const IterationForm = ({
 }: {
   translate: any;
   iteration: IIteration;
-  iterationTickets: IIterationTickets[];
+  iterationTickets: IIterationTicket[];
   isEditable: boolean;
   onEditBtnClick: any;
   onCancelBtnClick: any;
