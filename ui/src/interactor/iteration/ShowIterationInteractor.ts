@@ -1,9 +1,9 @@
 import Application from "../../Application";
 import IterationPresenter, {
-  IIterationPresenter
+  IIterationPresenter,
+  TIterationPresentationModel
 } from "../../presenter/iteration/IterationPresenter";
 import { IIterationService } from "../../service/iteration/IterationService";
-import { IIteration } from "../../model/iteration/Iteration";
 
 export default class ShowIterationInteractor {
   private application: Application;
@@ -19,7 +19,7 @@ export default class ShowIterationInteractor {
     this.output = IterationPresenter({
       application: this.application,
       initialState: {
-        iteration: {} as IIteration,
+        iteration: {} as TIterationPresentationModel,
         iterationTickets: [],
         isEditableForm: false,
         editButtonDisabled: false

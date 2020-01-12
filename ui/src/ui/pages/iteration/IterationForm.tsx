@@ -1,8 +1,7 @@
 import * as React from "react";
 import { PageHeader, Input, Form, List, Row, Col } from "antd";
-import Text from "antd/lib/typography/Text";
-import { IIteration } from "../../../model/iteration/Iteration";
 import { IIterationTicket } from "../../../model/iteration/IterationTicket";
+import { TIterationPresentationModel } from "../../../presenter/iteration/IterationPresenter";
 
 const IterationForm = ({
   translate,
@@ -12,7 +11,7 @@ const IterationForm = ({
   validationErrors,
 }: {
   translate: any;
-  iteration: IIteration;
+  iteration: TIterationPresentationModel;
   iterationTickets: IIterationTicket[];
   isEditable: boolean;
   validationErrors: any;
@@ -20,8 +19,6 @@ const IterationForm = ({
   const checkValidationErrors = (fieldName: string) => {
     return validationErrors && validationErrors[fieldName].length > 0;
   };
-  const newStartDate = new Date(iteration.startDate).toLocaleDateString();
-  const newEndDate = new Date(iteration.endDate).toLocaleDateString();
   return (
     <div
       style={{
@@ -45,7 +42,7 @@ const IterationForm = ({
                 border: '1px solid rgb(235, 237, 240)',
               }}  
               title={iteration.name}
-              subTitle={newStartDate + "-" + newEndDate}
+              subTitle={iteration.startDate + "-" + iteration.endDate}
             />
             </div>
           </Form.Item>
