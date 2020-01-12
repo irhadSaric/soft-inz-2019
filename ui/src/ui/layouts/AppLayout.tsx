@@ -1,6 +1,6 @@
 import React from "react";
 import RootLayout from "./RootLayout";
-import { Layout, Menu, Breadcrumb, Icon } from "antd";
+import { Layout, Menu, Breadcrumb, Icon, Badge } from "antd";
 import { TTranslate } from "../../service/locale/TranslationService";
 import { TPresentable } from "../../presenter/withStore";
 
@@ -42,7 +42,7 @@ export default class BaseLayout extends React.Component<Props, State> {
   render() {
     const { children, translate, router } = this.props;
 
-    const { userEmail } = this.state as any;
+    const { userEmail, countTeamInvites } = this.state as any;
 
     const redirect = path => {
       router.push({
@@ -96,6 +96,18 @@ export default class BaseLayout extends React.Component<Props, State> {
                     </span>
                   </Menu.Item>
                 </SubMenu>
+
+                <Menu.Item key="4" style={{ float: "right" }}>
+                  <Badge
+                    count={countTeamInvites}
+                    overflowCount={99}
+                    title={"Team invites"}
+                  >
+                    <span>
+                      <div style={{ padding: 4 }}>Team invites</div>
+                    </span>
+                  </Badge>
+                </Menu.Item>
               </Menu>
             </Header>
             <Layout>

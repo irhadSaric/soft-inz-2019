@@ -257,3 +257,20 @@
 .ant-input-group-addon {
   width: 100px;
 }
+
+.ant-badge-count {
+  z-index: 10;
+  min-width: 10px;
+  height: 15px;
+  padding: 0 4px;
+  color: #fff;
+  font-weight: normal;
+  font-size: 10px;
+  line-height: 12px;
+  white-space: nowrap;
+  text-align: center;
+  background: #f5222d;
+  border-radius: 15px;
+  -webkit-box-shadow: 0 0 0 1px #fff;
+  box-shadow: 0 0 0 1px #fff;
+}
