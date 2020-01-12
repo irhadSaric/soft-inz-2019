@@ -4,9 +4,8 @@ import Application from "../../Application";
 import ShowSuccessMessageInteractor from "../../interactor/notifications/ShowSuccessMessageInteractor";
 import ShowErrorMessageInteractor from "../../interactor/notifications/ShowErrorMessageInteractor";
 import UpdateProjectDetailsInteractor from "../../interactor/project/UpdateProjectDetailsInteractor";
-import { IIteration } from "../../model/iteration/iteration";
+import { IIteration } from "../../model/iteration/Iteration";
 import CreateIterationInteractor from "../../interactor/iteration/CreateIterationInteractor";
-import ShowProjectInteractor from "../../interactor/project/ShowProjectInteractor";
 import GetActiveIterationInteractor from "../../interactor/project/GetAcitveIterationForProjectInteractor";
 
 export interface TProjectPresenter extends TLoadingAwarePresenter {

@@ -1,10 +1,8 @@
 import * as React from "react";
 import { Input, Select, DatePicker } from "antd";
 import Text from "antd/lib/typography/Text";
-import { IStatus } from "../../../model/status/Status";
 import moment, { Moment } from "moment";
-import { IProject } from "../../../model/project/Project";
-import { IIteration } from "../../../model/iteration/iteration";
+import { IIteration } from "../../../model/iteration/Iteration";
 
 const { Option } = Select;
 
