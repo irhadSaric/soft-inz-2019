@@ -27,7 +27,7 @@ export default class ShowIterationInteractor {
     });
 
     this.iterationService
-      .getAllIterations(iterationId)
+      .getIterationById(iterationId)
       .then(this.output && this.output.loadIterations);
 
     this.iterationService

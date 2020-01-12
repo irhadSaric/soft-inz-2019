@@ -6,7 +6,7 @@ import IterationTicket, {
 } from "../../model/iteration/IterationTicket";
 
 export interface IIterationService {
-  getAllIterations(iterationId: number): Promise<IIteration>;
+  getIterationById(iterationId: number): Promise<IIteration>;
   getAllIterationTickets(iterationId: number): Promise<IIterationTicket[]>;
   getIteration(id: number): Promise<IIteration>;
   createIteration(
@@ -43,7 +43,7 @@ const IterationService = ({ httpService }): IIterationService => {
       const responseJSON = await _http.toJSON(response);
       return Iteration(responseJSON);
     },
-    async getAllIterations(iterationId: number) {
+    async getIterationById(iterationId: number) {
       const path = _http.buildPath(_basePath, _get, iterationId.toString());
       const response = await _http.get(path);
       const responseJSON = await _http.toJSON(response);
