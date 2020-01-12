@@ -15,7 +15,7 @@ export default class ShowIterationInteractor {
     this.iterationService = iterationService;
   }
 
-  execute() {
+  execute(iterationaId: number) {
     this.output = IterationPresenter({
       application: this.application,
       initialState: {
@@ -27,11 +27,11 @@ export default class ShowIterationInteractor {
     });
 
     this.iterationService
-      .getAllIterations(1)
+      .getAllIterations(iterationaId)
       .then(this.output && this.output.loadIterations);
 
     this.iterationService
-      .getAllIterationTickets(1)
+      .getAllIterationTickets(iterationaId)
       .then(this.output && this.output.loadIterationTickets);
 
     return this.output;
