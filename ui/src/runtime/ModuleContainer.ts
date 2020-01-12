@@ -57,10 +57,17 @@ import TeamService from "../service/team/TeamService";
 import InviteUserToTeamInteractor from "../interactor/team/InviteUserToTeamInteractor";
 import RespondToPendingInviteInteractor from "../interactor/team/RespondToPendingInviteInteractor";
 import GetTeamInvitesForUserInteractor from "../interactor/team/GetTeamInvitesForUserInteractor";
+import ProjectService from "../service/project/ProjectService";
+import ProjectArea from "../areas/ProjectArea";
 import UpdateTeamDetailsInteractor from "../interactor/team/UpdateTeamDetailsInteractor";
 import IterationArea from "../areas/IterationArea";
 import ShowIterationInteractor from "../interactor/iteration/ShowIterationInteractor";
 import IterationService from "../service/iteration/IterationService";
+import ShowProjectInteractor from "../interactor/project/ShowProjectInteractor";
+import CreateProjectInteractor from "../interactor/project/CreateProjectInteractor";
+import UpdateProjectDetailsInteractor from "../interactor/project/UpdateProjectDetailsInteractor";
+import CreateIterationInteractor from "../interactor/iteration/CreateIterationInteractor";
+import GetActiveIterationForProjectInteractor from "../interactor/project/GetAcitveIterationForProjectInteractor";
 
 //const DEFAULT_CACHE_TIMEOUT_MS = 15000;
 const ModuleContainer = (application: Application): IModuleContainer => {
@@ -133,6 +140,7 @@ const ModuleContainer = (application: Application): IModuleContainer => {
     credentialsService: asFunction(CredentialsService),
     codebookService: asFunction(CodebookService),
     teamService: asFunction(TeamService),
+    projectService: asFunction(ProjectService),
     iterationService: asFunction(IterationService)
   });
 
@@ -142,6 +150,7 @@ const ModuleContainer = (application: Application): IModuleContainer => {
     userArea: asClass(UserArea).singleton(),
     teamArea: asClass(TeamArea).singleton(),
     iterationArea: asClass(IterationArea).singleton(),
+    projectArea: asClass(ProjectArea).singleton(),
     authenticationArea: asClass(AuthenticationArea)
   });
 
@@ -169,7 +178,14 @@ const ModuleContainer = (application: Application): IModuleContainer => {
     respondToPendingInvite: asInteractor(RespondToPendingInviteInteractor),
     getTeamInvitesForUser: asInteractor(GetTeamInvitesForUserInteractor),
     updateTeamDetails: asInteractor(UpdateTeamDetailsInteractor),
-    showIteration: asInteractor(ShowIterationInteractor)
+    showIteration: asInteractor(ShowIterationInteractor),
+    showProject: asInteractor(ShowProjectInteractor),
+    createProject: asInteractor(CreateProjectInteractor),
+    updateProjectDetails: asInteractor(UpdateProjectDetailsInteractor),
+    createIteration: asInteractor(CreateIterationInteractor),
+    getActiveIterationForProject: asInteractor(
+      GetActiveIterationForProjectInteractor
+    )
   });
 
   return {

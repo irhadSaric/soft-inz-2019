@@ -34,9 +34,17 @@ export default class TeamPage extends React.Component<Props, State> {
       onCancelBtnClick,
       editButtonDisabled,
       editValidationErrors,
-      updateTeamDetails,
       onChangeTeamData,
-      activeTeamMembers
+      isCreateProjectModalVisible,
+      createProject,
+      project,
+      onChangeProjectData,
+      updateTeamDetails,
+      onCreateProjectBtnClick,
+      onCancelProjectModalButtonClick,
+      createProjectValidationErrors,
+      activeTeamMembers,
+      showProjectPage
     } = this.state;
     return (
       <Page
@@ -55,7 +63,15 @@ export default class TeamPage extends React.Component<Props, State> {
           isLoading={this.state.loaders.editTeamLoader}
           updateTeamDetails={updateTeamDetails}
           onChangeTeamData={onChangeTeamData}
+          isCreateProjectModalVisible={isCreateProjectModalVisible}
+          createProject={createProject}
+          project={project}
+          onChangeProjectData={onChangeProjectData}
+          onCreateProjectBtnClick={onCreateProjectBtnClick}
+          onCancelProjectModalButtonClick={onCancelProjectModalButtonClick}
+          validationProjectErrors={createProjectValidationErrors}
           activeTeamMembers={activeTeamMembers}
+          showProjectPage={showProjectPage}
         />
       </Page>
     );

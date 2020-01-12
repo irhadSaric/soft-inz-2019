@@ -4,6 +4,7 @@ import TeamPresenter, {
 } from "../../presenter/team/TeamPresenter";
 import { ITeamDetails } from "../../model/team/TeamDetails";
 import { ITeamService } from "../../service/team/TeamService";
+import { IProject } from "../../model/project/Project";
 
 export default class ShowTeamInteractor {
   private application: Application;
@@ -23,6 +24,9 @@ export default class ShowTeamInteractor {
         teamProjects: [],
         isEditableForm: false,
         editButtonDisabled: false,
+        teamId,
+        isCreateProjectModalVisible: false,
+        project: {} as IProject,
         activeTeamMembers: []
       }
     });
