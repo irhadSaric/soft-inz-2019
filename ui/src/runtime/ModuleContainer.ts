@@ -66,6 +66,9 @@ import UpdateProjectDetailsInteractor from "../interactor/project/UpdateProjectD
 import CreateIterationInteractor from "../interactor/iteration/CreateIterationInteractor";
 import IterationService from "../service/iteration/IterationService";
 import GetActiveIterationForProjectInteractor from "../interactor/project/GetAcitveIterationForProjectInteractor";
+import TicketService from "../service/ticket/TicketService";
+import ShowTicketInteractor from "../interactor/ticket/ShowTicketInteractor";
+import TicketArea from "../areas/TicketArea";
 
 //const DEFAULT_CACHE_TIMEOUT_MS = 15000;
 const ModuleContainer = (application: Application): IModuleContainer => {
@@ -139,7 +142,8 @@ const ModuleContainer = (application: Application): IModuleContainer => {
     codebookService: asFunction(CodebookService),
     teamService: asFunction(TeamService),
     projectService: asFunction(ProjectService),
-    iterationService: asFunction(IterationService)
+    iterationService: asFunction(IterationService),
+    ticketService: asFunction(TicketService)
   });
 
   //areas
@@ -148,7 +152,8 @@ const ModuleContainer = (application: Application): IModuleContainer => {
     userArea: asClass(UserArea).singleton(),
     teamArea: asClass(TeamArea).singleton(),
     projectArea: asClass(ProjectArea).singleton(),
-    authenticationArea: asClass(AuthenticationArea)
+    authenticationArea: asClass(AuthenticationArea),
+    ticketArea: asClass(TicketArea).singleton()
   });
 
   //interactors
@@ -181,7 +186,8 @@ const ModuleContainer = (application: Application): IModuleContainer => {
     createIteration: asInteractor(CreateIterationInteractor),
     getActiveIterationForProject: asInteractor(
       GetActiveIterationForProjectInteractor
-    )
+    ),
+    ShowTicket: asInteractor(ShowTicketInteractor)
   });
 
   return {
