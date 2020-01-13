@@ -21,8 +21,7 @@ export default class ShowTicketInteractor {
       initialState: {
         isEditableForm: false,
         editButtonDisabled: false,
-        ticket: {} as ITicket,
-        loadTickets: {} as ITicket
+        tickets: []
       }
     });
 

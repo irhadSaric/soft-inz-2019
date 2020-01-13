@@ -6,21 +6,19 @@ export interface TTicketPresenter extends TLoadingAwarePresenter {
   isEditableForm: boolean;
   editValidationErrors?: any;
   editButtonDisabled: boolean;
-  ticket: ITicket;
-  loadTickets: any;
+  tickets: ITicket[];
 }
 export interface ITicketPresenter extends TTicketPresenter, TPresentable {
   onEditBtnClick(): void;
   onCancelBtnClick(): void;
-  loadTickets(ticket: ITicket): void;
+  loadTickets(tickets: ITicket[]): void;
 }
 
 const defaultState: TTicketPresenter = {
   isEditableForm: false,
   editValidationErrors: undefined,
   editButtonDisabled: false,
-  ticket: {} as ITicket,
-  loadTickets: {} as ITicket
+  tickets: []
 };
 
 const TicketPresenter = withStore<ITicketPresenter, TTicketPresenter>(
@@ -37,9 +35,9 @@ const TicketPresenter = withStore<ITicketPresenter, TTicketPresenter>(
       _store.update({ isEditableForm: false });
     };
 
-    const loadTickets = (ticket: ITicket) => {
+    const loadTickets = (tickets: ITicket[]) => {
       return _store.update({
-        ticket
+        tickets
       });
     };
 

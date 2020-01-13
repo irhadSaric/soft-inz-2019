@@ -187,7 +187,7 @@ const ModuleContainer = (application: Application): IModuleContainer => {
     getActiveIterationForProject: asInteractor(
       GetActiveIterationForProjectInteractor
     ),
-    ShowTicket: asInteractor(ShowTicketInteractor)
+    showTicket: asInteractor(ShowTicketInteractor)
   });
 
   return {

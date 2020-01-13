@@ -30,21 +30,21 @@ export default class TicketPage extends React.Component<Props, State> {
       isEditableForm,
       onCancelBtnClick,
       editValidationErrors,
-      ticket
+      tickets
     } = this.state;
     return (
       <Page
         {...this.props}
         style={{ justifyContent: "center", display: "flex" }}
       >
-        <TicketForm
+        {/* <TicketForm
           translate={translate}
           isEditable={isEditableForm}
           onCancelBtnClick={onCancelBtnClick}
           validationErrors={editValidationErrors}
           isLoading={this.state.loaders.editTeamLoader}
-          ticket={ticket}
-        />
+          tickets={tickets}
+        /> */}
       </Page>
     );
   }

@@ -55,25 +55,29 @@ const TicketForm = ({
                     <div className={"form-item"}>
                         <Input.TextArea
                             placeholder={"Description"}
+                            value={ticket.description}
                             autosize={{ minRows: 4 }}
                             style={{ marginTop: 20 }}
-                            readOnly={!isEditable}
                         />
                     </div>
                 </Form.Item>
                 <Select
                     placeholder="Task Level"
                     style={{ width: "100%", marginTop: 20 }}
-                >
+                    >
                 </Select>
                 <Select
                     placeholder="Assigned User"
                     style={{ width: "100%", marginTop: 40}}
+                    labelInValue
+                    value={ticket.assignee.firstName}
                 >
                 </Select>
                 <Select
                     placeholder="Status"
                     style={{ width: "100%", marginTop: 60 }}
+                    labelInValue
+                    value={ticket.status}
                 >
                 </Select>
             </Form>
