@@ -43,7 +43,8 @@ export default class ProjectPage extends React.Component<Props, State> {
       onChangeIterationData,
       isCreateIterationModalVisible,
       activeIteration,
-      completedIterations
+      completedIterations,
+      showIterationPage
     } = this.state;
     return (
       <Page
@@ -69,6 +70,7 @@ export default class ProjectPage extends React.Component<Props, State> {
           isCreateIterationModalVisible={isCreateIterationModalVisible}
           activeIteration={activeIteration}
           completedIterations={completedIterations}
+          showIterationPage={showIterationPage}
         />
       </Page>
     );

@@ -60,11 +60,13 @@ import GetTeamInvitesForUserInteractor from "../interactor/team/GetTeamInvitesFo
 import ProjectService from "../service/project/ProjectService";
 import ProjectArea from "../areas/ProjectArea";
 import UpdateTeamDetailsInteractor from "../interactor/team/UpdateTeamDetailsInteractor";
+import IterationArea from "../areas/IterationArea";
+import ShowIterationInteractor from "../interactor/iteration/ShowIterationInteractor";
+import IterationService from "../service/iteration/IterationService";
 import ShowProjectInteractor from "../interactor/project/ShowProjectInteractor";
 import CreateProjectInteractor from "../interactor/project/CreateProjectInteractor";
 import UpdateProjectDetailsInteractor from "../interactor/project/UpdateProjectDetailsInteractor";
 import CreateIterationInteractor from "../interactor/iteration/CreateIterationInteractor";
-import IterationService from "../service/iteration/IterationService";
 import GetActiveIterationForProjectInteractor from "../interactor/project/GetAcitveIterationForProjectInteractor";
 
 //const DEFAULT_CACHE_TIMEOUT_MS = 15000;
@@ -147,6 +149,7 @@ const ModuleContainer = (application: Application): IModuleContainer => {
     homeArea: asClass(HomeArea).singleton(),
     userArea: asClass(UserArea).singleton(),
     teamArea: asClass(TeamArea).singleton(),
+    iterationArea: asClass(IterationArea).singleton(),
     projectArea: asClass(ProjectArea).singleton(),
     authenticationArea: asClass(AuthenticationArea)
   });
@@ -174,8 +177,9 @@ const ModuleContainer = (application: Application): IModuleContainer => {
     inviteUserToTeam: asInteractor(InviteUserToTeamInteractor),
     respondToPendingInvite: asInteractor(RespondToPendingInviteInteractor),
     getTeamInvitesForUser: asInteractor(GetTeamInvitesForUserInteractor),
-    showProject: asInteractor(ShowProjectInteractor),
     updateTeamDetails: asInteractor(UpdateTeamDetailsInteractor),
+    showIteration: asInteractor(ShowIterationInteractor),
+    showProject: asInteractor(ShowProjectInteractor),
     createProject: asInteractor(CreateProjectInteractor),
     updateProjectDetails: asInteractor(UpdateProjectDetailsInteractor),
     createIteration: asInteractor(CreateIterationInteractor),
