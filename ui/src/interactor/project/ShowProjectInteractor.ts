@@ -5,7 +5,7 @@ import ProjectPresenter, {
   IProjectPresenter
 } from "../../presenter/project/ProjectPresenter";
 import { Moment } from "moment";
-import { IIteration } from "../../model/iteration/iteration";
+import { IIteration } from "../../model/iteration/Iteration";
 
 export default class ShowProjectInteractor {
   private application: Application;

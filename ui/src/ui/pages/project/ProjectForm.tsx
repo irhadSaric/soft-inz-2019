@@ -12,7 +12,7 @@ import {
 import Text from "antd/lib/typography/Text";
 import { IProject } from "../../../model/project/Project";
 import moment from "moment";
-import { IIteration } from "../../../model/iteration/iteration";
+import { IIteration } from "../../../model/iteration/Iteration";
 import CreateIterationForm from "../iteration/CreateIterationForm";
 
 function disabledDate(current) {
