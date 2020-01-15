@@ -69,6 +69,7 @@ import GetActiveIterationForProjectInteractor from "../interactor/project/GetAci
 import TicketService from "../service/ticket/TicketService";
 import ShowTicketInteractor from "../interactor/ticket/ShowTicketInteractor";
 import TicketArea from "../areas/TicketArea";
+import CreateTicketInteractor from "../interactor/ticket/CreateTicketInteractor";
 
 //const DEFAULT_CACHE_TIMEOUT_MS = 15000;
 const ModuleContainer = (application: Application): IModuleContainer => {
@@ -187,7 +188,8 @@ const ModuleContainer = (application: Application): IModuleContainer => {
     getActiveIterationForProject: asInteractor(
       GetActiveIterationForProjectInteractor
     ),
-    showTicket: asInteractor(ShowTicketInteractor)
+    showTicket: asInteractor(ShowTicketInteractor),
+    createTicket: asInteractor(CreateTicketInteractor)
   });
 
   return {

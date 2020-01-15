@@ -1,24 +1,37 @@
 import withStore, { TLoadingAwarePresenter, TPresentable } from "../withStore";
 import Application from "../../Application";
 import { ITicket } from "../../model/ticket/Ticket";
+import { ITicketDetails } from "../../model/ticket/TicketDetails";
+import ShowSuccessMessageInteractor from "../../interactor/notifications/ShowSuccessMessageInteractor";
+import ShowErrorMessageInteractor from "../../interactor/notifications/ShowErrorMessageInteractor";
+import CreateTicketInteractor from "../../interactor/ticket/CreateTicketInteractor";
+//import CreateTicketInteractor from "../../interactor/ticket/CreateTicketInteractor";
 
 export interface TTicketPresenter extends TLoadingAwarePresenter {
   isEditableForm: boolean;
   editValidationErrors?: any;
   editButtonDisabled: boolean;
   tickets: ITicket[];
+  ticket: ITicket;
+  ticketDetails: ITicketDetails;
+  createTicketValidationErrors?: any;
 }
 export interface ITicketPresenter extends TTicketPresenter, TPresentable {
   onEditBtnClick(): void;
   onCancelBtnClick(): void;
   loadTickets(tickets: ITicket[]): void;
+  loadTicketDetails(ticketDetails: ITicketDetails): void;
+  onChangeTicketData(key: string, value: any): void;
+  createTicket(): void;
 }
 
 const defaultState: TTicketPresenter = {
   isEditableForm: false,
   editValidationErrors: undefined,
   editButtonDisabled: false,
-  tickets: []
+  tickets: [],
+  ticket: {} as ITicket,
+  ticketDetails: {} as ITicketDetails
 };
 
 const TicketPresenter = withStore<ITicketPresenter, TTicketPresenter>(
@@ -41,6 +54,89 @@ const TicketPresenter = withStore<ITicketPresenter, TTicketPresenter>(
       });
     };
 
+    const loadTicketDetails = (ticketDetails: ITicketDetails) => {
+      return _store.update({
+        ticketDetails
+      });
+    };
+
+    const onChangeTicketData = (key: string, value: any) => {
+      let ticketDetails = _store.getState<TTicketPresenter>().ticketDetails;
+      ticketDetails[key] = value;
+      _store.update({ ticketDetails });
+    };
+
+    const validateCreateTicketForm = () => {
+      const ticketDetails = _store.getState<TTicketPresenter>().ticketDetails;
+      let createTicketValidationErrors = _store.getState<TTicketPresenter>()
+        .createTicketValidationErrors;
+      createTicketValidationErrors = {
+        ticketName: [],
+        ticketDescription: [],
+        ticketEndDate: []
+      };
+      if (!ticketDetails.name) {
+        createTicketValidationErrors.ticketName.push(
+          "The Ticket Name field is required."
+        );
+      }
+      if (!ticketDetails.description) {
+        createTicketValidationErrors.ticketDescription.push(
+          "The Description field is required."
+        );
+      }
+      if (
+        typeof ticketDetails.endDate === "undefined" ||
+        Object.entries(ticketDetails.endDate).length === 0
+      ) {
+        createTicketValidationErrors.ticketEndDate.push(
+          "The End Date field is required."
+        );
+      }
+      _store.update({
+        createTicketValidationErrors
+      });
+    };
+
+    const createTicket = async () => {
+      validateCreateTicketForm();
+      const createProjectValidationErrors = _store.getState<ITicketPresenter>()
+        .createTicketValidationErrors;
+      if (
+        !(
+          createProjectValidationErrors.ticketName.length ||
+          createProjectValidationErrors.ticketDescription.length ||
+          createProjectValidationErrors.ticketEndDate.length
+        )
+      )
+        try {
+          loader.start("createTicketLoader");
+          const ticketDetails = _store.getState<TTicketPresenter>()
+            .ticketDetails;
+          ticketDetails.projectId &&
+            (await _application.container
+              .resolve<CreateTicketInteractor>("createTicket")
+              .execute(
+                ticketDetails.description,
+                ticketDetails.endDate,
+                ticketDetails.name,
+                ticketDetails.projectId
+              ));
+          loader.stop("createTicketLoader");
+          _application.container
+            .resolve<ShowSuccessMessageInteractor>("showSuccessMessage")
+            .execute("You have successfully created a ticket");
+          _store.update({
+            isCreateTicketModalVisible: false
+          });
+        } catch (error) {
+          loader.stop("createTicketLoader");
+          _application.container
+            .resolve<ShowErrorMessageInteractor>("showErrorMessage")
+            .execute(error.message);
+        }
+    };
+
     return {
       ...state,
       store: _store,
@@ -49,7 +145,10 @@ const TicketPresenter = withStore<ITicketPresenter, TTicketPresenter>(
       translate,
       onEditBtnClick,
       onCancelBtnClick,
-      loadTickets
+      loadTickets,
+      loadTicketDetails,
+      onChangeTicketData,
+      createTicket
     };
   },
   defaultState

@@ -1,6 +1,9 @@
 import * as React from "react";
 import { Divider, Input, Form, Select } from "antd";
 import { ITicket } from "../../../model/ticket/Ticket";
+import { ITicketDetails } from "../../../model/ticket/TicketDetails";
+import Text from "antd/lib/typography/Text";
+
 
 const TicketForm = ({
     translate,
@@ -8,7 +11,9 @@ const TicketForm = ({
     onCancelBtnClick,
     validationErrors,
     isLoading,
-    ticket
+    ticket,
+    ticketDetails,
+    onChangeTicketData
 }: {
     translate: any,
     isEditable: boolean;
@@ -16,6 +21,8 @@ const TicketForm = ({
     validationErrors: any;
     isLoading: boolean;
     ticket: ITicket;
+    ticketDetails: ITicketDetails;
+    onChangeTicketData(key: string, value: any): void;
 }) => {
     const checkValidationErrors = (fieldName: string) => {
         return validationErrors && validationErrors[fieldName].length > 0;
@@ -33,9 +40,23 @@ const TicketForm = ({
         >
             <Form>
                 <Form.Item>
-                    <div className={"form-item"}>
-                        <h3 style={{ margin: "16px 0" }}>Ticket name</h3>
-                    </div>
+                validateStatus={checkValidationErrors("name") ? "error" : undefined}
+          >
+                <div className={"form-item"}>
+              <Input
+                placeholder={"Ticket Name"}
+                value={ticketDetails.name}
+                onChange={e => onChangeTicketData("name", e.target.value)}
+                allowClear={true}
+                style={{ marginTop: 20, width: 400 }}
+                readOnly={!isEditable}
+              />
+             {checkValidationErrors("name") && (
+                <Text className={"error-text"}>
+                  {validationErrors["name"][0]}
+                </Text>
+              )}
+            </div>
                 </Form.Item>
                 <Divider
                     style={{ height: "auto", background: "#cccccc" }}
@@ -43,22 +64,25 @@ const TicketForm = ({
                 />
                 <Form.Item
                     validateStatus={
-                        checkValidationErrors("name") ? "error" : undefined
-                    }
-                >
-                </Form.Item>
-                <Form.Item
-                    validateStatus={
                         checkValidationErrors("description") ? "error" : undefined
                     }
                 >
-                    <div className={"form-item"}>
-                        <Input.TextArea
-                            placeholder={"Description"}
-                            value={ticket.description}
-                            autosize={{ minRows: 4 }}
-                            style={{ marginTop: 20 }}
-                        />
+                    validateStatus={checkValidationErrors("name") ? "error" : undefined}
+          >
+                <div className={"form-item"}>
+              <Input
+                placeholder={"Ticket Name"}
+                value={ticketDetails.description}
+                onChange={e => onChangeTicketData("description", e.target.value)}
+                allowClear={true}
+                style={{ marginTop: 20, width: 400 }}
+                readOnly={!isEditable}
+              />
+             {checkValidationErrors("description") && (
+                <Text className={"error-text"}>
+                  {validationErrors["name"][0]}
+                </Text>
+              )}
                     </div>
                 </Form.Item>
                 <Select
@@ -77,7 +101,7 @@ const TicketForm = ({
                     placeholder="Status"
                     style={{ width: "100%", marginTop: 60 }}
                     labelInValue
-                    value={ticket.status}
+                    value={ticketDetails.status}
                 >
                 </Select>
             </Form>
