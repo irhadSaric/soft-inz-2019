@@ -1,4 +1,3 @@
-import moment from "moment";
 import "moment/locale/bs";
 import IModuleContainer from "./runtime/IModuleContainer";
 import ModuleContainer from "./runtime/ModuleContainer";
@@ -19,7 +18,8 @@ export default class Application {
     "authentication",
     "team",
     "project",
-    "ticket"
+    "ticket",
+    "iteration"
   ];
 
   get container() {
@@ -41,7 +41,6 @@ export default class Application {
       "localeProvider"
     );
 
-    moment.locale(this._localeProvider.getCurrentLanguage());
     window["__secretApplication"] = this;
   }
 

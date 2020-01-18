@@ -60,11 +60,13 @@ import GetTeamInvitesForUserInteractor from "../interactor/team/GetTeamInvitesFo
 import ProjectService from "../service/project/ProjectService";
 import ProjectArea from "../areas/ProjectArea";
 import UpdateTeamDetailsInteractor from "../interactor/team/UpdateTeamDetailsInteractor";
+import IterationArea from "../areas/IterationArea";
+import ShowIterationInteractor from "../interactor/iteration/ShowIterationInteractor";
+import IterationService from "../service/iteration/IterationService";
 import ShowProjectInteractor from "../interactor/project/ShowProjectInteractor";
 import CreateProjectInteractor from "../interactor/project/CreateProjectInteractor";
 import UpdateProjectDetailsInteractor from "../interactor/project/UpdateProjectDetailsInteractor";
 import CreateIterationInteractor from "../interactor/iteration/CreateIterationInteractor";
-import IterationService from "../service/iteration/IterationService";
 import GetActiveIterationForProjectInteractor from "../interactor/project/GetAcitveIterationForProjectInteractor";
 import TicketService from "../service/ticket/TicketService";
 import ShowTicketInteractor from "../interactor/ticket/ShowTicketInteractor";
@@ -152,6 +154,7 @@ const ModuleContainer = (application: Application): IModuleContainer => {
     homeArea: asClass(HomeArea).singleton(),
     userArea: asClass(UserArea).singleton(),
     teamArea: asClass(TeamArea).singleton(),
+    iterationArea: asClass(IterationArea).singleton(),
     projectArea: asClass(ProjectArea).singleton(),
     authenticationArea: asClass(AuthenticationArea),
     ticketArea: asClass(TicketArea).singleton()
@@ -180,8 +183,9 @@ const ModuleContainer = (application: Application): IModuleContainer => {
     inviteUserToTeam: asInteractor(InviteUserToTeamInteractor),
     respondToPendingInvite: asInteractor(RespondToPendingInviteInteractor),
     getTeamInvitesForUser: asInteractor(GetTeamInvitesForUserInteractor),
-    showProject: asInteractor(ShowProjectInteractor),
     updateTeamDetails: asInteractor(UpdateTeamDetailsInteractor),
+    showIteration: asInteractor(ShowIterationInteractor),
+    showProject: asInteractor(ShowProjectInteractor),
     createProject: asInteractor(CreateProjectInteractor),
     updateProjectDetails: asInteractor(UpdateProjectDetailsInteractor),
     createIteration: asInteractor(CreateIterationInteractor),

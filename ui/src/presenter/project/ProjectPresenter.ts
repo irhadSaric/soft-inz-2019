@@ -4,9 +4,8 @@ import Application from "../../Application";
 import ShowSuccessMessageInteractor from "../../interactor/notifications/ShowSuccessMessageInteractor";
 import ShowErrorMessageInteractor from "../../interactor/notifications/ShowErrorMessageInteractor";
 import UpdateProjectDetailsInteractor from "../../interactor/project/UpdateProjectDetailsInteractor";
-import { IIteration } from "../../model/iteration/iteration";
+import { IIteration } from "../../model/iteration/Iteration";
 import CreateIterationInteractor from "../../interactor/iteration/CreateIterationInteractor";
-import ShowProjectInteractor from "../../interactor/project/ShowProjectInteractor";
 import GetActiveIterationInteractor from "../../interactor/project/GetAcitveIterationForProjectInteractor";
 
 export interface TProjectPresenter extends TLoadingAwarePresenter {
@@ -34,6 +33,7 @@ export interface IProjectPresenter extends TProjectPresenter, TPresentable {
   onCancelIterationModalButtonClick(): void;
   loadActiveIteration(activeIteration: IIteration): void;
   loadCompletedIterations(completedIterations: IIteration[]): void;
+  showIterationPage(iterationId: number): void;
 }
 
 const defaultState: TProjectPresenter = {
@@ -57,6 +57,10 @@ const ProjectPresenter = withStore<IProjectPresenter, TProjectPresenter>(
       return _store.update({
         project
       });
+    };
+
+    const showIterationPage = (iterationId: number) => {
+      application.navigator.replace({ pathname: `/iteration/${iterationId}` });
     };
 
     const onEditBtnClick = () => {
@@ -267,6 +271,7 @@ const ProjectPresenter = withStore<IProjectPresenter, TProjectPresenter>(
       loader,
       application: _application,
       loadProject,
+      showIterationPage,
       translate,
       onEditBtnClick,
       onCancelBtnClick,

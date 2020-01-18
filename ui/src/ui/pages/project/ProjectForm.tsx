@@ -12,7 +12,7 @@ import {
 import Text from "antd/lib/typography/Text";
 import { IProject } from "../../../model/project/Project";
 import moment from "moment";
-import { IIteration } from "../../../model/iteration/iteration";
+import { IIteration } from "../../../model/iteration/Iteration";
 import CreateIterationForm from "../iteration/CreateIterationForm";
 
 function disabledDate(current) {
@@ -38,7 +38,8 @@ const ProjectForm = ({
   onChangeIterationData,
   isCreateIterationModalVisible,
   activeIteration,
-  completedIterations
+  completedIterations,
+  showIterationPage
 }: {
   translate: any;
   project: IProject;
@@ -58,6 +59,7 @@ const ProjectForm = ({
   isCreateIterationModalVisible: boolean;
   activeIteration: IIteration;
   completedIterations: IIteration[];
+  showIterationPage: any;
 }) => {
   const checkValidationErrors = (fieldName: string) => {
     return validationErrors && validationErrors[fieldName].length > 0;
@@ -183,7 +185,15 @@ const ProjectForm = ({
                 size="small"
                 bordered
                 dataSource={activeIterationList}
-                renderItem={item => <List.Item>{item.name}</List.Item>}
+                renderItem={item => (
+                  <List.Item
+                    onClick={() => {
+                      showIterationPage(item.id);
+                    }}
+                  >
+                    {item.name}
+                  </List.Item>
+                )}
               />
               {completedIterations.length !== 0 && (
                 <List
