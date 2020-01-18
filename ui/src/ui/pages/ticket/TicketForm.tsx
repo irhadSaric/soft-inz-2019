@@ -27,6 +27,8 @@ const TicketForm = ({
     const checkValidationErrors = (fieldName: string) => {
         return validationErrors && validationErrors[fieldName].length > 0;
     };
+    console.log(ticketDetails);
+
     return (
         <div
             style={{
@@ -39,74 +41,72 @@ const TicketForm = ({
             }}
         >
             <Form>
-                <Form.Item>
-                validateStatus={checkValidationErrors("name") ? "error" : undefined}
-          >
-                <div className={"form-item"}>
-              <Input
-                placeholder={"Ticket Name"}
-                value={ticketDetails.name}
-                onChange={e => onChangeTicketData("name", e.target.value)}
-                allowClear={true}
-                style={{ marginTop: 20, width: 400 }}
-                readOnly={!isEditable}
-              />
-             {checkValidationErrors("name") && (
-                <Text className={"error-text"}>
-                  {validationErrors["name"][0]}
-                </Text>
-              )}
-            </div>
+                <Form.Item
+                    validateStatus={checkValidationErrors("name") ? "error" : undefined}
+                >
+                    <div className={"form-item"}>
+                        <Input
+                            placeholder={"Ticket Name"}
+                            value={ticketDetails.name}
+                            onChange={e => onChangeTicketData("name", e.target.value)}
+                            allowClear={true}
+                            style={{ marginTop: 20, width: 400 }}
+                            readOnly={isEditable}
+                        />
+                        {checkValidationErrors("name") && (
+                            <Text className={"error-text"}>
+                                {validationErrors["name"][0]}
+                            </Text>
+                        )}
+                    </div>
                 </Form.Item>
                 <Divider
                     style={{ height: "auto", background: "#cccccc" }}
-                    type={"vertical"}
+                    type={"horizontal"}
                 />
-                <Form.Item
-                    validateStatus={
-                        checkValidationErrors("description") ? "error" : undefined
-                    }
-                >
-                    validateStatus={checkValidationErrors("name") ? "error" : undefined}
-          >
-                <div className={"form-item"}>
-              <Input
-                placeholder={"Ticket Name"}
-                value={ticketDetails.description}
-                onChange={e => onChangeTicketData("description", e.target.value)}
-                allowClear={true}
-                style={{ marginTop: 20, width: 400 }}
-                readOnly={!isEditable}
-              />
-             {checkValidationErrors("description") && (
-                <Text className={"error-text"}>
-                  {validationErrors["name"][0]}
-                </Text>
-              )}
-                    </div>
-                </Form.Item>
-                <Select
-                    placeholder="Task Level"
-                    style={{ width: "100%", marginTop: 20 }}
+                    <Form.Item
+                        validateStatus={
+                            checkValidationErrors("description") ? "error" : undefined
+                        }
                     >
-                </Select>
-                <Select
-                    placeholder="Assigned User"
-                    style={{ width: "100%", marginTop: 40}}
-                    labelInValue
-                    value={ticket.assignee.firstName}
-                >
-                </Select>
-                <Select
-                    placeholder="Status"
-                    style={{ width: "100%", marginTop: 60 }}
-                    labelInValue
-                    value={ticketDetails.status}
-                >
-                </Select>
+                        <div className={"form-item"}>
+                            <Input.TextArea
+                                placeholder={"Description"}
+                                value={ticketDetails.description}
+                                onChange={e => onChangeTicketData("description", e.target.value)}
+                                style={{ marginTop: 20, width: 400 }}
+                                readOnly={isEditable}
+                            />
+                            {checkValidationErrors("description") && (
+                                <Text className={"error-text"}>
+                                    {validationErrors["name"][0]}
+                                </Text>
+                            )}
+                        </div>
+                    </Form.Item>
+                    <Select
+                        placeholder="Task Level"
+                        style={{ width: "100%", marginTop: 20 }}
+                    >
+                    </Select>
+
+                    <Select
+                        placeholder="Assigned User"
+                        style={{ width: "100%", marginTop: 20 }}
+                        labelInValue
+                    >
+                    </Select>
+
+                    <Select
+                        placeholder="Status"
+                        style={{ width: "100%", marginTop: 20 }}
+                        labelInValue
+                        value={ticketDetails.status}
+                    >
+                    </Select> 
             </Form>
         </div>
-    );
-};
-
-export default TicketForm;
+            );
+        };
+        
+        export default TicketForm;

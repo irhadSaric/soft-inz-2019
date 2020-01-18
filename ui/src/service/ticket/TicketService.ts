@@ -38,6 +38,16 @@ const TicketService = ({ httpService }): ITicketService => {
     });
   };
 
+  // const buildTicketDetails = (data: any): ITicketDetails => {
+  //   return data.map(item => {
+  //     let ticketDetails = TicketDetails(item);
+  //     ticketDetails.endDate = new Date(item.endDate);
+  //     ticketDetails.startDate = new Date(item.startDate);
+  //     ticketDetails.status = Status(item.status);      
+  //     return ticketDetails;
+  //   });
+  // };
+
   return {
     async getAllTickets() {
       const path = _http.buildPath(_basePath);

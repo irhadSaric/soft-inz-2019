@@ -22,7 +22,7 @@ export default class TicketArea extends Area implements IArea {
 
   register(params: any) {
     this.router.registerRoutes({
-      path: "/ticket/",
+      path: "/ticket/:ticketId",
       page: this.createPage({
         Page: TicketPage,
         action: this.showTicketPage.bind(this)
