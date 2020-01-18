@@ -22,7 +22,7 @@ import java.util.List;
  * November, 06, 2019.
  */
 @RestController
-@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+//@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
 public class UserController extends BaseController {
 
     @Autowired

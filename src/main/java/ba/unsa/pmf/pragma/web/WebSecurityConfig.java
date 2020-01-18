@@ -55,7 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .and()
                 .formLogin()
                 .usernameParameter("email")
-                .loginPage("http://localhost:3000/login")
+                .loginPage("/login")
                 .loginProcessingUrl("/login")
                 .defaultSuccessUrl("/api/codebooks/countries/all")
                 .and()
