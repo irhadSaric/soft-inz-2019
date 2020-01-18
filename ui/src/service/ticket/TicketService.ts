@@ -22,7 +22,7 @@ export interface ITicketService {
 const TicketService = ({ httpService }): ITicketService => {
   const _http: IHttpService = httpService;
   const _basePath: string = "/api/ticket";
-  const _details: string = "details";
+  const _details: string = "/details";
   const _create: string = "/create";
 
   const buildTicketList = (data: any): ITicket[] => {
