@@ -5,6 +5,8 @@ import { ITicketDetails } from "../../model/ticket/TicketDetails";
 import ShowSuccessMessageInteractor from "../../interactor/notifications/ShowSuccessMessageInteractor";
 import ShowErrorMessageInteractor from "../../interactor/notifications/ShowErrorMessageInteractor";
 import CreateTicketInteractor from "../../interactor/ticket/CreateTicketInteractor";
+import { TSelectValuePresentationModel } from "../main/HomePresenter";
+import { IUser } from "../../model/user/User";
 //import CreateTicketInteractor from "../../interactor/ticket/CreateTicketInteractor";
 
 export interface TTicketPresenter extends TLoadingAwarePresenter {
@@ -15,6 +17,8 @@ export interface TTicketPresenter extends TLoadingAwarePresenter {
   ticket: ITicket;
   ticketDetails: ITicketDetails;
   createTicketValidationErrors?: any;
+  userList: IUser[];
+  selectedUsers: TSelectValuePresentationModel[];
 }
 export interface ITicketPresenter extends TTicketPresenter, TPresentable {
   onEditBtnClick(): void;
@@ -23,6 +27,9 @@ export interface ITicketPresenter extends TTicketPresenter, TPresentable {
   loadTicketDetails(ticketDetails: ITicketDetails): void;
   onChangeTicketData(key: string, value: any): void;
   createTicket(): void;
+  loadUserList(userList: IUser[]): void;
+  loadUserProfile(userProfile: IUser): void;
+  assignUserToTask(value: TSelectValuePresentationModel[]): void;
 }
 
 const defaultState: TTicketPresenter = {
@@ -31,7 +38,9 @@ const defaultState: TTicketPresenter = {
   editButtonDisabled: false,
   tickets: [],
   ticket: {} as ITicket,
-  ticketDetails: {} as ITicketDetails
+  ticketDetails: {} as ITicketDetails,
+  userList: [],
+  selectedUsers: []
 };
 
 const TicketPresenter = withStore<ITicketPresenter, TTicketPresenter>(
@@ -137,6 +146,23 @@ const TicketPresenter = withStore<ITicketPresenter, TTicketPresenter>(
         }
     };
 
+    const loadUserList = (userList: IUser[]) => {
+      _store.update({
+        userList
+      });
+    };
+
+    const loadUserProfile = (userProfile: IUser) => {
+      return _store.update({
+        userProfile
+      });
+    };
+
+    const assignUserToTask = (value: TSelectValuePresentationModel[]) => {
+      _store.update({ selectedUsers: value });
+    };
+
+
     return {
       ...state,
       store: _store,
@@ -148,7 +174,10 @@ const TicketPresenter = withStore<ITicketPresenter, TTicketPresenter>(
       loadTickets,
       loadTicketDetails,
       onChangeTicketData,
-      createTicket
+      createTicket,
+      loadUserList,
+      loadUserProfile,
+      assignUserToTask
     };
   },
   defaultState

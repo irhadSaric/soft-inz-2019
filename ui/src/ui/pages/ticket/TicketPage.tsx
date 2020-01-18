@@ -33,6 +33,9 @@ export default class TicketPage extends React.Component<Props, State> {
       ticket,
       ticketDetails,
       onChangeTicketData,
+      userList,
+      assignUserToTask,
+      selectedUsers
 
     } = this.state;
     return (
@@ -49,7 +52,10 @@ export default class TicketPage extends React.Component<Props, State> {
           ticket={ticket}
           ticketDetails={ticketDetails}
           onChangeTicketData={onChangeTicketData}
-       />
+          users={userList}
+          assignUserToTask={assignUserToTask}
+          selectedUsers={selectedUsers}
+      />
       </Page>
     );
   }

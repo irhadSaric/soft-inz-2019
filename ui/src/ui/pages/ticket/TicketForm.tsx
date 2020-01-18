@@ -3,6 +3,8 @@ import { Divider, Input, Form, Select } from "antd";
 import { ITicket } from "../../../model/ticket/Ticket";
 import { ITicketDetails } from "../../../model/ticket/TicketDetails";
 import Text from "antd/lib/typography/Text";
+import { TSelectValuePresentationModel } from "../../../presenter/main/HomePresenter";
+import { IUser } from "../../../model/user/User";
 
 
 const TicketForm = ({
@@ -13,7 +15,10 @@ const TicketForm = ({
     isLoading,
     ticket,
     ticketDetails,
-    onChangeTicketData
+    onChangeTicketData,
+    users,
+    assignUserToTask,
+    selectedUsers
 }: {
     translate: any,
     isEditable: boolean;
@@ -23,6 +28,10 @@ const TicketForm = ({
     ticket: ITicket;
     ticketDetails: ITicketDetails;
     onChangeTicketData(key: string, value: any): void;
+    assignUserToTask: any;
+    users: IUser[];
+    selectedUsers: TSelectValuePresentationModel[];
+
 }) => {
     const checkValidationErrors = (fieldName: string) => {
         return validationErrors && validationErrors[fieldName].length > 0;
@@ -64,49 +73,57 @@ const TicketForm = ({
                     style={{ height: "auto", background: "#cccccc" }}
                     type={"horizontal"}
                 />
-                    <Form.Item
-                        validateStatus={
-                            checkValidationErrors("description") ? "error" : undefined
-                        }
-                    >
-                        <div className={"form-item"}>
-                            <Input.TextArea
-                                placeholder={"Description"}
-                                value={ticketDetails.description}
-                                onChange={e => onChangeTicketData("description", e.target.value)}
-                                style={{ marginTop: 20, width: 400 }}
-                                readOnly={isEditable}
-                            />
-                            {checkValidationErrors("description") && (
-                                <Text className={"error-text"}>
-                                    {validationErrors["name"][0]}
-                                </Text>
-                            )}
-                        </div>
-                    </Form.Item>
-                    <Select
-                        placeholder="Task Level"
-                        style={{ width: "100%", marginTop: 20 }}
-                    >
-                    </Select>
+                <Form.Item
+                    validateStatus={
+                        checkValidationErrors("description") ? "error" : undefined
+                    }
+                >
+                    <div className={"form-item"}>
+                        <Input.TextArea
+                            placeholder={"Description"}
+                            value={ticketDetails.description}
+                            onChange={e => onChangeTicketData("description", e.target.value)}
+                            style={{ marginTop: 20, width: 400 }}
+                            readOnly={isEditable}
+                        />
+                        {checkValidationErrors("description") && (
+                            <Text className={"error-text"}>
+                                {validationErrors["name"][0]}
+                            </Text>
+                        )}
+                    </div>
+                </Form.Item>
+                <Select
+                    placeholder="Task Level"
+                    style={{ width: "100%", marginTop: 20 }}
+                >
+                </Select>
 
-                    <Select
-                        placeholder="Assigned User"
-                        style={{ width: "100%", marginTop: 20 }}
-                        labelInValue
-                    >
-                    </Select>
+                <Select
+                    placeholder="Assigned User"
+                    style={{ width: "100%", marginTop: 20 }}
+                    labelInValue
+                    value={ticket.assignee}
+                    onChange={e => assignUserToTask(e)}
+                >
+                    {users.map(item => (
+                        <Select.Option key={item.id}>
+                            {item.firstName} {item.lastName}
+                        </Select.Option>
+                    ))}
+                </Select>
 
-                    <Select
-                        placeholder="Status"
-                        style={{ width: "100%", marginTop: 20 }}
-                        labelInValue
-                        value={ticketDetails.status}
-                    >
-                    </Select> 
+                <Select
+                    placeholder="Status"
+                    style={{ width: "100%", marginTop: 20 }}
+                    labelInValue
+                    value={ticketDetails.status}
+                >
+                  
+                </Select>
             </Form>
         </div>
-            );
-        };
-        
-        export default TicketForm;
+    );
+};
+
+export default TicketForm;

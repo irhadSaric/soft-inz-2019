@@ -3,10 +3,11 @@ import Ticket, { ITicket } from "../../model/ticket/Ticket";
 import User from "../../model/user/User";
 import Iteration from "../../model/iteration/Iteration";
 import Project from "../../model/project/Project";
-import Status from "../../model/status/Status";
+import Status, { IStatus } from "../../model/status/Status";
 import TicketDetails, {
   ITicketDetails
 } from "../../model/ticket/TicketDetails";
+import StatusType from "../../model/status/StatusType";
 
 export interface ITicketService {
   getAllTickets(): Promise<ITicket[]>;
@@ -17,6 +18,7 @@ export interface ITicketService {
     name: string,
     projectId: number
   ): Promise<any>;
+  changeStatusOfTicket(statusId: number, ticketId: number): Promise<IStatus>;
 }
 
 const TicketService = ({ httpService }): ITicketService => {
@@ -24,6 +26,7 @@ const TicketService = ({ httpService }): ITicketService => {
   const _basePath: string = "/api/ticket";
   const _details: string = "/details";
   const _create: string = "/create";
+  const _updateStatus: string = "/update-status";
 
   const buildTicketList = (data: any): ITicket[] => {
     return data.map(item => {
@@ -38,12 +41,21 @@ const TicketService = ({ httpService }): ITicketService => {
     });
   };
 
+  // const buildStatus = (data: any): IStatus => {
+  //   return data.map(item => {
+  //     let status = Status(item);
+  //     status.statusType = StatusType(item.statusType);
+  //     return Status;
+  // });
+  // };
+
+
   // const buildTicketDetails = (data: any): ITicketDetails => {
   //   return data.map(item => {
   //     let ticketDetails = TicketDetails(item);
   //     ticketDetails.endDate = new Date(item.endDate);
   //     ticketDetails.startDate = new Date(item.startDate);
-  //     ticketDetails.status = Status(item.status);      
+  //     ticketDetails.status = Status(item.status);
   //     return ticketDetails;
   //   });
   // };
@@ -77,6 +89,17 @@ const TicketService = ({ httpService }): ITicketService => {
         }
       });
       return _http.toJSON(response);
+    },
+    async changeStatusOfTicket(statusId: number, ticketId: number) {
+      const path = _http.buildPath(
+        _basePath,
+        ticketId.toString(),
+        _updateStatus,
+        statusId.toString()
+      );
+      const response = await _http.get(path);
+      const responseJSON = await _http.toJSON(response);
+      return Status(responseJSON);
     }
   };
 };
