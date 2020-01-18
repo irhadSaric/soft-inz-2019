@@ -43,14 +43,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/codebooks/*").permitAll().anyRequest().authenticated()
-                .and()
-                .authorizeRequests()
                 .antMatchers(
                         "/api/teams/create-team",
                         "/api/user/find/all"
                 )
                 .hasAnyAuthority("admin")
+                .and()
+                .authorizeRequests()
+                .antMatchers("/api/codebooks/*").permitAll().anyRequest().authenticated()
                 .and()
 //                .authorizeRequests()
 //                .and()
