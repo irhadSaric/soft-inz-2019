@@ -3,8 +3,8 @@ import Page, { PageProps } from "../Page";
 import IterationForm from "./IterationForm";
 import { IIterationPresenter } from "../../../presenter/iteration/IterationPresenter";
 
-export interface Props extends PageProps {}
-export interface State extends IIterationPresenter {}
+export interface Props extends PageProps { }
+export interface State extends IIterationPresenter { }
 
 export default class IterationPage extends React.Component<Props, State> {
   private subscriptionId: number = 0;
@@ -31,7 +31,14 @@ export default class IterationPage extends React.Component<Props, State> {
       iterationTickets,
       isEditableForm,
       editValidationErrors,
-      showTicketPage
+      showTicketPage,
+      onCreateTicketBtnClick,
+      onCancelTicketModalButtonClick,
+      createTicketValidationErrors,
+      createTicket,
+      ticket,
+      onChangeTicketData,
+      isCreateTicketModalVisible
     } = this.state;
     return (
       <Page
@@ -45,6 +52,13 @@ export default class IterationPage extends React.Component<Props, State> {
           isEditable={isEditableForm}
           validationErrors={editValidationErrors}
           showTicketPage={showTicketPage}
+          onCreateTicketBtnClick={onCreateTicketBtnClick}
+          onCancelTicketModalButtonClick={onCancelTicketModalButtonClick}
+          createTicketValidationErrors={createTicketValidationErrors}
+          createTicket={createTicket}
+          ticket={ticket}
+          onChangeTicketData={onChangeTicketData}
+          isCreateTicketModalVisible={isCreateTicketModalVisible}
         />
       </Page>
     );

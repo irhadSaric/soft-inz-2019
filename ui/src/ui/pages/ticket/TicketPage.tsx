@@ -3,8 +3,8 @@ import Page, { PageProps } from "../Page";
 import { ITicketPresenter } from "../../../presenter/ticket/TicketPresenter";
 import TicketForm from "./TicketForm";
 
-export interface Props extends PageProps {}
-export interface State extends ITicketPresenter {}
+export interface Props extends PageProps { }
+export interface State extends ITicketPresenter { }
 
 export default class TicketPage extends React.Component<Props, State> {
   private subscriptionId: number = 0;
@@ -54,7 +54,7 @@ export default class TicketPage extends React.Component<Props, State> {
           users={userList}
           assignUserToTask={assignUserToTask}
           selectedUsers={selectedUsers}
-      />
+        />
       </Page>
     );
   }

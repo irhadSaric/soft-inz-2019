@@ -14,15 +14,16 @@ function disabledDate(current) {
 const CreateTicketForm = ({
   ticket,
   onChangeTicketData,
-  validationTicketErrors
+  createTicketValidationErrors
+
 }: {
   onChangeTicketData(key: string, value: any): void;
   ticket: ITicket;
-  validationTicketErrors: any;
+  createTicketValidationErrors: any;
 }) => {
   const checkValidationErrors = (fieldName: string) => {
     return (
-      validationTicketErrors && validationTicketErrors[fieldName].length > 0
+      createTicketValidationErrors && createTicketValidationErrors[fieldName].length > 0
     );
   };
   return (
@@ -38,7 +39,7 @@ const CreateTicketForm = ({
         />
         {checkValidationErrors("ticketName") && (
           <Text className={"error-text"}>
-            {validationTicketErrors["ticketName"][0]}
+            {createTicketValidationErrors["ticketName"][0]}
           </Text>
         )}
       </div>
@@ -51,7 +52,7 @@ const CreateTicketForm = ({
       />
       {checkValidationErrors("ticketDescription") && (
         <Text className={"error-text"}>
-          {validationTicketErrors["ticketDescription"][0]}
+          {createTicketValidationErrors["ticketDescription"][0]}
         </Text>
       )}
       <div>
@@ -66,7 +67,7 @@ const CreateTicketForm = ({
       </div>
       {checkValidationErrors("ticketEndDate") && (
         <Text className={"error-text"}>
-          {validationTicketErrors["ticketEndDate"][0]}
+          {createTicketValidationErrors["ticketEndDate"][0]}
         </Text>
       )}
     </div>

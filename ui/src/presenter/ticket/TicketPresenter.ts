@@ -7,7 +7,6 @@ import ShowErrorMessageInteractor from "../../interactor/notifications/ShowError
 import CreateTicketInteractor from "../../interactor/ticket/CreateTicketInteractor";
 import { TSelectValuePresentationModel } from "../main/HomePresenter";
 import { IUser } from "../../model/user/User";
-//import CreateTicketInteractor from "../../interactor/ticket/CreateTicketInteractor";
 
 export interface TTicketPresenter extends TLoadingAwarePresenter {
   isEditableForm: boolean;
@@ -161,7 +160,6 @@ const TicketPresenter = withStore<ITicketPresenter, TTicketPresenter>(
     const assignUserToTask = (value: TSelectValuePresentationModel[]) => {
       _store.update({ selectedUsers: value });
     };
-
 
     return {
       ...state,

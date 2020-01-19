@@ -4,6 +4,7 @@ import IterationPresenter, {
   TIterationPresentationModel
 } from "../../presenter/iteration/IterationPresenter";
 import { IIterationService } from "../../service/iteration/IterationService";
+import { ITicket } from "../../model/ticket/Ticket";
 
 export default class ShowIterationInteractor {
   private application: Application;
@@ -22,7 +23,10 @@ export default class ShowIterationInteractor {
         iteration: {} as TIterationPresentationModel,
         iterationTickets: [],
         isEditableForm: false,
-        editButtonDisabled: false
+        editButtonDisabled: false,
+        isCreateTicketModalVisible: false,
+        ticket: {} as ITicket,
+        iterationId
       }
     });
 

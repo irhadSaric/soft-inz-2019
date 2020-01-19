@@ -5,6 +5,11 @@ import { IIterationTicket } from "../../model/iteration/IterationTicket";
 import { IStatus } from "../../model/status/Status";
 import { IProject } from "../../model/project/Project";
 import { DateService } from "../../service/DateService";
+import { ITicket } from "../../model/ticket/Ticket";
+import CreateTicketInteractor from "../../interactor/ticket/CreateTicketInteractor";
+import ShowSuccessMessageInteractor from "../../interactor/notifications/ShowSuccessMessageInteractor";
+import ShowErrorMessageInteractor from "../../interactor/notifications/ShowErrorMessageInteractor";
+import { TTicketPresenter } from "../ticket/TicketPresenter";
 
 export interface TIterationPresenter extends TLoadingAwarePresenter {
   iteration: TIterationPresentationModel;
@@ -12,6 +17,10 @@ export interface TIterationPresenter extends TLoadingAwarePresenter {
   isEditableForm: boolean;
   editValidationErrors?: any;
   editButtonDisabled: boolean;
+  isCreateTicketModalVisible: boolean;
+  ticket: ITicket;
+  iterationId?: number;
+  createTicketValidationErrors?: any;
 }
 export interface IIterationPresenter extends TIterationPresenter, TPresentable {
   loadIterations(iteration: IIteration): void;
@@ -19,6 +28,10 @@ export interface IIterationPresenter extends TIterationPresenter, TPresentable {
   onEditBtnClick(): void;
   onCancelBtnClick(): void;
   showTicketPage(ticketId: number): void;
+  createTicket(): void;
+  onChangeTicketData(key: string, value: any): void;
+  onCreateTicketBtnClick(): void;
+  onCancelTicketModalButtonClick(): void;
 }
 
 export interface TIterationPresentationModel {
@@ -36,7 +49,9 @@ const defaultState: TIterationPresenter = {
   iterationTickets: [],
   isEditableForm: false,
   editValidationErrors: undefined,
-  editButtonDisabled: false
+  editButtonDisabled: false,
+  isCreateTicketModalVisible: false,
+  ticket: {} as ITicket
 };
 
 const IterationPresentationModel = (data: IIteration) => {
@@ -83,6 +98,118 @@ const IterationPresenter = withStore<IIterationPresenter, TIterationPresenter>(
       application.navigator.replace({ pathname: `/ticket/${ticketId}` });
     };
 
+    const onCreateIterationBtnClick = () => {
+      _store.update({
+        isCreateIterationModalVisible: true
+      });
+    };
+
+    const onChangeIterationData = (key: string, value: any) => {
+      let iteration = _store.getState<TIterationPresenter>().iteration;
+      iteration[key] = value;
+      _store.update({ iteration });
+    };
+
+    const onCancelIterationModalButtonClick = () => {
+      _store.update({
+        isCreateIterationModalVisible: false,
+        iterationName: "",
+        iterationDescription: ""
+      });
+    };
+
+    const validateCreateTicketForm = () => {
+      const ticket = _store.getState<TIterationPresenter>().ticket;
+      let createTicketValidationErrors = _store.getState<TIterationPresenter>()
+        .createTicketValidationErrors;
+      createTicketValidationErrors = {
+        ticketName: [],
+        ticketDescription: [],
+        ticketEndDate: []
+      };
+      if (!ticket.name) {
+        createTicketValidationErrors.ticketName.push(
+          "The Ticket Name field is required."
+        );
+      }
+      if (!ticket.description) {
+        createTicketValidationErrors.ticketDescription.push(
+          "The Description field is required."
+        );
+      }
+      if (
+        typeof ticket.endDate === "undefined" ||
+        Object.entries(ticket.endDate).length === 0
+      ) {
+        createTicketValidationErrors.ticketEndDate.push(
+          "The End Date field is required."
+        );
+      }
+      _store.update({
+        createTicketValidationErrors
+      });
+    };
+
+    const createTicket = async () => {
+      validateCreateTicketForm();
+      const createTicketValidationErrors = _store.getState<
+        TIterationPresenter
+      >().createTicketValidationErrors;
+      if (
+        !(
+          createTicketValidationErrors.ticketName.length ||
+          createTicketValidationErrors.ticketDescription.length ||
+          createTicketValidationErrors.ticketEndDate.length
+        )
+      )
+        try {
+          loader.start("createTicketLoader");
+          const ticket = _store.getState<TIterationPresenter>().ticket;
+          const iteration = _store.getState<TIterationPresenter>().iteration;
+          iteration.id &&
+            (await _application.container
+              .resolve<CreateTicketInteractor>("createTicket")
+              .execute(
+                ticket.description,
+                ticket.endDate,
+                ticket.name,
+                iteration.id
+              ));
+          loader.stop("createTicketLoader");
+          _application.container
+            .resolve<ShowSuccessMessageInteractor>("showSuccessMessage")
+            .execute("You have successfully created ticket");
+          _store.update({
+            isCreateTicketModalVisible: false
+          });
+        } catch (error) {
+          loader.stop("createTicketLoader");
+          _application.container
+            .resolve<ShowErrorMessageInteractor>("showErrorMessage")
+            .execute(error.message);
+        }
+    };
+
+    const onChangeTicketData = (key: string, value: any) => {
+      let ticketDetails = _store.getState<TTicketPresenter>().ticketDetails;
+      ticketDetails[key] = value;
+      _store.update({ ticketDetails });
+    };
+
+    const onCancelTicketModalButtonClick = () => {
+      _store.update({
+        isCreateTicketModalVisible: false,
+        ticketName: "",
+        ticketDescription: ""
+      });
+    };
+
+    const onCreateTicketBtnClick = () => {
+      _store.update({
+        isCreateTicketModalVisible: true
+      });
+    };
+
     return {
       ...state,
       store: _store,
@@ -93,7 +220,11 @@ const IterationPresenter = withStore<IIterationPresenter, TIterationPresenter>(
       loadIterationTickets,
       onEditBtnClick,
       onCancelBtnClick,
-      showTicketPage
+      showTicketPage,
+      createTicket,
+      onChangeTicketData,
+      onCancelTicketModalButtonClick,
+      onCreateTicketBtnClick
     };
   },
   defaultState

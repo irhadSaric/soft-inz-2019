@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Divider, Input, Form, Select } from "antd";
+import { Divider, Input, Form, Select, Button } from "antd";
 import { ITicket } from "../../../model/ticket/Ticket";
 import { ITicketDetails } from "../../../model/ticket/TicketDetails";
 import Text from "antd/lib/typography/Text";
@@ -31,7 +31,6 @@ const TicketForm = ({
     assignUserToTask: any;
     users: IUser[];
     selectedUsers: TSelectValuePresentationModel[];
-
 }) => {
     const checkValidationErrors = (fieldName: string) => {
         return validationErrors && validationErrors[fieldName].length > 0;
@@ -119,9 +118,48 @@ const TicketForm = ({
                     labelInValue
                     value={ticketDetails.status}
                 >
-                  
+
                 </Select>
             </Form>
+
+
+            <div>
+                {isEditable && (
+                    <div
+                        style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignSelf: "flex-end",
+                            marginTop: 20
+                        }}
+                    >
+                        <Button type={"link"} onClick={onCancelBtnClick}>
+                            Cancel
+            </Button>
+                        <Button
+                            type={"primary"}
+                            loading={isLoading}
+                            //disabled={editButtonDisabled}
+                            //onClick={updateTicketDetails}
+                        >
+                            Save
+            </Button>
+                    </div>
+                )}
+            </div>
+            <div style={{ marginTop: -15, marginLeft: 30 }}>
+                <Button
+                    type="primary"
+                    shape={"circle"}
+                    icon="edit"
+                 //   onClick={onEditBtnClick}
+                    disabled={isEditable}
+                >
+                    Edit
+        </Button>
+
+            </div>
+
         </div>
     );
 };
