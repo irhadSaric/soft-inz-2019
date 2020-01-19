@@ -6,6 +6,7 @@ export interface IUserService {
   getUserProfile(userId: number): Promise<IUser>;
   getUserByEmail(email: string): Promise<IUser>;
   updateUserProfile(user: IUser): Promise<any>;
+  getUserListByEmail(email: string): Promise<IUser[]>;
 }
 
 const UserService = ({ httpService }): IUserService => {
@@ -51,6 +52,12 @@ const UserService = ({ httpService }): IUserService => {
       });
       const responseJSON = await _http.toJSON(response);
       return User(responseJSON);
+    },
+    async getUserListByEmail(email: string) {
+      const path = _http.buildPath(_basePath, _findPath, email);
+      const response = await _http.get(path);
+      const responseJSON = await _http.toJSON(response);
+      return buildUserList(responseJSON);
     }
   };
 };
