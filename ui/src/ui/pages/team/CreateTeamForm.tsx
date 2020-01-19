@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Input, Select } from "antd";
+import { Input, Select, Spin } from "antd";
 import Text from "antd/lib/typography/Text";
 import { IUser } from "../../../model/user/User";
 import { TSelectValuePresentationModel } from "../../../presenter/main/HomePresenter";
@@ -15,7 +15,10 @@ const CreateTeamForm = ({
   onChangeProjectDescription,
   teamName,
   projectDescription,
-  validationErrors
+  validationErrors,
+  onChangeSelectSearch,
+  userListLoading,
+  onDropdownVisibleChange
 }: {
   translate: any;
   users: IUser[];
@@ -26,6 +29,9 @@ const CreateTeamForm = ({
   teamName: string;
   projectDescription: string;
   validationErrors: any;
+  onChangeSelectSearch(value: string): void;
+  userListLoading?: boolean;
+  onDropdownVisibleChange(value: boolean): void;
 }) => {
   const checkValidationErrors = (fieldName: string) => {
     return validationErrors && validationErrors[fieldName].length > 0;
@@ -64,11 +70,27 @@ const CreateTeamForm = ({
         labelInValue
         value={selectedUsers}
         placeholder="Select users"
-        //notFoundContent={fetching ? <Spin size="small" /> : null}
         filterOption={false}
-        //onSearch={this.fetchUser}
+        notFoundContent={
+          userListLoading ? (
+            <Spin
+              size="small"
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center"
+              }}
+              tip={"Please wait..."}
+            />
+          ) : null
+        }
+        onSearch={e => onChangeSelectSearch(e)}
         onChange={e => onChangeSelectUserList(e)}
         style={{ width: "100%", marginTop: 20 }}
+        loading={userListLoading}
+        autoClearSearchValue={true}
+        onDropdownVisibleChange={e => onDropdownVisibleChange(e)}
       >
         {users.map(user => (
           <Option key={user.id}>{user.email}</Option>

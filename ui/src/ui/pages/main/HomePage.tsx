@@ -6,8 +6,8 @@ import { IHomePresenter } from "../../../presenter/main/HomePresenter";
 import CreateTeamForm from "../team/CreateTeamForm";
 import ShowTeamInvitesList from "../team/ShowTeamInvitesList";
 
-export interface Props extends PageProps { }
-export interface State extends IHomePresenter { }
+export interface Props extends PageProps {}
+export interface State extends IHomePresenter {}
 
 export default class HomePage extends React.Component<Props, State> {
   private subscriptionId: number = 0;
@@ -45,7 +45,9 @@ export default class HomePage extends React.Component<Props, State> {
       teamInvitesForUser,
       respondToPendingInvite,
       activeTeamList,
-      showTeamPage
+      showTeamPage,
+      onChangeSelectSearch,
+      onDropdownVisibleChange
     } = this.state;
     return (
       <Page {...this.props} style={{ display: "flex" }}>
@@ -59,6 +61,7 @@ export default class HomePage extends React.Component<Props, State> {
             onOk={createTeam}
             onCancel={onCancelTeamModalButtonClick}
             maskClosable={false}
+            okButtonProps={{ loading: this.state.loaders.createTeamLoader }}
           >
             <Avatar style={{ marginLeft: 50 }} size={150} icon="team" />
             <Button style={{ marginLeft: 30 }} type={"link"}>
@@ -74,6 +77,9 @@ export default class HomePage extends React.Component<Props, State> {
               teamName={teamName}
               projectDescription={projectDescription}
               validationErrors={createTeamValidationErrors}
+              onChangeSelectSearch={onChangeSelectSearch}
+              userListLoading={this.state.loaders.userListLoader}
+              onDropdownVisibleChange={onDropdownVisibleChange}
             />
           </Modal>
         </div>
@@ -94,7 +100,6 @@ export default class HomePage extends React.Component<Props, State> {
           activeTeamList={activeTeamList}
           showTeamPage={showTeamPage}
         />
-
       </Page>
     );
   }

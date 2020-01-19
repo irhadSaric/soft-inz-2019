@@ -72,6 +72,8 @@ import TicketService from "../service/ticket/TicketService";
 import ShowTicketInteractor from "../interactor/ticket/ShowTicketInteractor";
 import TicketArea from "../areas/TicketArea";
 import CreateTicketInteractor from "../interactor/ticket/CreateTicketInteractor";
+import GetUserListByEmailInteractor from "../interactor/user/GetUserListByEmailInteractor";
+import GetAllUsersInteractor from "../interactor/user/GetAllUsersInteractor";
 
 //const DEFAULT_CACHE_TIMEOUT_MS = 15000;
 const ModuleContainer = (application: Application): IModuleContainer => {
@@ -193,7 +195,9 @@ const ModuleContainer = (application: Application): IModuleContainer => {
       GetActiveIterationForProjectInteractor
     ),
     showTicket: asInteractor(ShowTicketInteractor),
-    createTicket: asInteractor(CreateTicketInteractor)
+    createTicket: asInteractor(CreateTicketInteractor),
+    getUserListByEmail: asInteractor(GetUserListByEmailInteractor),
+    getAllUsers: asInteractor(GetAllUsersInteractor)
   });
 
   return {
