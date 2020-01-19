@@ -13,6 +13,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class UserDetailsImpl implements UserDetails {
+
+    private static String ROLE_PREFIX = "ROLE_";
     private User user;
     private List<Role> roles;
 
@@ -34,13 +36,12 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        System.out.println(user.getId());
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
 
         for (Role role: roles){
-            grantedAuthorities.add(new SimpleGrantedAuthority(role.getKey()));
+            grantedAuthorities.add(new SimpleGrantedAuthority(ROLE_PREFIX + role.getKey().toUpperCase()));
         }
-        System.out.println(grantedAuthorities);
+
         return grantedAuthorities;
     }
 

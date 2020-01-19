@@ -42,16 +42,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors()
                 .and()
                 .csrf().disable()
-                .authorizeRequests()
-                .antMatchers(
-                        "/api/teams/create-team",
-                        "/api/user/find/all"
-                )
-                .hasAnyAuthority("admin")
-                .and()
-                .authorizeRequests()
-                .antMatchers("/api/codebooks/*").permitAll().anyRequest().authenticated()
-                .and()
 //                .authorizeRequests()
 //                .and()
 //                .authorizeRequests()
@@ -63,9 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("email")
                 .loginPage("/login")
                 .loginProcessingUrl("/login")
-                .defaultSuccessUrl("/api/codebooks/countries/all")
-                .and()
-                ;
+                .defaultSuccessUrl("/api/codebooks/countries/all");
     }
 
     @Bean

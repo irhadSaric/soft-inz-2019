@@ -8,6 +8,7 @@ import ba.unsa.pmf.pragma.service.dtos.UserProfileData;
 import ba.unsa.pmf.pragma.web.CustomAuthenticationProvider;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,7 @@ public class UserController extends BaseController {
     @Autowired
     private CustomAuthenticationProvider authenticationProvider;
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/api/user/find/all")
     public List<User> findAllUsers() {
         return userService.findAllUsers();

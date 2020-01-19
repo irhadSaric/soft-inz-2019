@@ -19,8 +19,12 @@ import java.util.*;
 
 @Component
 public class CustomAuthenticationProvider implements AuthenticationProvider{
+
+    private String ROLE_PREFIX = "ROLE_";
+
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private RoleRepository roleRepository;
 
@@ -29,11 +33,14 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
         User user = userRepository.getUserByEmail(authentication.getName());
         List<Role> roles = roleRepository.findRolesByUserId(user.getId());
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+
         if (user != null && bCryptPasswordEncoder.matches(authentication.getCredentials().toString(), user.getPassword())) {
+
             Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
             for (Role role: roles){
-                grantedAuthorities.add(new SimpleGrantedAuthority(role.getKey()));
+                grantedAuthorities.add(new SimpleGrantedAuthority(ROLE_PREFIX + role.getKey().toUpperCase()));
             }
+
             return new UsernamePasswordAuthenticationToken(
                     user.getEmail(), user.getPassword(), grantedAuthorities
             );
