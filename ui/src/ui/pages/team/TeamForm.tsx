@@ -1,11 +1,15 @@
 import * as React from "react";
-import { Avatar, Button, Divider, Input, Form, List, Modal } from "antd";
+import { Avatar, Button, Divider, Input, Form, List, Modal, Select, Spin } from "antd";
 import Text from "antd/lib/typography/Text";
 import { ITeamDetails } from "../../../model/team/TeamDetails";
 import CreateProjectForm from "../project/CreateProjectForm";
 import { ITeamProject } from "../../../model/team/TeamProject";
 import { IActiveTeamMember } from "../../../model/team/ActiveTeamMember";
 import { IProject } from "../../../model/project/Project";
+import { IUser } from "../../../model/user/User";
+import { TSelectValuePresentationModel } from "../../../presenter/main/HomePresenter";
+
+const { Option } = Select;
 
 const TeamForm = ({
   translate,
@@ -27,7 +31,13 @@ const TeamForm = ({
   validationProjectErrors,
   updateTeamDetails,
   activeTeamMembers,
-  showProjectPage
+  showProjectPage,
+  users,
+  onChangeSelectUserList,
+  selectedUsers,
+  onChangeSelectSearch,
+  userListLoading,
+  onDropdownVisibleChange
 }: {
   translate: any;
   teamDetails: ITeamDetails;
@@ -49,6 +59,12 @@ const TeamForm = ({
   onCancelProjectModalButtonClick(): void;
   validationProjectErrors: any;
   showProjectPage: any;
+  users: IUser[];
+  selectedUsers: TSelectValuePresentationModel[];
+  onChangeSelectUserList: any;
+  onChangeSelectSearch(value: string): void;
+  userListLoading?: boolean;
+  onDropdownVisibleChange(value: boolean): void;
 }) => {
   const checkValidationErrors = (fieldName: string) => {
     return validationErrors && validationErrors[fieldName].length > 0;
@@ -153,6 +169,36 @@ const TeamForm = ({
           <Form.Item>
             <div className={"form-item"}>
               <h3 style={{ margin: "16px 0" }}>Users</h3>
+              <Select
+                mode="multiple"
+                labelInValue
+                value={selectedUsers}
+                placeholder="Add user"
+                filterOption={false}
+                notFoundContent={
+                  userListLoading ? (
+                    <Spin
+                      size="small"
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        alignItems: "center"
+                      }}
+                      tip={"Please wait..."}
+                    />
+                  ) : null
+                }
+                onSearch={e => onChangeSelectSearch(e)}
+                onChange={e => onChangeSelectUserList(e)}
+                style={{ marginTop: 20, width: 400 }}
+                loading={userListLoading}
+                autoClearSearchValue={true}
+                onDropdownVisibleChange={e => onDropdownVisibleChange(e)}
+              >{users.map(user => (
+                <Option key={user.id}>{user.email}</Option>
+              ))}
+              </Select>
               <List
                 size="small"
                 bordered

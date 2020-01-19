@@ -9,6 +9,7 @@ import ActiveTeamMember, {
   IActiveTeamMember
 } from "../../model/team/ActiveTeamMember";
 import Country from "../../model/country/Country";
+import User, { IUser } from "../../model/user/User";
 
 export interface ITeamService {
   createTeam(
@@ -34,6 +35,7 @@ export interface ITeamService {
     accept: boolean
   ): Promise<any>;
   getActiveTeamMembersList(teamId: number): Promise<IActiveTeamMember[]>;
+  getUserListByEmail(email: string): Promise<IUser[]>;
 }
 
 const TeamService = ({ httpService }): ITeamService => {
@@ -49,6 +51,7 @@ const TeamService = ({ httpService }): ITeamService => {
   const _edit: string = "/edit";
   const _teamProject: string = "/api/project/team";
   const _members: string = "/members";
+  const _findPath: string = "/find";
 
   let buildProjectList = (json: any): ITeamProject[] => {
     return json.map(item => {
@@ -79,6 +82,10 @@ const TeamService = ({ httpService }): ITeamService => {
       activeTeamMember.country = Country(item.country);
       return activeTeamMember;
     });
+  };
+
+  const buildUserList = (data: any): IUser[] => {
+    return data.map(item => User(item));
   };
 
   return {
@@ -186,6 +193,12 @@ const TeamService = ({ httpService }): ITeamService => {
       const response = await _http.get(path);
       const responseJSON = await _http.toJSON(response);
       return buildActiveTeamMembersList(responseJSON);
+    },
+    async getUserListByEmail(email: string) {
+      const path = _http.buildPath(_basePath, _findPath, email);
+      const response = await _http.get(path);
+      const responseJSON = await _http.toJSON(response);
+      return buildUserList(responseJSON);
     }
   };
 };

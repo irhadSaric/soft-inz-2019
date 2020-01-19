@@ -8,6 +8,16 @@ import ShowErrorMessageInteractor from "../../interactor/notifications/ShowError
 import { ITeamProject } from "../../model/team/TeamProject";
 import { IActiveTeamMember } from "../../model/team/ActiveTeamMember";
 import { IProject } from "../../model/project/Project";
+import { IUser } from "../../model/user/User";
+import {
+  TSelectValuePresentationModel,
+  THomePresenter
+} from "../main/HomePresenter";
+import { ITeamInvite } from "../../model/team/TeamInvite";
+import InviteUserToTeamInteractor from "../../interactor/team/InviteUserToTeamInteractor";
+import GetAllUsersInteractor from "../../interactor/user/GetAllUsersInteractor";
+import GetUserListByEmailInteractor from "../../interactor/user/GetUserListByEmailInteractor";
+import CreateTeamInteractor from "../../interactor/team/CreateTeamInteractor";
 
 export interface TTeamPresenter extends TLoadingAwarePresenter {
   teamDetails: ITeamDetails;
@@ -20,6 +30,9 @@ export interface TTeamPresenter extends TLoadingAwarePresenter {
   project: IProject;
   activeTeamMembers: IActiveTeamMember[];
   createProjectValidationErrors?: any;
+  userList: IUser[];
+  selectedUsers: TSelectValuePresentationModel[];
+  userProfile: IUser;
 }
 export interface ITeamPresenter extends TTeamPresenter, TPresentable {
   loadTeamDetails(teamDetails: ITeamDetails): void;
@@ -34,6 +47,13 @@ export interface ITeamPresenter extends TTeamPresenter, TPresentable {
   updateTeamDetails(): void;
   loadActiveTeamMembersList(activeTeamMembers: IActiveTeamMember[]): void;
   showProjectPage(ProjectId: number): void;
+  loadUserList(userList: IUser[]): void;
+  loadTeamInvitesForUser(teamInvitesForUser: ITeamInvite[]): void;
+  loadUserProfile(userProfile: IUser): void;
+  onChangeSelectUserList(value: TSelectValuePresentationModel[]): void;
+  inviteUserToTeam(invitedUserId: number, teamId: number, userId: number): void;
+  onChangeSelectSearch(value: string): void;
+  onDropdownVisibleChange(value: boolean): void;
 }
 
 const defaultState: TTeamPresenter = {
@@ -44,7 +64,10 @@ const defaultState: TTeamPresenter = {
   editButtonDisabled: false,
   isCreateProjectModalVisible: false,
   project: {} as IProject,
-  activeTeamMembers: []
+  activeTeamMembers: [],
+  userList: [],
+  selectedUsers: [],
+  userProfile: {} as IUser
 };
 
 const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
@@ -52,6 +75,8 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
     const _store = store;
     const _application: Application = application;
     const state = _store.getState<TTeamPresenter>();
+
+    loader.start("userListLoader");
 
     const loadTeamDetails = (teamDetails: ITeamDetails) => {
       return _store.update({
@@ -140,6 +165,11 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
         try {
           loader.start("editTeamLoader");
           const teamDetails = _store.getState<TTeamPresenter>().teamDetails;
+          const selectedUsers = _store.getState<THomePresenter>().selectedUsers;
+          const userProfile = _store.getState<THomePresenter>().userProfile;
+          const response = await _application.container
+            .resolve<CreateTeamInteractor>("createTeam")
+            .execute(teamDetails.description, teamDetails.name, userProfile.id);
           _application.container
             .resolve<UpdateTeamDetailsInteractor>("updateTeamDetails")
             .execute(teamDetails);
@@ -147,6 +177,13 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
           _application.container
             .resolve<ShowSuccessMessageInteractor>("showSuccessMessage")
             .execute("Changes successfully saved");
+          selectedUsers.forEach(element => {
+            inviteUserToTeam(
+              parseInt(element.key, 10),
+              response.teamId,
+              userProfile.id
+            );
+          });
           _store.update({
             teamDetails,
             isEditableForm: false
@@ -246,6 +283,75 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
       application.navigator.replace({ pathname: `/project/${projectId}` });
     };
 
+    const loadUserList = (userList: IUser[]) => {
+      _store.update({
+        userList
+      });
+      loader.stop("userListLoader");
+    };
+
+    const loadTeamInvitesForUser = (teamInvitesForUser: ITeamInvite[]) => {
+      return _store.update({
+        teamInvitesForUser
+      });
+    };
+
+    const loadUserProfile = (userProfile: IUser) => {
+      return _store.update({
+        userProfile
+      });
+    };
+
+    const onChangeSelectUserList = (value: TSelectValuePresentationModel[]) => {
+      _store.update({ selectedUsers: value });
+    };
+
+    const inviteUserToTeam = async (
+      invitedUserId: number,
+      teamId: number,
+      userId: number
+    ) => {
+      await _application.container
+        .resolve<InviteUserToTeamInteractor>("inviteUserToTeam")
+        .execute(invitedUserId, teamId, userId);
+    };
+
+    const onChangeSelectSearch = async (value: string) => {
+      loader.start("userListLoader");
+      _store.update({
+        userList: []
+      });
+      let userList;
+      if (value !== "") {
+        userList = await application.container
+          .resolve<GetUserListByEmailInteractor>("getUserListByEmail")
+          .execute(value);
+      } else {
+        userList = await application.container
+          .resolve<GetAllUsersInteractor>("getAllUsers")
+          .execute();
+      }
+
+      _store.update({
+        userList
+      });
+      loader.stop("userListLoader");
+    };
+
+    const onDropdownVisibleChange = async (value: boolean) => {
+      if (!value) {
+        loader.start("userListLoader");
+        _store.update({
+          userList: []
+        });
+        const userList = await application.container
+          .resolve<GetAllUsersInteractor>("getAllUsers")
+          .execute();
+        _store.update({ userList });
+        loader.stop("userListLoader");
+      }
+    };
+
     return {
       ...state,
       store: _store,
@@ -263,7 +369,14 @@ const TeamPresenter = withStore<ITeamPresenter, TTeamPresenter>(
       onChangeProjectData,
       updateTeamDetails,
       loadActiveTeamMembersList,
-      showProjectPage
+      showProjectPage,
+      loadUserList,
+      loadTeamInvitesForUser,
+      loadUserProfile,
+      onChangeSelectUserList,
+      inviteUserToTeam,
+      onChangeSelectSearch,
+      onDropdownVisibleChange
     };
   },
   defaultState

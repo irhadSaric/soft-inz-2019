@@ -31,6 +31,7 @@ export default class IterationPage extends React.Component<Props, State> {
       iterationTickets,
       isEditableForm,
       editValidationErrors,
+      showTicketPage
     } = this.state;
     return (
       <Page
@@ -43,6 +44,7 @@ export default class IterationPage extends React.Component<Props, State> {
           iterationTickets={iterationTickets}
           isEditable={isEditableForm}
           validationErrors={editValidationErrors}
+          showTicketPage={showTicketPage}
         />
       </Page>
     );

@@ -41,24 +41,19 @@ const TicketService = ({ httpService }): ITicketService => {
     });
   };
 
-  // const buildStatus = (data: any): IStatus => {
-  //   return data.map(item => {
-  //     let status = Status(item);
-  //     status.statusType = StatusType(item.statusType);
-  //     return Status;
-  // });
-  // };
+  const buildStatus = (data: any): IStatus => {
+    let status = Status(data);
+    status.statusType = StatusType(data.statusType);
+    return status;
+  };
 
-
-  // const buildTicketDetails = (data: any): ITicketDetails => {
-  //   return data.map(item => {
-  //     let ticketDetails = TicketDetails(item);
-  //     ticketDetails.endDate = new Date(item.endDate);
-  //     ticketDetails.startDate = new Date(item.startDate);
-  //     ticketDetails.status = Status(item.status);
-  //     return ticketDetails;
-  //   });
-  // };
+  const buildTicketDetails = (data: any): ITicketDetails => {
+    let ticketDetails = TicketDetails(data);
+    ticketDetails.endDate = new Date(data.endDate);
+    ticketDetails.startDate = new Date(data.startDate);
+    ticketDetails.status = Status(data.status);
+    return ticketDetails;
+  };
 
   return {
     async getAllTickets() {
@@ -71,7 +66,7 @@ const TicketService = ({ httpService }): ITicketService => {
       const path = _http.buildPath(_basePath, _details, ticketId.toString());
       const response = await _http.get(path);
       const responseJSON = await _http.toJSON(response);
-      return TicketDetails(responseJSON);
+      return buildTicketDetails(responseJSON);
     },
     async createTicket(
       description: string,
@@ -97,9 +92,9 @@ const TicketService = ({ httpService }): ITicketService => {
         _updateStatus,
         statusId.toString()
       );
-      const response = await _http.get(path);
+      const response = await _http.put(path);
       const responseJSON = await _http.toJSON(response);
-      return Status(responseJSON);
+      return buildStatus(responseJSON);
     }
   };
 };

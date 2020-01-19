@@ -9,12 +9,14 @@ const IterationForm = ({
   iterationTickets,
   isEditable,
   validationErrors,
+  showTicketPage
 }: {
   translate: any;
   iteration: TIterationPresentationModel;
   iterationTickets: IIterationTicket[];
   isEditable: boolean;
   validationErrors: any;
+  showTicketPage: any
 }) => {
   const checkValidationErrors = (fieldName: string) => {
     return validationErrors && validationErrors[fieldName].length > 0;
@@ -80,7 +82,15 @@ const IterationForm = ({
                   size="small"
                   bordered
                   dataSource={iterationTickets}
-                  renderItem={item => <List.Item>{item.name}</List.Item>}
+                  renderItem={item => (
+                    <List.Item
+                      onClick={() => {
+                        showTicketPage(item.ticketTypeId);
+                      }}
+                    >
+                      {item.name}
+                    </List.Item>
+                  )}
               />
               </Col>
               <Col span={8}>In progress</Col>

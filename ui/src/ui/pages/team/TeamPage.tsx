@@ -3,8 +3,8 @@ import Page, { PageProps } from "../Page";
 import { ITeamPresenter } from "../../../presenter/team/TeamPresenter";
 import TeamForm from "./TeamForm";
 
-export interface Props extends PageProps {}
-export interface State extends ITeamPresenter {}
+export interface Props extends PageProps { }
+export interface State extends ITeamPresenter { }
 
 export default class TeamPage extends React.Component<Props, State> {
   private subscriptionId: number = 0;
@@ -44,7 +44,12 @@ export default class TeamPage extends React.Component<Props, State> {
       onCancelProjectModalButtonClick,
       createProjectValidationErrors,
       activeTeamMembers,
-      showProjectPage
+      showProjectPage,
+      userList,
+      onChangeSelectUserList,
+      selectedUsers,
+      onChangeSelectSearch,
+      onDropdownVisibleChange
     } = this.state;
     return (
       <Page
@@ -72,6 +77,12 @@ export default class TeamPage extends React.Component<Props, State> {
           validationProjectErrors={createProjectValidationErrors}
           activeTeamMembers={activeTeamMembers}
           showProjectPage={showProjectPage}
+          users={userList}
+          onChangeSelectUserList={onChangeSelectUserList}
+          selectedUsers={selectedUsers}
+          onChangeSelectSearch={onChangeSelectSearch}
+          userListLoading={this.state.loaders.userListLoader}
+          onDropdownVisibleChange={onDropdownVisibleChange}
         />
       </Page>
     );

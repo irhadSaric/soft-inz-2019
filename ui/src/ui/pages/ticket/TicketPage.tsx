@@ -36,7 +36,6 @@ export default class TicketPage extends React.Component<Props, State> {
       userList,
       assignUserToTask,
       selectedUsers
-
     } = this.state;
     return (
       <Page

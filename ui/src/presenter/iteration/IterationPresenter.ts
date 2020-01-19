@@ -18,6 +18,7 @@ export interface IIterationPresenter extends TIterationPresenter, TPresentable {
   loadIterationTickets(iterationTickets: IIterationTicket[]): void;
   onEditBtnClick(): void;
   onCancelBtnClick(): void;
+  showTicketPage(ticketId: number): void;
 }
 
 export interface TIterationPresentationModel {
@@ -78,6 +79,10 @@ const IterationPresenter = withStore<IIterationPresenter, TIterationPresenter>(
       _store.update({ isEditableForm: false });
     };
 
+    const showTicketPage = (ticketId: number) => {
+      application.navigator.replace({ pathname: `/ticket/${ticketId}` });
+    };
+
     return {
       ...state,
       store: _store,
@@ -87,7 +92,8 @@ const IterationPresenter = withStore<IIterationPresenter, TIterationPresenter>(
       loadIterations,
       loadIterationTickets,
       onEditBtnClick,
-      onCancelBtnClick
+      onCancelBtnClick,
+      showTicketPage
     };
   },
   defaultState
