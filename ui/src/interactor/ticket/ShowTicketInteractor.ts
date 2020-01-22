@@ -6,6 +6,7 @@ import { ITicketService } from "../../service/ticket/TicketService";
 import { ITicket } from "../../model/ticket/Ticket";
 import { ITicketDetails } from "../../model/ticket/TicketDetails";
 import { IUserService } from "../../service/user/UserService";
+import { IUser } from "../../model/user/User";
 
 export default class ShowTicketInteractor {
   private application: Application;
@@ -13,7 +14,7 @@ export default class ShowTicketInteractor {
   private ticketService: ITicketService;
   private userService: IUserService;
 
-  constructor({ application, ticketService, userService, credentialsService }: any) {
+  constructor({ application, ticketService, userService }: any) {
     this.application = application;
     this.ticketService = ticketService;
     this.userService = userService;
@@ -29,7 +30,8 @@ export default class ShowTicketInteractor {
         ticket: {} as ITicket,
         ticketDetails: {} as ITicketDetails,
         userList: [],
-        selectedUsers: []
+        selectedUsers: [],
+        userProfile: {} as IUser
       }
     });
 
@@ -42,7 +44,6 @@ export default class ShowTicketInteractor {
       .then(this.output && this.output.loadTicketDetails);
 
     this.userService.getUsers().then(this.output && this.output.loadUserList);
-    
 
     return this.output;
   }

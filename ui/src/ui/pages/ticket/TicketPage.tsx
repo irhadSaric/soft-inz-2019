@@ -35,7 +35,13 @@ export default class TicketPage extends React.Component<Props, State> {
       onChangeTicketData,
       userList,
       assignUserToTask,
-      selectedUsers
+      onChangeSelectUserList,
+      selectedUsers,
+      onChangeSelectSearch,
+      onDropdownVisibleChange,
+      onEditBtnClick,
+      updateTicketDetails,
+      editButtonDisabled
     } = this.state;
     return (
       <Page
@@ -53,7 +59,14 @@ export default class TicketPage extends React.Component<Props, State> {
           onChangeTicketData={onChangeTicketData}
           users={userList}
           assignUserToTask={assignUserToTask}
+          onChangeSelectUserList={onChangeSelectUserList}
           selectedUsers={selectedUsers}
+          onChangeSelectSearch={onChangeSelectSearch}
+          userListLoading={this.state.loaders.userListLoader}
+          onDropdownVisibleChange={onDropdownVisibleChange}
+          onEditBtnClick={onEditBtnClick}
+          updateTicketDetails={updateTicketDetails}
+          editButtonDisabled={editButtonDisabled}
         />
       </Page>
     );

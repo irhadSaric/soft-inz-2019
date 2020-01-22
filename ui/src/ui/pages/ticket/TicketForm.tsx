@@ -1,11 +1,12 @@
 import * as React from "react";
-import { Divider, Input, Form, Select, Button } from "antd";
+import { Divider, Input, Form, Select, Button, Spin } from "antd";
 import { ITicket } from "../../../model/ticket/Ticket";
 import { ITicketDetails } from "../../../model/ticket/TicketDetails";
 import Text from "antd/lib/typography/Text";
 import { TSelectValuePresentationModel } from "../../../presenter/main/HomePresenter";
 import { IUser } from "../../../model/user/User";
 
+const { Option } = Select;
 
 const TicketForm = ({
     translate,
@@ -18,7 +19,14 @@ const TicketForm = ({
     onChangeTicketData,
     users,
     assignUserToTask,
-    selectedUsers
+    onChangeSelectUserList,
+    selectedUsers,
+    onChangeSelectSearch,
+    userListLoading,
+    onDropdownVisibleChange,
+    onEditBtnClick,
+    updateTicketDetails,
+    editButtonDisabled
 }: {
     translate: any,
     isEditable: boolean;
@@ -31,6 +39,13 @@ const TicketForm = ({
     assignUserToTask: any;
     users: IUser[];
     selectedUsers: TSelectValuePresentationModel[];
+    onChangeSelectUserList: any;
+    onChangeSelectSearch(value: string): void;
+    userListLoading?: boolean;
+    onDropdownVisibleChange(value: boolean): void;
+    onEditBtnClick: any;
+    updateTicketDetails: any;
+    editButtonDisabled: boolean;
 }) => {
     const checkValidationErrors = (fieldName: string) => {
         return validationErrors && validationErrors[fieldName].length > 0;
@@ -59,7 +74,7 @@ const TicketForm = ({
                             onChange={e => onChangeTicketData("name", e.target.value)}
                             allowClear={true}
                             style={{ marginTop: 20, width: 400 }}
-                            readOnly={isEditable}
+                            readOnly={!isEditable}
                         />
                         {checkValidationErrors("name") && (
                             <Text className={"error-text"}>
@@ -83,7 +98,7 @@ const TicketForm = ({
                             value={ticketDetails.description}
                             onChange={e => onChangeTicketData("description", e.target.value)}
                             style={{ marginTop: 20, width: 400 }}
-                            readOnly={isEditable}
+                            readOnly={!isEditable}
                         />
                         {checkValidationErrors("description") && (
                             <Text className={"error-text"}>
@@ -94,31 +109,63 @@ const TicketForm = ({
                 </Form.Item>
                 <Select
                     placeholder="Task Level"
-                    style={{ width: "100%", marginTop: 20 }}
+                    style={{ marginTop: 20, width: 400 }}
                 >
                 </Select>
 
                 <Select
-                    placeholder="Assigned User"
-                    style={{ width: "100%", marginTop: 20 }}
                     labelInValue
-                    value={ticket.assignee}
-                    onChange={e => assignUserToTask(e)}
-                >
-                    {users.map(item => (
-                        <Select.Option key={item.id}>
-                            {item.firstName} {item.lastName}
-                        </Select.Option>
-                    ))}
+                    value={selectedUsers}
+                    placeholder="Assign user"
+                    filterOption={false}
+                    notFoundContent={
+                        userListLoading ? (
+                            <Spin
+                                size="small"
+                                style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    justifyContent: "center",
+                                    alignItems: "center"
+                                }}
+                                tip={"Please wait..."}
+                            />
+                        ) : null
+                    }
+                    onSearch={e => onChangeSelectSearch(e)}
+                    onChange={e => onChangeSelectUserList(e)}
+                    style={{ marginTop: 20, width: 400 }}
+                    loading={userListLoading}
+                    autoClearSearchValue={true}
+                    onDropdownVisibleChange={e => onDropdownVisibleChange(e)}
+                >{users.map(user => (
+                    <Option key={user.id}>{user.firstName} {user.lastName} </Option>
+                ))}
                 </Select>
 
+
                 <Select
-                    placeholder="Status"
-                    style={{ width: "100%", marginTop: 20 }}
                     labelInValue
                     value={ticketDetails.status}
+                    placeholder="Status"
+                    filterOption={false}
+                    notFoundContent={
+                        userListLoading ? (
+                            <Spin
+                                size="small"
+                                style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    justifyContent: "center",
+                                    alignItems: "center"
+                                }}
+                                tip={"Please wait..."}
+                            />
+                        ) : null
+                    }
+                    style={{ marginTop: 20, width: 400 }}
+                    autoClearSearchValue={true}
                 >
-
                 </Select>
             </Form>
 
@@ -139,8 +186,8 @@ const TicketForm = ({
                         <Button
                             type={"primary"}
                             loading={isLoading}
-                            //disabled={editButtonDisabled}
-                            //onClick={updateTicketDetails}
+                            disabled={editButtonDisabled}
+                            onClick={updateTicketDetails}
                         >
                             Save
             </Button>
@@ -152,7 +199,7 @@ const TicketForm = ({
                     type="primary"
                     shape={"circle"}
                     icon="edit"
-                 //   onClick={onEditBtnClick}
+                    onClick={onEditBtnClick}
                     disabled={isEditable}
                 >
                     Edit

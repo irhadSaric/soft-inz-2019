@@ -18,7 +18,10 @@ export interface ITicketService {
     name: string,
     projectId: number
   ): Promise<any>;
-  changeStatusOfTicket(statusId: number, ticketId: number): Promise<IStatus>;
+  findTicketsByType(
+    iterationId: number,
+    ticketTypeId: number
+  ): Promise<ITicket[]>;
 }
 
 const TicketService = ({ httpService }): ITicketService => {
@@ -27,6 +30,7 @@ const TicketService = ({ httpService }): ITicketService => {
   const _details: string = "/details";
   const _create: string = "/create";
   const _updateStatus: string = "/update-status";
+  const _assignUser: string = "/assign-user";
 
   const buildTicketList = (data: any): ITicket[] => {
     return data.map(item => {
@@ -39,12 +43,6 @@ const TicketService = ({ httpService }): ITicketService => {
       ticket.startDate = new Date(item.startDate);
       return ticket;
     });
-  };
-
-  const buildStatus = (data: any): IStatus => {
-    let status = Status(data);
-    status.statusType = StatusType(data.statusType);
-    return status;
   };
 
   const buildTicketDetails = (data: any): ITicketDetails => {
@@ -85,16 +83,16 @@ const TicketService = ({ httpService }): ITicketService => {
       });
       return _http.toJSON(response);
     },
-    async changeStatusOfTicket(statusId: number, ticketId: number) {
+
+    async findTicketsByType(iterationId: number, ticketTypeId: number) {
       const path = _http.buildPath(
         _basePath,
-        ticketId.toString(),
-        _updateStatus,
-        statusId.toString()
+        iterationId.toString(),
+        ticketTypeId.toString()
       );
-      const response = await _http.put(path);
+      const response = await _http.get(path);
       const responseJSON = await _http.toJSON(response);
-      return buildStatus(responseJSON);
+      return buildTicketList(responseJSON);
     }
   };
 };

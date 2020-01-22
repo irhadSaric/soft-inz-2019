@@ -98,26 +98,6 @@ const IterationPresenter = withStore<IIterationPresenter, TIterationPresenter>(
       application.navigator.replace({ pathname: `/ticket/${ticketId}` });
     };
 
-    const onCreateIterationBtnClick = () => {
-      _store.update({
-        isCreateIterationModalVisible: true
-      });
-    };
-
-    const onChangeIterationData = (key: string, value: any) => {
-      let iteration = _store.getState<TIterationPresenter>().iteration;
-      iteration[key] = value;
-      _store.update({ iteration });
-    };
-
-    const onCancelIterationModalButtonClick = () => {
-      _store.update({
-        isCreateIterationModalVisible: false,
-        iterationName: "",
-        iterationDescription: ""
-      });
-    };
-
     const validateCreateTicketForm = () => {
       const ticket = _store.getState<TIterationPresenter>().ticket;
       let createTicketValidationErrors = _store.getState<TIterationPresenter>()
@@ -152,9 +132,8 @@ const IterationPresenter = withStore<IIterationPresenter, TIterationPresenter>(
 
     const createTicket = async () => {
       validateCreateTicketForm();
-      const createTicketValidationErrors = _store.getState<
-        TIterationPresenter
-      >().createTicketValidationErrors;
+      const createTicketValidationErrors = store.getState<TIterationPresenter>()
+        .createTicketValidationErrors;
       if (
         !(
           createTicketValidationErrors.ticketName.length ||
@@ -165,15 +144,16 @@ const IterationPresenter = withStore<IIterationPresenter, TIterationPresenter>(
         try {
           loader.start("createTicketLoader");
           const ticket = _store.getState<TIterationPresenter>().ticket;
-          const iteration = _store.getState<TIterationPresenter>().iteration;
-          iteration.id &&
+          const iterationId = _store.getState<TIterationPresenter>()
+            .iterationId;
+          iterationId &&
             (await _application.container
               .resolve<CreateTicketInteractor>("createTicket")
               .execute(
                 ticket.description,
                 ticket.endDate,
                 ticket.name,
-                iteration.id
+                iterationId
               ));
           loader.stop("createTicketLoader");
           _application.container
@@ -191,9 +171,9 @@ const IterationPresenter = withStore<IIterationPresenter, TIterationPresenter>(
     };
 
     const onChangeTicketData = (key: string, value: any) => {
-      let ticketDetails = _store.getState<TTicketPresenter>().ticketDetails;
-      ticketDetails[key] = value;
-      _store.update({ ticketDetails });
+      let ticket = _store.getState<TTicketPresenter>().ticket;
+      ticket[key] = value;
+      _store.update({ ticket });
     };
 
     const onCancelTicketModalButtonClick = () => {
