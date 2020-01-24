@@ -70,5 +70,10 @@ public class ProjectController {
         return projectService.getAllTicketsForProject(projectId);
     }
 
+    @GetMapping("/backlog/{projectId}/")
+    public List<Ticket> getAllBacklogTicketsForProject(@PathVariable("projectId") Long projectId){
+        return projectService.getAllBacklogTicketsForProject(projectId);
+    }
+
 
 }

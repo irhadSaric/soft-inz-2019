@@ -116,4 +116,9 @@ public class ProjectService {
     public List<Ticket> getAllTicketsForProject(Long projectId) {
         return projectRepository.getAllTicketsForProject(projectId);
     }
+
+    @Transactional
+    public List<Ticket> getAllBacklogTicketsForProject(Long projectId){
+        return projectRepository.getAllBacklogTicketsForProject(projectId);
+    }
 }

@@ -26,4 +26,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     @Query(value = "select t from Ticket t where t.project.id= :projectId")
     List<Ticket> getAllTicketsForProject(@Param("projectId") Long projectId);
+
+    @Query(value = "select t from Ticket t where t.project.id= :projectId and t.status.key='backlog-ticket'")
+    List<Ticket> getAllBacklogTicketsForProject(@Param("projectId") Long projectId);
 }
