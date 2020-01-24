@@ -5,8 +5,12 @@ import ba.unsa.pmf.pragma.service.UserService;
 import ba.unsa.pmf.pragma.service.dtos.LoginRequest;
 import ba.unsa.pmf.pragma.service.dtos.RegistrationResponse;
 import ba.unsa.pmf.pragma.service.dtos.UserProfileData;
+import ba.unsa.pmf.pragma.web.CustomAuthenticationProvider;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,11 +23,16 @@ import java.util.List;
  * November, 06, 2019.
  */
 @RestController
+//@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
 public class UserController extends BaseController {
 
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private CustomAuthenticationProvider authenticationProvider;
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/api/user/find/all")
     public List<User> findAllUsers() {
         return userService.findAllUsers();
@@ -39,9 +48,16 @@ public class UserController extends BaseController {
         return userService.register(user);
     }
 
-    @PostMapping("/login")
+    @PostMapping("/api/login")
     public RegistrationResponse login(@Valid @RequestBody LoginRequest request) throws Exception {
-        return userService.login(request);
+        if(authenticationProvider.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())) != null){
+            return userService.login(request);
+        }
+        else{
+            throw new Exception("Error with authentication.");
+        }
+
     }
 
     @GetMapping("/api/user/profile/{id}")
