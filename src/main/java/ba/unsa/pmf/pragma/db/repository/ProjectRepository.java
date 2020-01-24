@@ -2,6 +2,7 @@ package ba.unsa.pmf.pragma.db.repository;
 
 import ba.unsa.pmf.pragma.db.entity.Iteration;
 import ba.unsa.pmf.pragma.db.entity.Project;
+import ba.unsa.pmf.pragma.db.entity.Ticket;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -22,4 +23,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     @Query(value = "select i from Iteration i where i.project.id = :projectId and i.status.key = 'active-iteration'")
     Iteration getActiveIterationForProject(@Param("projectId") Long projectId);
+
+    @Query(value = "select t from Ticket t where t.project.id= :projectId")
+    List<Ticket> getAllTicketsForProject(@Param("projectId") Long projectId);
 }

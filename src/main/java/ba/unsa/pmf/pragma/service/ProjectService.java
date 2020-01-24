@@ -3,6 +3,7 @@ package ba.unsa.pmf.pragma.service;
 import ba.unsa.pmf.pragma.db.entity.Iteration;
 import ba.unsa.pmf.pragma.db.entity.Project;
 import ba.unsa.pmf.pragma.db.entity.Team;
+import ba.unsa.pmf.pragma.db.entity.Ticket;
 import ba.unsa.pmf.pragma.db.repository.ProjectRepository;
 import ba.unsa.pmf.pragma.db.repository.StatusRepository;
 import ba.unsa.pmf.pragma.db.repository.TeamRepository;
@@ -101,11 +102,18 @@ public class ProjectService {
         return projectRepository.getAllByTeamId(id);
     }
 
+    @Transactional
     public List<Iteration> getAllIterationsByType(Long id, String s) {
         return projectRepository.getAllIterationsByType(id, s);
     }
 
+    @Transactional
     public Iteration getActiveIterationForProject(Long id) {
         return projectRepository.getActiveIterationForProject(id);
+    }
+
+    @Transactional
+    public List<Ticket> getAllTicketsForProject(Long projectId) {
+        return projectRepository.getAllTicketsForProject(projectId);
     }
 }
