@@ -8,9 +8,13 @@ import ba.unsa.pmf.pragma.service.dtos.UserProfileData;
 import ba.unsa.pmf.pragma.web.CustomAuthenticationProvider;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,6 +39,10 @@ public class UserController extends BaseController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/api/user/find/all")
     public List<User> findAllUsers() {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        System.out.println(securityContext.getAuthentication().getAuthorities());
+        System.out.println(securityContext.getAuthentication().getCredentials());
+        System.out.println(securityContext.getAuthentication().isAuthenticated());
         return userService.findAllUsers();
     }
 
@@ -50,8 +58,11 @@ public class UserController extends BaseController {
 
     @PostMapping("/api/login")
     public RegistrationResponse login(@Valid @RequestBody LoginRequest request) throws Exception {
-        if(authenticationProvider.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())) != null){
+        Authentication authentication = authenticationProvider.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+        if(authentication != null){
+            SecurityContext securityContext = SecurityContextHolder.getContext();
+            securityContext.setAuthentication(authentication);
             return userService.login(request);
         }
         else{
