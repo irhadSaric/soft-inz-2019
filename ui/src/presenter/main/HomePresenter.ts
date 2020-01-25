@@ -5,11 +5,13 @@ import CreateTeamInteractor from "../../interactor/team/CreateTeamInteractor";
 import InviteUserToTeamInteractor from "../../interactor/team/InviteUserToTeamInteractor";
 import RespondToPendingInviteInteractor from "../../interactor/team/RespondToPendingInviteInteractor";
 import { ITeam } from "../../model/team/Team";
-import { TTeamInvite, ITeamInvite } from "../../model/team/TeamInvite";
+import { ITeamInvite } from "../../model/team/TeamInvite";
 import GetTeamInvitesForUserInteractor from "../../interactor/team/GetTeamInvitesForUserInteractor";
 import ShowSuccessMessageInteractor from "../../interactor/notifications/ShowSuccessMessageInteractor";
 import ShowErrorMessageInteractor from "../../interactor/notifications/ShowErrorMessageInteractor";
 import { IActiveTeam } from "../../model/team/ActiveTeam";
+import GetUserListByEmailInteractor from "../../interactor/user/GetUserListByEmailInteractor";
+import GetAllUsersInteractor from "../../interactor/user/GetAllUsersInteractor";
 
 export interface TCreateTeamPresentationModel {
   description: string;
@@ -48,6 +50,8 @@ export interface IHomePresenter extends THomePresenter, TPresentable {
   respondToPendingInvite(userId: number, teamId: number, accept: boolean): void;
   loadActiveTeamList(activeTeamList: IActiveTeam[]): void;
   showTeamPage(teamId: number): void;
+  onChangeSelectSearch(value: string): void;
+  onDropdownVisibleChange(value: boolean): void;
 }
 
 export interface TSelectValuePresentationModel {
@@ -75,6 +79,8 @@ const HomePresenter = withStore<IHomePresenter, THomePresenter>(
     const _application: Application = application;
     const state = _store.getState<THomePresenter & TLoadingAwarePresenter>();
 
+    loader.start("userListLoader");
+
     const loadUserProfile = (userProfile: IUser) => {
       return _store.update({
         userProfile
@@ -100,6 +106,7 @@ const HomePresenter = withStore<IHomePresenter, THomePresenter>(
       _store.update({
         userList
       });
+      loader.stop("userListLoader");
     };
 
     const onChangeSelectUserList = (value: TSelectValuePresentationModel[]) => {
@@ -238,6 +245,42 @@ const HomePresenter = withStore<IHomePresenter, THomePresenter>(
       application.navigator.push({ pathname: `team/${teamId}/details` });
     };
 
+    const onChangeSelectSearch = async (value: string) => {
+      loader.start("userListLoader");
+      _store.update({
+        userList: []
+      });
+      let userList;
+      if (value !== "") {
+        userList = await application.container
+          .resolve<GetUserListByEmailInteractor>("getUserListByEmail")
+          .execute(value);
+      } else {
+        userList = await application.container
+          .resolve<GetAllUsersInteractor>("getAllUsers")
+          .execute();
+      }
+
+      _store.update({
+        userList
+      });
+      loader.stop("userListLoader");
+    };
+
+    const onDropdownVisibleChange = async (value: boolean) => {
+      if (!value) {
+        loader.start("userListLoader");
+        _store.update({
+          userList: []
+        });
+        const userList = await application.container
+          .resolve<GetAllUsersInteractor>("getAllUsers")
+          .execute();
+        _store.update({ userList });
+        loader.stop("userListLoader");
+      }
+    };
+
     return {
       ...state,
 
@@ -258,7 +301,9 @@ const HomePresenter = withStore<IHomePresenter, THomePresenter>(
       loadTeamList,
       loadActiveTeamList,
       respondToPendingInvite,
-      showTeamPage
+      showTeamPage,
+      onChangeSelectSearch,
+      onDropdownVisibleChange
     };
   },
   defaultState

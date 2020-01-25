@@ -68,6 +68,8 @@ import CreateProjectInteractor from "../interactor/project/CreateProjectInteract
 import UpdateProjectDetailsInteractor from "../interactor/project/UpdateProjectDetailsInteractor";
 import CreateIterationInteractor from "../interactor/iteration/CreateIterationInteractor";
 import GetActiveIterationForProjectInteractor from "../interactor/project/GetAcitveIterationForProjectInteractor";
+import GetUserListByEmailInteractor from "../interactor/user/GetUserListByEmailInteractor";
+import GetAllUsersInteractor from "../interactor/user/GetAllUsersInteractor";
 
 //const DEFAULT_CACHE_TIMEOUT_MS = 15000;
 const ModuleContainer = (application: Application): IModuleContainer => {
@@ -185,7 +187,9 @@ const ModuleContainer = (application: Application): IModuleContainer => {
     createIteration: asInteractor(CreateIterationInteractor),
     getActiveIterationForProject: asInteractor(
       GetActiveIterationForProjectInteractor
-    )
+    ),
+    getUserListByEmail: asInteractor(GetUserListByEmailInteractor),
+    getAllUsers: asInteractor(GetAllUsersInteractor)
   });
 
   return {
