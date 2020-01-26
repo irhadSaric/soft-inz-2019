@@ -2,6 +2,7 @@ package ba.unsa.pmf.pragma.controller;
 
 import ba.unsa.pmf.pragma.db.entity.Iteration;
 import ba.unsa.pmf.pragma.db.entity.Project;
+import ba.unsa.pmf.pragma.db.entity.Ticket;
 import ba.unsa.pmf.pragma.service.ProjectService;
 import ba.unsa.pmf.pragma.service.dtos.CreateProjectRequest;
 import ba.unsa.pmf.pragma.service.dtos.CreateProjectResponse;
@@ -62,6 +63,16 @@ public class ProjectController {
     @GetMapping("/team/{id}")
     public List<Project> getAllProjectsForTeam(@PathVariable("id") Long id){
         return projectService.getAllProjectsForTeam(id);
+    }
+
+    @GetMapping("/tickets/{projectId}/all")
+    public List<Ticket> getAllTicketsForProject(@PathVariable("projectId") Long projectId){
+        return projectService.getAllTicketsForProject(projectId);
+    }
+
+    @GetMapping("/backlog/{projectId}/")
+    public List<Ticket> getAllBacklogTicketsForProject(@PathVariable("projectId") Long projectId){
+        return projectService.getAllBacklogTicketsForProject(projectId);
     }
 
 
