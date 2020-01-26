@@ -5,7 +5,8 @@ import java.util.Date;
 
 @Entity
 @Table(name = "tickets")
-public class Ticket extends BaseEntity{
+public class Ticket extends BaseEntity {
+
     @Column(name = "name", nullable = false)
     private String name;
 
@@ -18,13 +19,13 @@ public class Ticket extends BaseEntity{
     @Column(name = "end_date", nullable = false)
     private Date endDate;
 
-    @Column(name = "finish_date", nullable = false)
+    @Column(name = "finish_date")
     private Date finishDate;
 
     @Column(name = "achieved_score")
     private Float achievedScore;
 
-    @Column(name = "score", nullable = false)
+    @Column(name = "score")
     private Short score;
 
     @ManyToOne

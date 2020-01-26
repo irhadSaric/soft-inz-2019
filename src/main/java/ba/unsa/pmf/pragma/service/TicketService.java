@@ -44,7 +44,7 @@ public class TicketService {
         ticket.setEndDate(request.getEndDate());
         ticket.setStartDate(new Date());
 
-        Status ticketStatus = statusRepository.getStatusByKey("backlog");
+        Status ticketStatus = statusRepository.getStatusByKey("backlog-ticket");
         ticket.setStatus(ticketStatus);
 
         Optional<Project> project = projectRepository.findById(request.getProjectId());

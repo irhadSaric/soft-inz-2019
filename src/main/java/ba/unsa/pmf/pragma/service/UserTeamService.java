@@ -59,14 +59,6 @@ public class UserTeamService {
     inviteUserToTeam(@NotNull TeamInviteRequest request)
     throws NotFoundException {
 
-        if (
-            teamRepository.getTeamByUserAndRoleKeyAndStatusKey(request.getUserId(), "team-lead", "active-team-member").
-            stream().noneMatch(team -> team.getId().equals(request.getTeamId()))
-        ) {
-            // If the requested UserTeam combination with lead role does not exist
-            // FIXME: replace with unauthorized exceptions
-            throw new NotFoundException(String.format("Provided user %d is not lead of team %d.", request.getUserId(), request.getTeamId()));
-        }
         Optional<User> obj = userRepository.findById(request.getInvitedUserId());
         if (obj.isEmpty()) {
             throw new NotFoundException(String.format("No user with id %d found.", request.getInvitedUserId()));

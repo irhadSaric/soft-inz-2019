@@ -15,9 +15,10 @@ import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.List;
 
+@PreAuthorize("isAuthenticated()")
 @RestController
 @RequestMapping("/api/teams")
-public class TeamController {
+public class TeamController extends BaseController {
 
     @Autowired
     private TeamService teamService;
@@ -25,17 +26,21 @@ public class TeamController {
     @Autowired
     private UserTeamService userTeamService;
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/all")
     public List<Team> getAll(){
         return teamService.getAll();
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @PostMapping("/create-team")
     public UserTeamResponse createTeam(@RequestBody CreateTeamRequest request) throws NotFoundException {
         return teamService.createTeam(request);
     }
 
+    // todo: create security method to only permit requests for users with the userId (parameter) which corresponds
+    // to the user sending the request (ideas: check if the user with the provided userId has same credentials as the
+    // user sending the request)
     @GetMapping("/all/{userId}")
     public List<Team> getTeamsForUser(@PathVariable @NotNull Long userId) {
          return userTeamService.getTeamsForUser(userId);
@@ -53,6 +58,7 @@ public class TeamController {
         return userTeamService.getTeamInvitesForUser(userId);
     }
 
+    @PreAuthorize("@authorizationService.isTeamLead(#request.userId, #request.teamId)")
     @PostMapping("/invite")
     public TeamInviteResponse
     inviteUserToTeam(@RequestBody @NotNull TeamInviteRequest request) throws NotFoundException {

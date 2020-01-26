@@ -27,7 +27,6 @@ import java.util.List;
  * November, 06, 2019.
  */
 @RestController
-//@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
 public class UserController extends BaseController {
 
     @Autowired
@@ -39,10 +38,6 @@ public class UserController extends BaseController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/api/user/find/all")
     public List<User> findAllUsers() {
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        System.out.println(securityContext.getAuthentication().getAuthorities());
-        System.out.println(securityContext.getAuthentication().getCredentials());
-        System.out.println(securityContext.getAuthentication().isAuthenticated());
         return userService.findAllUsers();
     }
 
